@@ -299,11 +299,12 @@ h1{
   font-size: 12px;
 }
 
-
-/* v3.6: no "Semana 1" labels */
-.ringNum{ display:none !important; }
-
-/* prismatic ring when 100% */
-.ringProg.prismatic{
-  stroke: url(#prismGradient);
+/* v3.7 rings label "Día X" */
+.ringNum{
+  display:block !important;
+  font-weight: 900;
+  font-size: 12px;
+  color: rgba(255,255,255,.78);
 }
+
+.ringProg.prismatic{ stroke: url(#prismGradient); }

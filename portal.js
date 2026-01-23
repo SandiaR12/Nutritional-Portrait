@@ -88,17 +88,21 @@ function ringSvg(pct, label){
 function renderDays(state){
   const wrap = document.getElementById("days");
   wrap.innerHTML = "";
-  Array.from({length:15}).forEach((_,i)=>{ const d = PLAN[i] || {day:i+1,hint:"",label:`Día ${i+1}`};
-    const prog = computeDayProgress(state, i+1);
+
+  for(let i=1;i<=15;i++){
+    const prog = computeDayProgress(state, i);
+
     const el = document.createElement("div");
     el.className = "ringDay";
-    el.innerHTML = ringSvg(prog.pct, String(i+1));
+    el.innerHTML = ringSvg(prog.pct, String(i)) + `<div class="ringNum">Día ${i}</div>`;
+
     el.onclick = ()=>{
-      selectDay(i+1);
+      selectDay(i);
       scrollToId("plan");
     };
+
     wrap.appendChild(el);
-  });
+  }
 }
 
 function setMealCircle(meal, isDone){
@@ -122,7 +126,7 @@ function renderMealCircles(state){
 
 function selectDay(day){
   selectedDay = day;
-  const d = PLAN[day-1];
+  const d = PLAN[day-1] || {label:`Día ${day}`, hint:'', desayuno:'—', col1:'—', comida:'—', col2:'—', cena:'—'};
 
   document.getElementById("dayTitle").textContent = d.label;
   document.getElementById("daySub").textContent = d.hint;

@@ -21,120 +21,50 @@
         <div class="brandSub">By: Ricardo Sandoval Solorzano</div>
       </div>
     </div>
-
-    <div class="topPills">
-      <div class="pill" id="pillId">ID: —</div>
-      <div class="pill" id="pillPaciente">Paciente: —</div>
-    </div>
+    <div class="pill" id="pillId">ID: —</div>
   </header>
 
   <main class="wrap">
-    <section class="hero">
-      <div class="heroCard">
-        <div class="heroLeft">
-          <div class="chip">Plan semanal · 15 días</div>
-          <h1 id="patientName">Paciente</h1>
-          <p class="muted">Marca cada comida completada. Tu progreso se guarda automáticamente.</p>
-        </div>
-
-        <div class="heroRight">
-          <div class="stat">
-            <div class="statLabel">Calorías</div>
-            <div class="statValue" id="kcal">—</div>
-          </div>
-          <div class="stat">
-            <div class="statLabel">Meta proteína</div>
-            <div class="statValue" id="prot">—</div>
-          </div>
-          <div class="stat">
-            <div class="statLabel">Progreso (día)</div>
-            <div class="statValue" id="progDay">0%</div>
-          </div>
+    <section class="card">
+      <div class="cardHead">
+        <div>
+          <div class="cardTitle">Progreso por días</div>
+          <div class="cardSub">15 días · toca un día para ver su dieta</div>
         </div>
       </div>
+
+      <div id="ringsGrid" class="ringsFlex"></div>
     </section>
 
-    <section class="layout">
-      <section class="card">
-        <div class="cardHead">
-          <div>
-            <div class="cardTitle">Progreso por días</div>
-            <div class="cardSub">Toca un día para ver su dieta.</div>
-          </div>
-          <button class="btn ghost" id="btnResetAll">Reiniciar todo</button>
+    <section class="card" id="plan">
+      <div class="cardHead">
+        <div>
+          <div class="cardTitle" id="dayTitle">Día 1</div>
+          <div class="cardSub">Desayuno · Colación 1 · Comida · Colación 2 · Cena</div>
         </div>
+        <div class="miniPill" id="miniPct">0%</div>
+      </div>
 
-        <div class="ringsGrid" id="ringsGrid"></div>
-      </section>
+      <div class="barWrap">
+        <div class="bar"><div class="barFill" id="barFill"></div></div>
+        <div class="barText" id="barText">0 / 5 completado</div>
+      </div>
 
-      <section class="card" id="plan">
-        <div class="cardHead">
-          <div>
-            <div class="cardTitle" id="dayTitle">Día 1</div>
-            <div class="cardSub" id="daySub">Desayuno · Colación 1 · Comida · Colación 2 · Cena</div>
-          </div>
-          <div class="miniPill" id="miniPct">0%</div>
-        </div>
+      <div class="meals">
+        <div class="meal"><button class="mealDot" id="dot_desayuno">D</button><div class="mealBody"><div class="mealTitle">Desayuno</div><div class="mealText" id="txt_desayuno">—</div></div></div>
+        <div class="meal"><button class="mealDot" id="dot_col1">1</button><div class="mealBody"><div class="mealTitle">Colación 1</div><div class="mealText" id="txt_col1">—</div></div></div>
+        <div class="meal"><button class="mealDot" id="dot_comida">C</button><div class="mealBody"><div class="mealTitle">Comida</div><div class="mealText" id="txt_comida">—</div></div></div>
+        <div class="meal"><button class="mealDot" id="dot_col2">2</button><div class="mealBody"><div class="mealTitle">Colación 2</div><div class="mealText" id="txt_col2">—</div></div></div>
+        <div class="meal"><button class="mealDot" id="dot_cena">Ce</button><div class="mealBody"><div class="mealTitle">Cena</div><div class="mealText" id="txt_cena">—</div></div></div>
+      </div>
 
-        <div class="barWrap">
-          <div class="bar">
-            <div class="barFill" id="barFill"></div>
-          </div>
-          <div class="barText" id="barText">0 / 5 completado</div>
-        </div>
+      <div class="actions">
+        <button class="btn ghost" id="btnResetDay">Reiniciar día</button>
+        <button class="btn primary" id="btnTop">Ir arriba</button>
+      </div>
 
-        <div class="meals">
-          <div class="meal" data-meal="desayuno">
-            <button class="mealDot" id="dot_desayuno">D</button>
-            <div class="mealBody">
-              <div class="mealTitle">Desayuno</div>
-              <div class="mealText" id="txt_desayuno">—</div>
-            </div>
-          </div>
-
-          <div class="meal" data-meal="col1">
-            <button class="mealDot" id="dot_col1">1</button>
-            <div class="mealBody">
-              <div class="mealTitle">Colación 1</div>
-              <div class="mealText" id="txt_col1">—</div>
-            </div>
-          </div>
-
-          <div class="meal" data-meal="comida">
-            <button class="mealDot" id="dot_comida">C</button>
-            <div class="mealBody">
-              <div class="mealTitle">Comida</div>
-              <div class="mealText" id="txt_comida">—</div>
-            </div>
-          </div>
-
-          <div class="meal" data-meal="col2">
-            <button class="mealDot" id="dot_col2">2</button>
-            <div class="mealBody">
-              <div class="mealTitle">Colación 2</div>
-              <div class="mealText" id="txt_col2">—</div>
-            </div>
-          </div>
-
-          <div class="meal" data-meal="cena">
-            <button class="mealDot" id="dot_cena">Ce</button>
-            <div class="mealBody">
-              <div class="mealTitle">Cena</div>
-              <div class="mealText" id="txt_cena">—</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="actions">
-          <button class="btn ghost" id="btnResetDay">Reiniciar día</button>
-          <button class="btn primary" id="btnToTop">Ir a días</button>
-        </div>
-
-        <div class="note muted">V.4exp · Progreso automático por paciente</div>
-      </section>
+      <div class="footer">V.4exp</div>
     </section>
-
-    <footer class="footer">V.4exp</footer>
   </main>
 
   <script type="module" src="./portal_v4exp.js"></script>

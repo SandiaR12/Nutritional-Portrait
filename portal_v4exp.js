@@ -1,9 +1,8 @@
-const BUILD = "V.4exp";
+const BUILD = "V.4exp-FIX2";
 console.log("Portal build:", BUILD);
 
 const params = new URLSearchParams(window.location.search);
 const planId = params.get("id") || "demo";
-
 const MEALS = ["desayuno","col1","comida","col2","cena"];
 
 const PLAN = Array.from({length:15}).map((_,i)=>({
@@ -17,9 +16,7 @@ const PLAN = Array.from({length:15}).map((_,i)=>({
 
 let selectedDay = 1;
 
-function key(){
-  return `np_v4exp_${planId}`;
-}
+function key(){ return `np_v4exp_${planId}`; }
 
 function loadState(){
   try{
@@ -29,21 +26,16 @@ function loadState(){
     return { meals:{} };
   }
 }
-function saveState(s){
-  localStorage.setItem(key(), JSON.stringify(s));
-}
+function saveState(s){ localStorage.setItem(key(), JSON.stringify(s)); }
 
 function ensureDay(s, day){
   const d = String(day);
-  if(!s.meals[d]){
-    s.meals[d] = {desayuno:false,col1:false,comida:false,col2:false,cena:false};
-  }
+  if(!s.meals[d]) s.meals[d] = {desayuno:false,col1:false,comida:false,col2:false,cena:false};
   return s;
 }
 
-function dayProgress(s, day){
-  const d = String(day);
-  const m = s.meals[d];
+function progress(s, day){
+  const m = s.meals[String(day)];
   const done = MEALS.filter(k=>m[k]).length;
   const total = MEALS.length;
   const pct = Math.round((done/total)*100);
@@ -57,7 +49,7 @@ function ringSvg(pct, label){
   const full = pct >= 100;
 
   return `
-  <svg class="ringSvg" viewBox="0 0 72 72" aria-label="Día ${label}">
+  <svg class="ringSvg" viewBox="0 0 72 72">
     <defs>
       <linearGradient id="prismGradient" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stop-color="rgba(59,130,246,.98)"/>
@@ -66,7 +58,6 @@ function ringSvg(pct, label){
         <stop offset="100%" stop-color="rgba(236,72,153,.98)"/>
       </linearGradient>
     </defs>
-
     <circle class="ringBase" cx="36" cy="36" r="${r}" stroke-width="8" fill="none"/>
     <circle class="ringProg ${full ? "prismatic" : ""}" cx="36" cy="36" r="${r}" stroke-width="8" fill="none"
       stroke-linecap="round"
@@ -82,10 +73,10 @@ function renderRings(s){
   grid.innerHTML = "";
 
   for(let i=1;i<=15;i++){
-    const prog = dayProgress(s, i);
+    const p = progress(s, i);
     const item = document.createElement("div");
     item.className = "ringItem";
-    item.innerHTML = ringSvg(prog.pct, String(i)) + `<div class="ringLabel">Día ${i}</div>`;
+    item.innerHTML = ringSvg(p.pct, String(i)) + `<div class="ringLabel">Día ${i}</div>`;
     item.addEventListener("click", ()=>{
       selectDay(i);
       document.getElementById("plan").scrollIntoView({behavior:"smooth", block:"start"});
@@ -95,27 +86,23 @@ function renderRings(s){
 }
 
 function setDot(meal, done){
-  const el = document.getElementById(`dot_${meal}`);
-  if(!el) return;
-  el.classList.toggle("done", !!done);
+  document.getElementById(`dot_${meal}`).classList.toggle("done", !!done);
 }
 
 function renderDay(s){
-  const d = PLAN[selectedDay-1];
-
   document.getElementById("dayTitle").textContent = `Día ${selectedDay}`;
 
+  const d = PLAN[selectedDay-1];
   document.getElementById("txt_desayuno").textContent = d.desayuno;
   document.getElementById("txt_col1").textContent = d.col1;
   document.getElementById("txt_comida").textContent = d.comida;
   document.getElementById("txt_col2").textContent = d.col2;
   document.getElementById("txt_cena").textContent = d.cena;
 
-  const prog = dayProgress(s, selectedDay);
-  document.getElementById("barFill").style.width = `${prog.pct}%`;
-  document.getElementById("barText").textContent = `${prog.done} / ${prog.total} completado`;
-  document.getElementById("progDay").textContent = `${prog.pct}%`;
-  document.getElementById("miniPct").textContent = `${prog.pct}%`;
+  const p = progress(s, selectedDay);
+  document.getElementById("barFill").style.width = `${p.pct}%`;
+  document.getElementById("barText").textContent = `${p.done} / ${p.total} completado`;
+  document.getElementById("miniPct").textContent = `${p.pct}%`;
 
   const m = s.meals[String(selectedDay)];
   MEALS.forEach(k=>setDot(k, m[k]));
@@ -147,27 +134,11 @@ function resetDay(){
   renderRings(s);
 }
 
-function resetAll(){
-  localStorage.removeItem(key());
-  const s = ensureDay(loadState(), 1);
-  saveState(s);
-  selectDay(1);
-}
-
 function init(){
   document.getElementById("pillId").textContent = `ID: ${planId}`;
-  document.getElementById("pillPaciente").textContent = "Paciente: —";
-  document.getElementById("patientName").textContent = "Paciente";
 
-  // placeholders (editable later via admin/firebase)
-  document.getElementById("kcal").textContent = "—";
-  document.getElementById("prot").textContent = "—";
-
-  document.getElementById("btnResetAll").addEventListener("click", resetAll);
   document.getElementById("btnResetDay").addEventListener("click", resetDay);
-  document.getElementById("btnToTop").addEventListener("click", ()=>{
-    window.scrollTo({top:0, behavior:"smooth"});
-  });
+  document.getElementById("btnTop").addEventListener("click", ()=>window.scrollTo({top:0, behavior:"smooth"}));
 
   MEALS.forEach(m=>{
     document.getElementById(`dot_${m}`).addEventListener("click", ()=>toggleMeal(m));

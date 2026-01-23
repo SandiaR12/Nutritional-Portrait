@@ -91,6 +91,7 @@
       save();
       renderPlan();
       renderDays();
+    renderPlan();
     };
   });
 

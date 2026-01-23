@@ -41,11 +41,11 @@
           </div>
         </div>
 
-        <h1>Tu plan, simple y claro.</h1>
+        <h1 id="patientName">Paciente</h1>
         <p class="muted">Selecciona un día. Marca comidas completadas con un click.</p>
 
         <div class="heroBtns">
-          <button class="btn primary" onclick="scrollToId('plan')">Ver día</button>
+          <button class="btn primary" onclick="scrollToId('plan')">Ver dieta</button>
           <button class="btn ghost" onclick="scrollToId('dias')">Calendario</button>
         </div>
       </div>
@@ -57,7 +57,7 @@
           <div class="cardTitle">Plan 15 días</div>
           <div class="cardSub">Toca un día para ver el detalle.</div>
         </div>
-        <div id="days" class="days"></div>
+        <div id="days" class="daysRings"></div>
       </section>
 
       <section class="card" id="plan">
@@ -82,22 +82,6 @@
             </div>
           </div>
 
-          <div class="mealRow" data-meal="comida">
-            <button class="mealCircle" id="c_comida" onclick="toggleMeal('comida')">C</button>
-            <div class="mealContent">
-              <div class="mealTitle">Comida</div>
-              <div class="mealText" id="m2">—</div>
-            </div>
-          </div>
-
-          <div class="mealRow" data-meal="cena">
-            <button class="mealCircle" id="c_cena" onclick="toggleMeal('cena')">Ce</button>
-            <div class="mealContent">
-              <div class="mealTitle">Cena</div>
-              <div class="mealText" id="m3">—</div>
-            </div>
-          </div>
-
           <div class="mealRow" data-meal="col1">
             <button class="mealCircle" id="c_col1" onclick="toggleMeal('col1')">1</button>
             <div class="mealContent">
@@ -106,11 +90,27 @@
             </div>
           </div>
 
+          <div class="mealRow" data-meal="comida">
+            <button class="mealCircle" id="c_comida" onclick="toggleMeal('comida')">C</button>
+            <div class="mealContent">
+              <div class="mealTitle">Comida</div>
+              <div class="mealText" id="m2">—</div>
+            </div>
+          </div>
+
           <div class="mealRow" data-meal="col2">
             <button class="mealCircle" id="c_col2" onclick="toggleMeal('col2')">2</button>
             <div class="mealContent">
               <div class="mealTitle">Colación 2</div>
               <div class="mealText" id="s2">—</div>
+            </div>
+          </div>
+
+          <div class="mealRow" data-meal="cena">
+            <button class="mealCircle" id="c_cena" onclick="toggleMeal('cena')">Ce</button>
+            <div class="mealContent">
+              <div class="mealTitle">Cena</div>
+              <div class="mealText" id="m3">—</div>
             </div>
           </div>
         </div>
@@ -125,7 +125,7 @@
     </section>
 
     <footer class="footer">
-      Portal Nutricional · v3.0
+      Portal Nutricional · v3.5
     </footer>
   </main>
 

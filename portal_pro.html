@@ -8,9 +8,9 @@
 </head>
 <body>
   <header class="top">
-    <div class="title">Portal Nutricional</div>
+    <div class="brand"><div class="logoBox">PN</div><div class="title">Portal Nutricional</div></div>
     <div class="sub">By: Ricardo Sandoval Solorzano</div>
-  </header>
+  <div class="periodTop"><span class="lbl">Periodo</span><span id="periodoTop">—</span></div></header>
 
   <main class="wrap">
     <section class="hero card">
@@ -71,8 +71,11 @@
           <button class="dot" data-meal="cena">CE</button>
           <div class="body"><div class="mt">Cena</div><div class="txt" id="t_cena">—</div></div>
         </div>
-      </div>
-    </section>
+      <div class="actions">
+  <button class="btn ghost" id="resetDay">Reiniciar día</button>
+  <button class="btn primary" id="concludeDay">Concluir día</button>
+</div>
+</section>
 
     <footer class="foot">V.3 PRO (cache-proof)</footer>
   </main>

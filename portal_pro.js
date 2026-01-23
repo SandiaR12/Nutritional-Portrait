@@ -9,7 +9,9 @@
 
   // header fields (admin later)
   document.getElementById('patientName').textContent = localStorage.getItem(key('name')) || id;
-  document.getElementById('periodo').textContent = localStorage.getItem(key('periodo')) || '—';
+  const periodoVal = localStorage.getItem(key('periodo')) || '—';
+  document.getElementById('periodo').textContent = periodoVal;
+  const pt = document.getElementById('periodoTop'); if(pt) pt.textContent = periodoVal;
 
   const setMeta = (k, el)=>{ const v = localStorage.getItem(key(k)) || '—'; document.getElementById(el).textContent = v; };
   setMeta('cal','cal'); setMeta('pro','pro'); setMeta('carb','carb'); setMeta('fat','fat');
@@ -40,7 +42,8 @@
     for(let d=1; d<=15; d++){
       const {done,pct} = progressOf(d);
       const el = document.createElement('div');
-      el.className = 'day' + (done===5 ? ' completed' : '');
+      const isDone = (done===5) || (state.days[d] && state.days[d].concluded);
+      el.className = 'day' + (isDone ? ' completed' : '');
       el.innerHTML = `
         <div class="dayNum">Día ${d}</div>
         <div class="dayHint">${done}/5 completado</div>
@@ -91,6 +94,9 @@
     };
   });
 
+  if(concludeDayBtn) concludeDayBtn.onclick = concludeDay;
+  if(resetDayBtn) resetDayBtn.onclick = resetDay;
+
   document.getElementById('resetAll').onclick = ()=>{
     localStorage.removeItem(key('state'));
     state = {days:{}};
@@ -98,6 +104,24 @@
     renderDays();
     renderPlan();
   };
+
+  
+  const concludeDayBtn = document.getElementById('concludeDay');
+  const resetDayBtn = document.getElementById('resetDay');
+
+  function concludeDay(){
+    ensureDay(currentDay);
+    state.days[currentDay].concluded = true;
+    save();
+    renderDays();
+  }
+  function resetDay(){
+    ensureDay(currentDay);
+    state.days[currentDay] = {desayuno:false,col1:false,comida:false,col2:false,cena:false, concluded:false};
+    save();
+    renderPlan();
+    renderDays();
+  }
 
   // init
   for(let d=1; d<=15; d++) ensureDay(d);

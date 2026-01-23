@@ -62,10 +62,21 @@ function ringSvg(pct, label){
   const r = 26;
   const c = 2 * Math.PI * r;
   const offset = c - (pct/100) * c;
+  const isFull = pct >= 100;
+
   return `
-  <svg class="ringSvg" viewBox="0 0 64 64" aria-label="${label}">
+  <svg class="ringSvg" viewBox="0 0 64 64" aria-label="Día ${label}">
+    <defs>
+      <linearGradient id="prismGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="rgba(59,130,246,.95)"/>
+        <stop offset="35%" stop-color="rgba(168,85,247,.95)"/>
+        <stop offset="70%" stop-color="rgba(34,197,94,.95)"/>
+        <stop offset="100%" stop-color="rgba(236,72,153,.95)"/>
+      </linearGradient>
+    </defs>
+
     <circle class="ringBase" cx="32" cy="32" r="${r}" stroke-width="8" fill="none"/>
-    <circle class="ringProg" cx="32" cy="32" r="${r}" stroke-width="8" fill="none"
+    <circle class="ringProg ${isFull ? "prismatic" : ""}" cx="32" cy="32" r="${r}" stroke-width="8" fill="none"
       stroke-linecap="round"
       stroke-dasharray="${c}"
       stroke-dashoffset="${offset}"
@@ -81,7 +92,7 @@ function renderDays(state){
     const prog = computeDayProgress(state, d.day);
     const el = document.createElement("div");
     el.className = "ringDay";
-    el.innerHTML = ringSvg(prog.pct, String(d.day)) + `<div class="ringNum">${d.hint}</div>`;
+    el.innerHTML = ringSvg(prog.pct, String(d.day));
     el.onclick = ()=>{
       selectDay(d.day);
       scrollToId("plan");

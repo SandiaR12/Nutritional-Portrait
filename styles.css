@@ -298,3 +298,12 @@ h1{
   color: var(--muted);
   font-size: 12px;
 }
+
+
+/* v3.6: no "Semana 1" labels */
+.ringNum{ display:none !important; }
+
+/* prismatic ring when 100% */
+.ringProg.prismatic{
+  stroke: url(#prismGradient);
+}

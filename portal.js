@@ -226,3 +226,12 @@ try{
   const el = document.getElementById('patientNameTitle');
   if(el) el.textContent = npPatientName();
 }catch(e){}
+
+// Header editable fields (admin will write these later)
+try{
+  const periodoEl = document.getElementById('periodoTitle');
+  if(periodoEl){
+    const periodo = localStorage.getItem('np_periodo_'+(new URLSearchParams(location.search).get('id')||'Paciente')) || 'Periodo';
+    periodoEl.textContent = periodo;
+  }
+}catch(e){}

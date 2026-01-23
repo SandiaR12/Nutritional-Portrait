@@ -155,48 +155,30 @@ h1{
 .cardTitle{font-weight:950;letter-spacing:-.2px}
 .cardSub{color:var(--muted);font-size:12px;margin-top:4px}
 
-/* rings */
-.daysRings{
+.days{
   display:grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 14px;
+  gap: 10px;
 }
 @media(max-width: 520px){
-  .daysRings{grid-template-columns: repeat(3, 1fr)}
+  .days{grid-template-columns: repeat(3, 1fr)}
 }
-
-.ringDay{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap: 8px;
+.day{
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.03);
+  border-radius: 18px;
+  padding: 12px;
   cursor:pointer;
-  user-select:none;
+  transition: transform .05s ease, background .2s ease, border-color .2s ease;
 }
-
-.ringSvg{
-  width: 64px;
-  height: 64px;
-  filter: drop-shadow(0 12px 22px rgba(0,0,0,.35));
+.day:hover{background: rgba(255,255,255,.05)}
+.day:active{transform: scale(.99)}
+.day.completed{
+  border-color: rgba(34,197,94,.35);
+  background: rgba(34,197,94,.08);
 }
-.ringBase{ stroke: rgba(255,255,255,.10); }
-.ringProg{
-  stroke: rgba(34,197,94,.78);
-  transition: stroke-dashoffset .18s ease;
-}
-.ringProg.prismatic{ stroke: url(#prismGradient); }
-
-.ringText{
-  font-weight: 950;
-  fill: rgba(255,255,255,.92);
-}
-
-.ringNum{
-  display:block;
-  font-weight: 900;
-  font-size: 12px;
-  color: rgba(255,255,255,.78);
-}
+.dayNum{font-weight:950}
+.dayHint{color:var(--muted);font-size:12px;margin-top:4px}
 
 .progressWrap{
   margin: 10px 0 14px;
@@ -216,7 +198,7 @@ h1{
   height: 100%;
   width: 0%;
   border-radius: 999px;
-  background: linear-gradient(135deg, rgba(34,197,94,.85), rgba(34,197,94,.55));
+  background: linear-gradient(135deg, rgba(96,165,250,.9), rgba(59,130,246,.9));
   transition: width .18s ease;
 }
 .progressText{
@@ -226,15 +208,26 @@ h1{
   font-weight: 900;
 }
 
-.mealTable{display:flex;flex-direction:column;gap: 10px;}
+.mealTable{
+  display:flex;
+  flex-direction:column;
+  gap: 10px;
+}
+
 .mealRow{
-  display:flex;gap: 12px;align-items:flex-start;
-  padding: 14px;border-radius: 22px;
+  display:flex;
+  gap: 12px;
+  align-items:flex-start;
+  padding: 14px;
+  border-radius: 22px;
   border: 1px solid var(--border);
   background: rgba(255,255,255,.02);
 }
+
 .mealCircle{
-  width: 44px;height: 44px;border-radius: 999px;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
   border: 1px solid var(--border);
   background: rgba(255,255,255,.03);
   color: var(--text);
@@ -243,13 +236,20 @@ h1{
   flex: 0 0 auto;
 }
 .mealCircle.done{
-  border-color: rgba(34,197,94,.55);
-  background: rgba(34,197,94,.18);
-  color: rgba(34,197,94,.95);
+  border-color: rgba(96,165,250,.35);
+  background: rgba(59,130,246,.18);
+  color: var(--blue2);
 }
 
-.mealContent{flex: 1 1 auto;min-width: 0;}
-.mealTitle{font-weight: 950;letter-spacing: -.2px;margin-bottom: 6px;}
+.mealContent{
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.mealTitle{
+  font-weight: 950;
+  letter-spacing: -.2px;
+  margin-bottom: 6px;
+}
 .mealText{
   color: var(--text);
   font-weight: 800;
@@ -260,7 +260,24 @@ h1{
   min-height: 48px;
 }
 
-.dayActions{display:flex;gap: 10px;flex-wrap:wrap;margin-top: 12px;}
+.textarea{
+  width:100%;
+  min-height: 110px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.03);
+  color: var(--text);
+  border-radius: 18px;
+  padding: 12px;
+  outline:none;
+  resize: vertical;
+}
+
+.dayActions{
+  display:flex;
+  gap: 10px;
+  flex-wrap:wrap;
+  margin-top: 12px;
+}
 
 .note{
   margin-top: 10px;
@@ -275,4 +292,97 @@ h1{
   text-align:center;
   color: var(--muted);
   font-size: 12px;
+}
+
+.adminGrid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+@media(max-width: 980px){
+  .adminGrid{grid-template-columns: 1fr}
+}
+.aLab{color:var(--muted);font-size:12px;font-weight:950}
+.aInp{
+  width:100%;
+  margin-top:8px;
+  padding:12px 12px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.03);
+  color: var(--text);
+  border-radius: 18px;
+  outline:none;
+  font-size:14px;
+}
+
+.adminBtns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.outBox{
+  margin-top: 12px;
+  border:1px dashed rgba(255,255,255,.18);
+  background: rgba(255,255,255,.02);
+  border-radius: 22px;
+  padding: 12px;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 12px;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.divider{
+  margin: 14px 0;
+  height: 1px;
+  background: var(--border);
+}
+
+
+/* v3.0-rings: days grid progress tiles */
+.daysGrid{
+  display:grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+@media(max-width:520px){
+  .daysGrid{grid-template-columns: repeat(3, 1fr);}
+}
+.dayTile{
+  position:relative;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+  border-radius: 18px;
+  padding: 12px 10px;
+  cursor:pointer;
+  overflow:hidden;
+}
+.dayTile .fill{
+  position:absolute;
+  inset:0;
+  width:0%;
+  background: rgba(34,197,94,.28);
+  transition: width .18s ease;
+}
+.dayTile.full .fill{
+  width:100% !important;
+  background: linear-gradient(135deg,
+    rgba(59,130,246,.55),
+    rgba(168,85,247,.55),
+    rgba(34,197,94,.55),
+    rgba(236,72,153,.55)
+  );
+}
+.dayTile .content{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 8px;
+}
+.dayTile .dnum{
+  font-weight:950;
+  letter-spacing:-.3px;
+}
+.dayTile .dpct{
+  font-size:12px;
+  color: rgba(255,255,255,.75);
+  font-weight:900;
 }

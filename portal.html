@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Portal Nutricional</title>
+  <link rel="stylesheet" href="./styles.css"/>
+</head>
+<body>
+  <div class="bg"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">NP</div>
+      <div class="titles">
+        <div class="t1">Portal Nutricional</div>
+        <div class="t2" id="subTitle">Plan 15 días</div>
+      </div>
+    </div>
+    <div class="pill" id="pillClient">Paciente: —</div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="heroCard">
+        <div class="heroTop">
+          <div class="chip" id="chipStatus">Cargando...</div>
+          <div class="meta">
+            <div class="metaItem">
+              <div class="metaLabel">Etapa</div>
+              <div class="metaValue" id="kEtapa">—</div>
+            </div>
+            <div class="metaItem">
+              <div class="metaLabel">Revisión</div>
+              <div class="metaValue" id="kRevision">—</div>
+            </div>
+            <div class="metaItem">
+              <div class="metaLabel">Plan ID</div>
+              <div class="metaValue" id="kPlanId">—</div>
+            </div>
+          </div>
+        </div>
+
+        <h1>Tu plan, simple y claro.</h1>
+        <p class="muted">Selecciona un día para ver tus comidas.</p>
+
+        <div class="heroBtns">
+          <button class="btn primary" onclick="scrollToId('plan')">Ver día</button>
+          <button class="btn ghost" onclick="scrollToId('dias')">Calendario</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid2">
+      <section class="card" id="dias">
+        <div class="cardHead">
+          <div class="cardTitle">Plan 15 días</div>
+          <div class="cardSub">Toca un día para ver el detalle.</div>
+        </div>
+        <div id="days" class="days"></div>
+      </section>
+
+      <section class="card" id="plan">
+        <div class="cardHead">
+          <div class="cardTitle" id="dayTitle">Día —</div>
+          <div class="cardSub" id="daySub">—</div>
+        </div>
+
+        <div class="bigTable">
+          <div class="row">
+            <div class="k">Desayuno</div>
+            <div class="v" id="m1">—</div>
+          </div>
+          <div class="row">
+            <div class="k">Comida</div>
+            <div class="v" id="m2">—</div>
+          </div>
+          <div class="row">
+            <div class="k">Cena</div>
+            <div class="v" id="m3">—</div>
+          </div>
+          <div class="row">
+            <div class="k">Colación 1</div>
+            <div class="v" id="s1">—</div>
+          </div>
+          <div class="row">
+            <div class="k">Colación 2</div>
+            <div class="v" id="s2">—</div>
+          </div>
+        </div>
+
+        <div class="note muted small" id="note">—</div>
+      </section>
+    </section>
+
+    <footer class="footer">
+      Portal Nutricional · vFirebase · Plan 15 días
+    </footer>
+  </main>
+
+  <script type="module" src="./portal.js"></script>
+</body>
+</html>

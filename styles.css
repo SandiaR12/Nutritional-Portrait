@@ -388,60 +388,63 @@ h1{
 }
 
 
-/* === V3.0 STYLEUP (Apple minimal) === */
+/* ===== V3 STYLEUP2: Strong prism day + bar color logic hooks ===== */
 :root{
-  --bg:#070A0F;
-  --card:rgba(255,255,255,.04);
-  --border:rgba(255,255,255,.10);
-  --text:#EAF0F7;
-  --muted:rgba(234,240,247,.62);
-  --blue: rgba(59,130,246,.95);
-  --green: rgba(34,197,94,.95);
-  --red: rgba(239,68,68,.95);
+  --np-bg:#070A0F;
+  --np-card:rgba(255,255,255,.04);
+  --np-border:rgba(255,255,255,.12);
+  --np-text:#EAF0F7;
+  --np-muted:rgba(234,240,247,.62);
+  --np-blue: rgba(59,130,246,.95);
+  --np-green: rgba(34,197,94,.95);
+  --np-red: rgba(239,68,68,.95);
 }
 
 body{
-  background: radial-gradient(900px 500px at 20% 10%, rgba(255,255,255,.10), transparent 55%),
-              radial-gradient(900px 500px at 80% 0%, rgba(59,130,246,.16), transparent 60%),
-              radial-gradient(900px 700px at 50% 110%, rgba(255,255,255,.08), transparent 60%),
-              var(--bg) !important;
-  color: var(--text) !important;
+  background:
+    radial-gradient(900px 520px at 15% 0%, rgba(255,255,255,.12), transparent 60%),
+    radial-gradient(900px 520px at 85% 0%, rgba(59,130,246,.18), transparent 60%),
+    radial-gradient(900px 720px at 50% 120%, rgba(255,255,255,.10), transparent 65%),
+    var(--np-bg) !important;
+  color: var(--np-text) !important;
 }
 
-.card, .panel, .box{
-  background: var(--card) !important;
-  border: 1px solid var(--border) !important;
+/* Day tiles (try multiple selectors) */
+.day, .day-card, .dayTile, .day-tile, .dayBox{
+  background: var(--np-card) !important;
+  border: 1px solid var(--np-border) !important;
+  color: var(--np-text) !important;
   backdrop-filter: blur(14px);
 }
 
-.day-card.completed{
-  background: linear-gradient(135deg, rgba(59,130,246,.18), rgba(255,255,255,.06)) !important;
-}
-
-/* Prism strong for completed day */
-.day-card.prismatic{
+/* Completed day strong prism */
+.day.prismatic, .day-card.prismatic, .dayTile.prismatic, .day-tile.prismatic, .dayBox.prismatic{
   background: linear-gradient(135deg,
-    rgba(59,130,246,.95),
-    rgba(168,85,247,.95),
-    rgba(34,197,94,.95),
-    rgba(236,72,153,.95)
+    rgba(59,130,246,.98),
+    rgba(168,85,247,.98),
+    rgba(34,197,94,.98),
+    rgba(236,72,153,.98)
   ) !important;
+  border-color: rgba(255,255,255,.22) !important;
   color: #061018 !important;
-  border-color: rgba(255,255,255,.18) !important;
+  box-shadow: 0 18px 60px rgba(0,0,0,.55) !important;
 }
 
-/* Progress bar states */
-.progress-fill.red{
+/* Progress bar fill (try multiple selectors) */
+.progress-fill, #progressFill, .barFill{
   background: linear-gradient(135deg, rgba(239,68,68,.95), rgba(239,68,68,.45)) !important;
 }
-.progress-fill.green{
+.progress-fill.red, #progressFill.red, .barFill.red{
+  background: linear-gradient(135deg, rgba(239,68,68,.95), rgba(239,68,68,.45)) !important;
+}
+.progress-fill.green, #progressFill.green, .barFill.green{
   background: linear-gradient(135deg, rgba(34,197,94,.95), rgba(34,197,94,.45)) !important;
 }
-.progress-fill.prismatic{
+.progress-fill.prismatic, #progressFill.prismatic, .barFill.prismatic{
   background: linear-gradient(135deg,
-    rgba(59,130,246,.95),
-    rgba(168,85,247,.95),
-    rgba(34,197,94,.95),
-    rgba(236,72,153,.95)
+    rgba(59,130,246,.98),
+    rgba(168,85,247,.98),
+    rgba(34,197,94,.98),
+    rgba(236,72,153,.98)
   ) !important;
 }

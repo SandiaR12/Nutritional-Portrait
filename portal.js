@@ -1,17 +1,15 @@
 
-function setProgressBarColor(doneCount){
-  const fill = document.querySelector('.progress-fill') || document.getElementById('progressFill');
-  if(!fill) return;
-  fill.classList.remove('red','green','prismatic');
-  if(doneCount >= 5){
-    fill.classList.add('prismatic');
-  }else if(doneCount >= 3){
-    fill.classList.add('green');
-  }else{
-    fill.classList.add('red');
-  }
+function npGetProgressFillEl(){
+  return document.querySelector('#progressFill') || document.querySelector('.progress-fill') || document.querySelector('.barFill');
 }
-
+function npSetBarColor(doneCount){
+  const el = npGetProgressFillEl();
+  if(!el) return;
+  el.classList.remove('red','green','prismatic');
+  if(doneCount >= 5) el.classList.add('prismatic');
+  else if(doneCount >= 3) el.classList.add('green');
+  else el.classList.add('red');
+}
 console.log('Portal build v3.0-tiles');
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
@@ -220,3 +218,10 @@ async function loadPlan(){
 }
 
 loadPlan();
+
+
+  // STYLEUP2: update bar color based on completed meals
+  try{
+    const done = document.querySelectorAll('.meal-toggle.done, .mealDot.done, .meal-complete.done').length;
+    npSetBarColor(done);
+  }catch(e){}

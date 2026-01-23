@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Portal Nutricional</title>
+  <link rel="stylesheet" href="./styles.css"/>
+</head>
+<body>
+  <div class="bg"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">NP</div>
+      <div class="titles">
+        <div class="t1">Portal Nutricional</div>
+        <div class="t2">By: Ricardo Sandoval Solorzano</div>
+      </div>
+    </div>
+    <div class="pill" id="pillClient">Paciente: —</div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="heroCard">
+        <div class="heroTop">
+          <div class="chip" id="chipStatus">Plan activo</div>
+          <div class="meta">
+            <div class="metaItem">
+              <div class="metaLabel">Calorías</div>
+              <div class="metaValue" id="kCalorias">—</div>
+            </div>
+            <div class="metaItem">
+              <div class="metaLabel">Meta proteína</div>
+              <div class="metaValue" id="kProte">—</div>
+            </div>
+            <div class="metaItem">
+              <div class="metaLabel">Progreso del día</div>
+              <div class="metaValue" id="kProg">0%</div>
+            </div>
+          </div>
+        </div>
+
+        <h1>Tu plan, simple y claro.</h1>
+        <p class="muted">Selecciona un día. Marca comidas completadas con un click.</p>
+
+        <div class="heroBtns">
+          <button class="btn primary" onclick="scrollToId('plan')">Ver día</button>
+          <button class="btn ghost" onclick="scrollToId('dias')">Calendario</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid2">
+      <section class="card" id="dias">
+        <div class="cardHead">
+          <div class="cardTitle">Plan 15 días</div>
+          <div class="cardSub">Toca un día para ver el detalle.</div>
+        </div>
+        <div id="days" class="daysGrid"></div>
+      </section>
+
+      <section class="card" id="plan">
+        <div class="cardHead">
+          <div class="cardTitle" id="dayTitle">Día —</div>
+          <div class="cardSub" id="daySub">—</div>
+        </div>
+
+        <div class="progressWrap">
+          <div class="progressBar">
+            <div class="progressFill" id="progressFill"></div>
+          </div>
+          <div class="progressText" id="progressText">0 / 5 completado</div>
+        </div>
+
+        <div class="mealTable">
+          <div class="mealRow" data-meal="desayuno">
+            <button class="mealCircle" id="c_desayuno" onclick="toggleMeal('desayuno')">D</button>
+            <div class="mealContent">
+              <div class="mealTitle">Desayuno</div>
+              <div class="mealText" id="m1">—</div>
+            </div>
+          </div>
+
+          <div class="mealRow" data-meal="comida">
+            <button class="mealCircle" id="c_comida" onclick="toggleMeal('comida')">C</button>
+            <div class="mealContent">
+              <div class="mealTitle">Comida</div>
+              <div class="mealText" id="m2">—</div>
+            </div>
+          </div>
+
+          <div class="mealRow" data-meal="cena">
+            <button class="mealCircle" id="c_cena" onclick="toggleMeal('cena')">Ce</button>
+            <div class="mealContent">
+              <div class="mealTitle">Cena</div>
+              <div class="mealText" id="m3">—</div>
+            </div>
+          </div>
+
+          <div class="mealRow" data-meal="col1">
+            <button class="mealCircle" id="c_col1" onclick="toggleMeal('col1')">1</button>
+            <div class="mealContent">
+              <div class="mealTitle">Colación 1</div>
+              <div class="mealText" id="s1">—</div>
+            </div>
+          </div>
+
+          <div class="mealRow" data-meal="col2">
+            <button class="mealCircle" id="c_col2" onclick="toggleMeal('col2')">2</button>
+            <div class="mealContent">
+              <div class="mealTitle">Colación 2</div>
+              <div class="mealText" id="s2">—</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dayActions">
+          <button class="btn ghost" onclick="resetDayProgress()">Reiniciar progreso</button>
+          <button class="btn primary" onclick="concludeDay()">Concluir día</button>
+        </div>
+
+        <div class="note muted small" id="note">Tip: puedes marcar/desmarcar comidas tocando el círculo.</div>
+      </section>
+    </section>
+
+    <footer class="footer">
+      Portal Nutricional · v3.0
+    </footer>
+  </main>
+
+  <script type="module" src="./portal.js"></script>
+</body>
+</html>

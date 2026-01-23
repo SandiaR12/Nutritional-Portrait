@@ -1,18 +1,3 @@
-
-function npPatientName(){
-  const id = new URLSearchParams(location.search).get('id') || 'Paciente';
-  return id.charAt(0).toUpperCase() + id.slice(1);
-}
-
-function setBarColor(done){
-  const el = document.getElementById('progressFill');
-  if(!el) return;
-  el.classList.remove('red','green','prismatic');
-  if(done >= 5) el.classList.add('prismatic');
-  else if(done >= 3) el.classList.add('green');
-  else el.classList.add('red');
-}
-
 console.log('Portal build v3.0-tiles');
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
@@ -222,16 +207,13 @@ async function loadPlan(){
 
 loadPlan();
 
+// Header fields from admin (localStorage)
 try{
-  const el = document.getElementById('patientNameTitle');
-  if(el) el.textContent = npPatientName();
-}catch(e){}
-
-// Header editable fields (admin will write these later)
-try{
-  const periodoEl = document.getElementById('periodoTitle');
-  if(periodoEl){
-    const periodo = localStorage.getItem('np_periodo_'+(new URLSearchParams(location.search).get('id')||'Paciente')) || 'Periodo';
-    periodoEl.textContent = periodo;
-  }
+  const pid = new URLSearchParams(location.search).get('id') || 'demo';
+  const name = localStorage.getItem('np_name_'+pid) || pid;
+  const periodo = localStorage.getItem('np_periodo_'+pid) || '—';
+  const nEl = document.getElementById('patientName');
+  const pEl = document.getElementById('periodo');
+  if(nEl) nEl.textContent = name;
+  if(pEl) pEl.textContent = periodo;
 }catch(e){}

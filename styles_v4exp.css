@@ -281,3 +281,13 @@ h1{
   color: var(--muted);
   font-size: 12px;
 }
+
+/* FIX: force 15 rings visible (5 columns) */
+.ringsGrid{
+  width: 100%;
+  min-width: 0;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+}
+.ringItem{
+  min-width: 0;
+}

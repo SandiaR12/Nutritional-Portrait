@@ -1,39 +1,26 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCCcA1fbapUdDbgrgn5sl9vBxX_XfKQmys",
-  authDomain: "portalnutricionals.firebaseapp.com",
-  projectId: "portalnutricionals",
-  storageBucket: "portalnutricionals.firebasestorage.app",
-  messagingSenderId: "1085909222208",
-  appId: "1:1085909222208:web:6650c8cf248fc5754fb0a5",
-  measurementId: "G-CMP8WBR4LE"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-const BUILD = 'v3.7-fix2';
-console.log('Portal build', BUILD);
+const BUILD = "v3.8-clean";
+console.log("Portal build:", BUILD);
 
 const params = new URLSearchParams(window.location.search);
 const planId = params.get("id") || "";
 
+/** Plan local (placeholder). Cuando metas Firebase, aquí se sobreescribe. */
 let PLAN = Array.from({length:15}).map((_,i)=>({
   day:i+1,
-  label:`Día ${i+1}`,
-  hint: i<7?"Semana 1":i<14?"Semana 2":"Semana 3",
-  desayuno:"—", comida:"—", cena:"—", col1:"—", col2:"—"
+  desayuno:"—",
+  col1:"—",
+  comida:"—",
+  col2:"—",
+  cena:"—"
 }));
 
 let selectedDay = 1;
 
 function storageKey(){
-  return `np_v35_${planId || "sinid"}`;
+  return `np_v38_${planId || "sinid"}`;
 }
 
-function getProgressState(){
+function getState(){
   try{
     const raw = localStorage.getItem(storageKey());
     return raw ? JSON.parse(raw) : { meals:{}, concluded:{} };
@@ -42,23 +29,23 @@ function getProgressState(){
   }
 }
 
-function setProgressState(state){
-  localStorage.setItem(storageKey(), JSON.stringify(state));
+function setState(s){
+  localStorage.setItem(storageKey(), JSON.stringify(s));
 }
 
-function ensureDayState(state, day){
+function ensureDay(s, day){
   const d = String(day);
-  if(!state.meals[d]) state.meals[d] = {desayuno:false, comida:false, cena:false, col1:false, col2:false};
-  if(state.concluded[d] === undefined) state.concluded[d] = false;
-  return state;
+  if(!s.meals[d]) s.meals[d] = {desayuno:false, col1:false, comida:false, col2:false, cena:false};
+  if(s.concluded[d] === undefined) s.concluded[d] = false;
+  return s;
 }
 
-function computeDayProgress(state, day){
+function computeProgress(s, day){
   const d = String(day);
-  const m = state.meals[d];
+  const m = s.meals[d];
   const total = 5;
   const done = Object.values(m).filter(Boolean).length;
-  return {done, total, pct: Math.round((done/total)*100)};
+  return {done,total,pct: Math.round((done/total)*100)};
 }
 
 function ringSvg(pct, label){
@@ -88,164 +75,113 @@ function ringSvg(pct, label){
   </svg>`;
 }
 
-function renderDays(state){
+function renderDays(s){
   const wrap = document.getElementById("days");
   wrap.innerHTML = "";
-
   for(let i=1;i<=15;i++){
-    const prog = computeDayProgress(state, i);
-
+    const prog = computeProgress(s, i);
     const el = document.createElement("div");
     el.className = "ringDay";
     el.innerHTML = ringSvg(prog.pct, String(i)) + `<div class="ringNum">Día ${i}</div>`;
-
-    el.onclick = ()=>{
+    el.addEventListener("click", ()=>{
       selectDay(i);
-      scrollToId("plan");
-    };
-
+      scrollTo("plan");
+    });
     wrap.appendChild(el);
   }
 }
 
-function setMealCircle(meal, isDone){
-  const c = document.getElementById(`c_${meal}`);
-  if(!c) return;
-  c.classList.toggle("done", !!isDone);
+function scrollTo(id){
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:"smooth", block:"start"});
 }
 
-function renderProgress(state){
-  const p = computeDayProgress(state, selectedDay);
-  document.getElementById("progressFill").style.width = `${p.pct}%`;
-  document.getElementById("progressText").textContent = `${p.done} / ${p.total} completado`;
-  document.getElementById("kProg").textContent = `${p.pct}%`;
+function setMealCircle(id, done){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.classList.toggle("done", !!done);
 }
 
-function renderMealCircles(state){
-  const d = String(selectedDay);
-  const m = state.meals[d];
-  ["desayuno","col1","comida","col2","cena"].forEach(k=>setMealCircle(k, m[k]));
+function renderDay(s){
+  const d = PLAN[selectedDay-1] || PLAN[0];
+
+  document.getElementById("dayTitle").textContent = `Día ${selectedDay}`;
+  document.getElementById("daySub").textContent = "—";
+
+  document.getElementById("t_desayuno").textContent = d.desayuno || "—";
+  document.getElementById("t_col1").textContent = d.col1 || "—";
+  document.getElementById("t_comida").textContent = d.comida || "—";
+  document.getElementById("t_col2").textContent = d.col2 || "—";
+  document.getElementById("t_cena").textContent = d.cena || "—";
+
+  const prog = computeProgress(s, selectedDay);
+  document.getElementById("progressFill").style.width = `${prog.pct}%`;
+  document.getElementById("progressText").textContent = `${prog.done} / ${prog.total} completado`;
+  document.getElementById("kProg").textContent = `${prog.pct}%`;
+
+  const ds = s.meals[String(selectedDay)];
+  setMealCircle("c_desayuno", ds.desayuno);
+  setMealCircle("c_col1", ds.col1);
+  setMealCircle("c_comida", ds.comida);
+  setMealCircle("c_col2", ds.col2);
+  setMealCircle("c_cena", ds.cena);
 }
 
 function selectDay(day){
   selectedDay = day;
-  const d = PLAN[day-1] || {label:`Día ${day}`, hint:'', desayuno:'—', col1:'—', comida:'—', col2:'—', cena:'—'};
-
-  document.getElementById("dayTitle").textContent = d.label;
-  document.getElementById("daySub").textContent = d.hint;
-
-  document.getElementById("m1").textContent = d.desayuno || "—";
-  document.getElementById("s1").textContent = d.col1 || "—";
-  document.getElementById("m2").textContent = d.comida || "—";
-  document.getElementById("s2").textContent = d.col2 || "—";
-  document.getElementById("m3").textContent = d.cena || "—";
-
-  const state = ensureDayState(getProgressState(), day);
-  setProgressState(state);
-
-  renderMealCircles(state);
-  renderProgress(state);
-  renderDays(state);
+  const s = ensureDay(getState(), day);
+  setState(s);
+  renderDay(s);
+  renderDays(s);
 }
 
-window.scrollToId = (id)=>{
-  const el = document.getElementById(id);
-  if(el) el.scrollIntoView({behavior:"smooth", block:"start"});
-};
-
-window.toggleMeal = (meal)=>{
-  const state = ensureDayState(getProgressState(), selectedDay);
+function toggleMeal(mealKey, circleId){
+  const s = ensureDay(getState(), selectedDay);
   const d = String(selectedDay);
-  state.meals[d][meal] = !state.meals[d][meal];
-  setProgressState(state);
-  renderMealCircles(state);
-  renderProgress(state);
-  renderDays(state);
-};
-
-window.resetDayProgress = ()=>{
-  const state = ensureDayState(getProgressState(), selectedDay);
-  const d = String(selectedDay);
-  state.meals[d] = {desayuno:false, comida:false, cena:false, col1:false, col2:false};
-  setProgressState(state);
-  renderMealCircles(state);
-  renderProgress(state);
-  renderDays(state);
-};
-
-window.concludeDay = ()=>{
-  const state = ensureDayState(getProgressState(), selectedDay);
-  const d = String(selectedDay);
-  state.concluded[d] = true;
-  setProgressState(state);
-  renderDays(state);
-};
-
-async function loadPlan(){
-  if(!planId){
-    document.getElementById("chipStatus").textContent = "Portal listo";
-    document.getElementById("kCalorias").textContent = "—";
-    document.getElementById("kProte").textContent = "—";
-    document.getElementById("pillClient").textContent = "Paciente: —";
-    document.getElementById("patientName").textContent = "Paciente";
-    const state = ensureDayState(getProgressState(), 1);
-    setProgressState(state);
-    renderDays(state);
-    selectDay(1);
-    return;
-  }
-
-  try{
-    const ref = doc(db, "plans", planId);
-    const snap = await getDoc(ref);
-
-    if(!snap.exists()){
-      document.getElementById("chipStatus").textContent = "Plan no disponible";
-      document.getElementById("patientName").textContent = "Paciente";
-      const state = ensureDayState(getProgressState(), 1);
-      setProgressState(state);
-      renderDays(state);
-      selectDay(1);
-      return;
-    }
-
-    const data = snap.data();
-    const paciente = data.paciente || "Paciente";
-    document.getElementById("pillClient").textContent = `Paciente: ${paciente}`;
-    document.getElementById("patientName").textContent = paciente;
-
-    document.getElementById("kCalorias").textContent = data.calorias ? `${data.calorias} kcal` : "—";
-    document.getElementById("kProte").textContent = data.metaProteina ? `${data.metaProteina} g` : "—";
-
-    if(Array.isArray(data.plan) && data.plan.length){
-      PLAN = data.plan.map((x,i)=>({
-        day: x.day ?? (i+1),
-        label: x.label ?? `Día ${i+1}`,
-        hint: x.hint ?? (i<7?"Semana 1":i<14?"Semana 2":"Semana 3"),
-        desayuno: x.desayuno ?? "—",
-        comida: x.comida ?? "—",
-        cena: x.cena ?? "—",
-        col1: x.col1 ?? "—",
-        col2: x.col2 ?? "—",
-      }));
-    }
-
-    document.getElementById("chipStatus").textContent = "Plan activo";
-
-    const state = ensureDayState(getProgressState(), 1);
-    setProgressState(state);
-    renderDays(state);
-    selectDay(1);
-
-  }catch(err){
-    console.error(err);
-    document.getElementById("chipStatus").textContent = "Portal listo";
-    document.getElementById("patientName").textContent = "Paciente";
-    const state = ensureDayState(getProgressState(), 1);
-    setProgressState(state);
-    renderDays(state);
-    selectDay(1);
-  }
+  s.meals[d][mealKey] = !s.meals[d][mealKey];
+  setState(s);
+  renderDay(s);
+  renderDays(s);
 }
 
-loadPlan();
+function resetDay(){
+  const s = ensureDay(getState(), selectedDay);
+  const d = String(selectedDay);
+  s.meals[d] = {desayuno:false, col1:false, comida:false, col2:false, cena:false};
+  setState(s);
+  renderDay(s);
+  renderDays(s);
+}
+
+function concludeDay(){
+  const s = ensureDay(getState(), selectedDay);
+  s.concluded[String(selectedDay)] = true;
+  setState(s);
+  renderDays(s);
+}
+
+function init(){
+  // Patient placeholder
+  document.getElementById("pillClient").textContent = "Paciente: —";
+  document.getElementById("patientName").textContent = "Paciente";
+
+  // Buttons
+  document.getElementById("btnVerDieta").addEventListener("click", ()=>scrollTo("plan"));
+  document.getElementById("btnCalendario").addEventListener("click", ()=>scrollTo("dias"));
+  document.getElementById("btnReset").addEventListener("click", resetDay);
+  document.getElementById("btnConcluir").addEventListener("click", concludeDay);
+
+  // Meal circles
+  document.getElementById("c_desayuno").addEventListener("click", ()=>toggleMeal("desayuno","c_desayuno"));
+  document.getElementById("c_col1").addEventListener("click", ()=>toggleMeal("col1","c_col1"));
+  document.getElementById("c_comida").addEventListener("click", ()=>toggleMeal("comida","c_comida"));
+  document.getElementById("c_col2").addEventListener("click", ()=>toggleMeal("col2","c_col2"));
+  document.getElementById("c_cena").addEventListener("click", ()=>toggleMeal("cena","c_cena"));
+
+  const s = ensureDay(getState(), 1);
+  setState(s);
+  renderDays(s);
+  selectDay(1);
+}
+
+init();

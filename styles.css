@@ -155,7 +155,7 @@ h1{
 .cardTitle{font-weight:950;letter-spacing:-.2px}
 .cardSub{color:var(--muted);font-size:12px;margin-top:4px}
 
-/* v3.5 rings calendar */
+/* rings */
 .daysRings{
   display:grid;
   grid-template-columns: repeat(5, 1fr);
@@ -179,22 +179,23 @@ h1{
   height: 64px;
   filter: drop-shadow(0 12px 22px rgba(0,0,0,.35));
 }
-.ringBase{
-  stroke: rgba(255,255,255,.10);
-}
+.ringBase{ stroke: rgba(255,255,255,.10); }
 .ringProg{
   stroke: rgba(34,197,94,.78);
   transition: stroke-dashoffset .18s ease;
 }
+.ringProg.prismatic{ stroke: url(#prismGradient); }
+
 .ringText{
   font-weight: 950;
   fill: rgba(255,255,255,.92);
 }
 
 .ringNum{
-  font-weight: 950;
+  display:block;
+  font-weight: 900;
   font-size: 12px;
-  color: var(--muted);
+  color: rgba(255,255,255,.78);
 }
 
 .progressWrap{
@@ -225,26 +226,15 @@ h1{
   font-weight: 900;
 }
 
-.mealTable{
-  display:flex;
-  flex-direction:column;
-  gap: 10px;
-}
-
+.mealTable{display:flex;flex-direction:column;gap: 10px;}
 .mealRow{
-  display:flex;
-  gap: 12px;
-  align-items:flex-start;
-  padding: 14px;
-  border-radius: 22px;
+  display:flex;gap: 12px;align-items:flex-start;
+  padding: 14px;border-radius: 22px;
   border: 1px solid var(--border);
   background: rgba(255,255,255,.02);
 }
-
 .mealCircle{
-  width: 44px;
-  height: 44px;
-  border-radius: 999px;
+  width: 44px;height: 44px;border-radius: 999px;
   border: 1px solid var(--border);
   background: rgba(255,255,255,.03);
   color: var(--text);
@@ -258,15 +248,8 @@ h1{
   color: rgba(34,197,94,.95);
 }
 
-.mealContent{
-  flex: 1 1 auto;
-  min-width: 0;
-}
-.mealTitle{
-  font-weight: 950;
-  letter-spacing: -.2px;
-  margin-bottom: 6px;
-}
+.mealContent{flex: 1 1 auto;min-width: 0;}
+.mealTitle{font-weight: 950;letter-spacing: -.2px;margin-bottom: 6px;}
 .mealText{
   color: var(--text);
   font-weight: 800;
@@ -277,12 +260,7 @@ h1{
   min-height: 48px;
 }
 
-.dayActions{
-  display:flex;
-  gap: 10px;
-  flex-wrap:wrap;
-  margin-top: 12px;
-}
+.dayActions{display:flex;gap: 10px;flex-wrap:wrap;margin-top: 12px;}
 
 .note{
   margin-top: 10px;
@@ -298,13 +276,3 @@ h1{
   color: var(--muted);
   font-size: 12px;
 }
-
-/* v3.7 rings label "Día X" */
-.ringNum{
-  display:block !important;
-  font-weight: 900;
-  font-size: 12px;
-  color: rgba(255,255,255,.78);
-}
-
-.ringProg.prismatic{ stroke: url(#prismGradient); }

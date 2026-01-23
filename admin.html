@@ -14,14 +14,13 @@
       <div class="logo">NP</div>
       <div class="titles">
         <div class="t1">Admin · Portal Nutricional</div>
-        <div class="t2">Editor de planes (Firebase)</div>
+        <div class="t2">Editor de planes (v3.0)</div>
       </div>
     </div>
     <div class="pill" id="userPill">No autenticado</div>
   </header>
 
   <main class="wrap">
-    <!-- LOGIN -->
     <section class="card" id="loginCard">
       <div class="cardHead">
         <div class="cardTitle">Iniciar sesión</div>
@@ -46,11 +45,10 @@
       <div class="muted small" id="loginMsg">—</div>
     </section>
 
-    <!-- EDITOR -->
     <section class="card" id="editorCard" style="display:none;">
       <div class="cardHead">
         <div class="cardTitle">Editor de plan 15 días</div>
-        <div class="cardSub">Editas aquí y el paciente lo ve en su portal.</div>
+        <div class="cardSub">Edita aquí. El paciente lo verá en su portal.</div>
       </div>
 
       <div class="adminGrid">
@@ -59,16 +57,16 @@
           <input id="planId" class="aInp" placeholder="Ej: juan15"/>
         </div>
         <div>
-          <div class="aLab">Paciente (texto)</div>
+          <div class="aLab">Paciente</div>
           <input id="paciente" class="aInp" placeholder="Ej: Juan Pérez"/>
         </div>
         <div>
-          <div class="aLab">Etapa</div>
-          <input id="etapa" class="aInp" placeholder="Ej: Pérdida de grasa 15D"/>
+          <div class="aLab">Calorías (kcal)</div>
+          <input id="calorias" class="aInp" placeholder="Ej: 2200"/>
         </div>
         <div>
-          <div class="aLab">Revisión</div>
-          <input id="revision" class="aInp" placeholder="Ej: 10 Feb"/>
+          <div class="aLab">Meta proteína (g)</div>
+          <input id="metaProteina" class="aInp" placeholder="Ej: 180"/>
         </div>
       </div>
 
@@ -90,26 +88,45 @@
 
       <div class="days" id="dayPicker"></div>
 
-      <div class="bigTable" style="margin-top:12px">
-        <div class="row">
-          <div class="k">Desayuno</div>
-          <div class="v"><textarea id="desayuno" class="textarea" placeholder="Escribe aquí..."></textarea></div>
+      <div class="mealTable" style="margin-top:12px">
+        <div class="mealRow">
+          <button class="mealCircle">D</button>
+          <div class="mealContent">
+            <div class="mealTitle">Desayuno</div>
+            <textarea id="desayuno" class="textarea" placeholder="Escribe aquí..."></textarea>
+          </div>
         </div>
-        <div class="row">
-          <div class="k">Comida</div>
-          <div class="v"><textarea id="comida" class="textarea" placeholder="Escribe aquí..."></textarea></div>
+
+        <div class="mealRow">
+          <button class="mealCircle">C</button>
+          <div class="mealContent">
+            <div class="mealTitle">Comida</div>
+            <textarea id="comida" class="textarea" placeholder="Escribe aquí..."></textarea>
+          </div>
         </div>
-        <div class="row">
-          <div class="k">Cena</div>
-          <div class="v"><textarea id="cena" class="textarea" placeholder="Escribe aquí..."></textarea></div>
+
+        <div class="mealRow">
+          <button class="mealCircle">Ce</button>
+          <div class="mealContent">
+            <div class="mealTitle">Cena</div>
+            <textarea id="cena" class="textarea" placeholder="Escribe aquí..."></textarea>
+          </div>
         </div>
-        <div class="row">
-          <div class="k">Colación 1</div>
-          <div class="v"><textarea id="col1" class="textarea" placeholder="Escribe aquí..."></textarea></div>
+
+        <div class="mealRow">
+          <button class="mealCircle">1</button>
+          <div class="mealContent">
+            <div class="mealTitle">Colación 1</div>
+            <textarea id="col1" class="textarea" placeholder="Escribe aquí..."></textarea>
+          </div>
         </div>
-        <div class="row">
-          <div class="k">Colación 2</div>
-          <div class="v"><textarea id="col2" class="textarea" placeholder="Escribe aquí..."></textarea></div>
+
+        <div class="mealRow">
+          <button class="mealCircle">2</button>
+          <div class="mealContent">
+            <div class="mealTitle">Colación 2</div>
+            <textarea id="col2" class="textarea" placeholder="Escribe aquí..."></textarea>
+          </div>
         </div>
       </div>
 

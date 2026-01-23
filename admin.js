@@ -2,7 +2,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/fireba
 import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 
-// TU CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyCCcA1fbapUdDbgrgn5sl9vBxX_XfKQmys",
   authDomain: "portalnutricionals.firebaseapp.com",
@@ -33,8 +32,8 @@ const outLink = document.getElementById("outLink");
 
 const planIdEl = document.getElementById("planId");
 const pacienteEl = document.getElementById("paciente");
-const etapaEl = document.getElementById("etapa");
-const revisionEl = document.getElementById("revision");
+const caloriasEl = document.getElementById("calorias");
+const metaProteinaEl = document.getElementById("metaProteina");
 
 const desayunoEl = document.getElementById("desayuno");
 const comidaEl = document.getElementById("comida");
@@ -43,6 +42,7 @@ const col1El = document.getElementById("col1");
 const col2El = document.getElementById("col2");
 
 let selectedDay = 1;
+
 let CURRENT_PLAN = Array.from({length:15}).map((_,i)=>({
   day:i+1,
   label:`Día ${i+1}`,
@@ -130,6 +130,9 @@ btnLoad.addEventListener("click", async ()=>{
         day:i+1,label:`Día ${i+1}`,hint:i<7?"Semana 1":i<14?"Semana 2":"Semana 3",
         desayuno:"",comida:"",cena:"",col1:"",col2:""
       }));
+      pacienteEl.value = "";
+      caloriasEl.value = "";
+      metaProteinaEl.value = "";
       renderDayPicker();
       selectDay(1);
       return;
@@ -137,8 +140,8 @@ btnLoad.addEventListener("click", async ()=>{
 
     const data = snap.data();
     pacienteEl.value = data.paciente || "";
-    etapaEl.value = data.etapa || "";
-    revisionEl.value = data.revision || "";
+    caloriasEl.value = data.calorias || "";
+    metaProteinaEl.value = data.metaProteina || "";
     CURRENT_PLAN = Array.isArray(data.plan) ? data.plan : CURRENT_PLAN;
 
     renderDayPicker();
@@ -160,8 +163,8 @@ btnSave.addEventListener("click", async ()=>{
   try{
     await setDoc(doc(db, "plans", planId), {
       paciente: pacienteEl.value.trim(),
-      etapa: etapaEl.value.trim(),
-      revision: revisionEl.value.trim(),
+      calorias: caloriasEl.value.trim(),
+      metaProteina: metaProteinaEl.value.trim(),
       plan: CURRENT_PLAN,
       updatedAt: Date.now()
     });

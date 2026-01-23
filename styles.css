@@ -5,6 +5,7 @@
   --border:rgba(255,255,255,.08);
   --blue:#3B82F6;
   --blue2:#60A5FA;
+  --green:#22C55E;
   --shadow: 0 18px 60px rgba(0,0,0,.45);
 }
 
@@ -98,7 +99,7 @@ body{
 
 .meta{
   display:grid;
-  grid-template-columns: repeat(3, minmax(120px, 1fr));
+  grid-template-columns: repeat(3, minmax(140px, 1fr));
   gap: 10px;
 }
 .metaItem{
@@ -168,36 +169,114 @@ h1{
   border-radius: 18px;
   padding: 12px;
   cursor:pointer;
-  transition: transform .05s ease, background .2s ease;
+  transition: transform .05s ease, background .2s ease, border-color .2s ease;
 }
 .day:hover{background: rgba(255,255,255,.05)}
 .day:active{transform: scale(.99)}
+.day.completed{
+  border-color: rgba(34,197,94,.35);
+  background: rgba(34,197,94,.08);
+}
 .dayNum{font-weight:950}
 .dayHint{color:var(--muted);font-size:12px;margin-top:4px}
 
-.bigTable{
-  border:1px solid var(--border);
-  border-radius: 22px;
-  overflow:hidden;
+.progressWrap{
+  margin: 10px 0 14px;
+  padding: 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
   background: rgba(255,255,255,.02);
 }
-.row{
-  display:grid;
-  grid-template-columns: 160px 1fr;
-  gap: 12px;
-  padding: 14px 14px;
-  border-bottom: 1px solid var(--border);
+.progressBar{
+  height: 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.04);
+  overflow:hidden;
 }
-.row:last-child{border-bottom:none}
-.k{
+.progressFill{
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(96,165,250,.9), rgba(59,130,246,.9));
+  transition: width .18s ease;
+}
+.progressText{
+  margin-top: 8px;
   color: var(--muted);
-  font-weight: 950;
   font-size: 12px;
-}
-.v{
   font-weight: 900;
+}
+
+.mealTable{
+  display:flex;
+  flex-direction:column;
+  gap: 10px;
+}
+
+.mealRow{
+  display:flex;
+  gap: 12px;
+  align-items:flex-start;
+  padding: 14px;
+  border-radius: 22px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.02);
+}
+
+.mealCircle{
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.03);
+  color: var(--text);
+  font-weight: 950;
+  cursor:pointer;
+  flex: 0 0 auto;
+}
+.mealCircle.done{
+  border-color: rgba(96,165,250,.35);
+  background: rgba(59,130,246,.18);
+  color: var(--blue2);
+}
+
+.mealContent{
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.mealTitle{
+  font-weight: 950;
+  letter-spacing: -.2px;
+  margin-bottom: 6px;
+}
+.mealText{
+  color: var(--text);
+  font-weight: 800;
+  line-height: 1.45;
   font-size: 14px;
-  letter-spacing: -.1px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  min-height: 48px;
+}
+
+.textarea{
+  width:100%;
+  min-height: 110px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.03);
+  color: var(--text);
+  border-radius: 18px;
+  padding: 12px;
+  outline:none;
+  resize: vertical;
+}
+
+.dayActions{
+  display:flex;
+  gap: 10px;
+  flex-wrap:wrap;
+  margin-top: 12px;
 }
 
 .note{
@@ -206,18 +285,6 @@ h1{
   border-radius: 18px;
   border: 1px solid var(--border);
   background: rgba(255,255,255,.02);
-}
-
-.textarea{
-  width:100%;
-  min-height: 70px;
-  border:1px solid var(--border);
-  background: rgba(255,255,255,.03);
-  color: var(--text);
-  border-radius: 18px;
-  padding: 12px;
-  outline:none;
-  resize: vertical;
 }
 
 .footer{

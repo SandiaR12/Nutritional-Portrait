@@ -14,6 +14,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+const BUILD = 'v3.7-fix2';
+console.log('Portal build', BUILD);
+
 const params = new URLSearchParams(window.location.search);
 const planId = params.get("id") || "";
 

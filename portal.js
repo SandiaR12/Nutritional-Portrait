@@ -1,13 +1,4 @@
-
-function setBarColor(done){
-  const el = document.getElementById('progressFill');
-  if(!el) return;
-  el.classList.remove('red','green','prismatic');
-  if(done >= 5) el.classList.add('prismatic');
-  else if(done >= 3) el.classList.add('green');
-  else el.classList.add('red');
-}
-
+const PATIENT_NAME = (new URLSearchParams(location.search).get('id')||'Paciente');
 console.log('Portal build v3.0-tiles');
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";

@@ -88,13 +88,13 @@ function ringSvg(pct, label){
 function renderDays(state){
   const wrap = document.getElementById("days");
   wrap.innerHTML = "";
-  PLAN.forEach(d=>{
-    const prog = computeDayProgress(state, d.day);
+  Array.from({length:15}).forEach((_,i)=>{ const d = PLAN[i] || {day:i+1,hint:"",label:`Día ${i+1}`};
+    const prog = computeDayProgress(state, i+1);
     const el = document.createElement("div");
     el.className = "ringDay";
-    el.innerHTML = ringSvg(prog.pct, String(d.day));
+    el.innerHTML = ringSvg(prog.pct, String(i+1));
     el.onclick = ()=>{
-      selectDay(d.day);
+      selectDay(i+1);
       scrollToId("plan");
     };
     wrap.appendChild(el);

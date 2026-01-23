@@ -1,4 +1,9 @@
 
+function npPatientName(){
+  const id = new URLSearchParams(location.search).get('id') || 'Paciente';
+  return id.charAt(0).toUpperCase() + id.slice(1);
+}
+
 function setBarColor(done){
   const el = document.getElementById('progressFill');
   if(!el) return;
@@ -216,3 +221,8 @@ async function loadPlan(){
 }
 
 loadPlan();
+
+try{
+  const el = document.getElementById('patientNameTitle');
+  if(el) el.textContent = npPatientName();
+}catch(e){}

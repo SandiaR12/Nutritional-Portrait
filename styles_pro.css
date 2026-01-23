@@ -88,3 +88,31 @@ body{
 
 .btn.primary{background: linear-gradient(135deg, rgba(59,130,246,.95), rgba(147,197,253,.95));color:#061018}
 .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+
+/* === PRO V3: palette + side-by-side layout === */
+body{
+  background:
+    radial-gradient(900px 520px at 15% 0%, rgba(255,255,255,.14), transparent 60%),
+    radial-gradient(900px 520px at 85% 0%, rgba(59,130,246,.22), transparent 60%),
+    radial-gradient(900px 720px at 50% 120%, rgba(255,255,255,.12), transparent 65%),
+    linear-gradient(180deg, #05070B 0%, #0A0E16 55%, #06080D 100%);
+}
+
+.card{
+  border: 1.5px solid rgba(255,255,255,.14);
+  background:
+    radial-gradient(140% 160% at 20% 0%, rgba(255,255,255,.10), transparent 60%),
+    rgba(255,255,255,.035);
+}
+
+.grid2{
+  display:grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap:14px;
+}
+@media(max-width:900px){
+  .grid2{grid-template-columns:1fr;}
+}
+
+.daysCard{height: fit-content;}
+.planCard{min-height: 720px;}

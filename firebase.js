@@ -1,15 +1,15 @@
-// firebase.js (Pega tu config aquí)
+// firebase.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "REEMPLAZA_AQUI",
-  authDomain: "REEMPLAZA_AQUI",
-  projectId: "REEMPLAZA_AQUI",
-  storageBucket: "REEMPLAZA_AQUI",
-  messagingSenderId: "REEMPLAZA_AQUI",
-  appId: "REEMPLAZA_AQUI",
-  measurementId: "REEMPLAZA_AQUI"
+  apiKey: "AIzaSyCCcA1fbapUdDbgrgn5sl9vBxX_XfKQmys",
+  authDomain: "portalnutricionals.firebaseapp.com",
+  projectId: "portalnutricionals",
+  storageBucket: "portalnutricionals.firebasestorage.app",
+  messagingSenderId: "1085909222208",
+  appId: "1:1085909222208:web:6650c8cf248fc5754fb0a5",
+  measurementId: "G-CMP8WBR4LE"
 };
 
 export const app = initializeApp(firebaseConfig);

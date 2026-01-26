@@ -187,16 +187,30 @@ els.saveDay.addEventListener('click', saveDay);
 els.resetProgressDay.addEventListener('click', resetProgressDay);
 els.copyLink.addEventListener('click', copyLink);
 
-els.prevDay.addEventListener('click', ()=>{
+els.prevDay.addEventListener('click', async ()=>{
   currentDay = Math.max(1, currentDay-1);
   setDayUI();
-  // reload day from firebase
-  if(currentId) openPatient();
+  if(!currentId) return;
+  const snap = await getDoc(patientRef(currentId));
+  if(snap.exists()){
+    const data = ensureShape(snap.data());
+    loadDayToForm(data);
+  }
 });
-els.nextDay.addEventListener('click', ()=>{
+
+els.nextDay.addEventListener('click', async ()=>{
   currentDay = Math.min(15, currentDay+1);
   setDayUI();
-  if(currentId) openPatient();
+  if(!currentId) return;
+  const snap = await getDoc(patientRef(currentId));
+  if(snap.exists()){
+    const data = ensureShape(snap.data());
+    loadDayToForm(data);
+  }
+});
+
+setDayUI();
+if(currentId) openPatient();
 });
 
 setDayUI();

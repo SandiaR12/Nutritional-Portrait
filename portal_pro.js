@@ -152,4 +152,7 @@ document.querySelectorAll('.dot').forEach(btn=>{
   save();
   renderDays();
   renderPlan();
+  // Force paint on first load (GitHub Pages / mobile quirk)
+  setTimeout(()=>{ renderDays(); renderPlan(); }, 50);
+  setTimeout(()=>{ renderDays(); renderPlan(); }, 250);
 })();

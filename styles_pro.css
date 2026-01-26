@@ -116,8 +116,3 @@ body{
 
 .daysCard{height: fit-content;}
 .planCard{min-height: 720px;}
-
-/* === V3.2 polish UX === */
-.day:hover{border-color: rgba(59,130,246,.45); transform: translateY(-1px); transition: .12s ease;}
-.day{transition: .12s ease;}
-.day.selected{outline: 2px solid rgba(59,130,246,.55); outline-offset: 2px;}

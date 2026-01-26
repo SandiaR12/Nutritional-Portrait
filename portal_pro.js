@@ -77,7 +77,31 @@
 
     // dots
     const m = state.days[currentDay];
-    document.querySelectorAll('.dot').forEach(btn=>{
+    
+  const concludeDayBtn = document.getElementById('concludeDay');
+  const resetDayBtn = document.getElementById('resetDay');
+
+  function markDayConcluded(){
+    ensureDay(currentDay);
+    state.days[currentDay].concluded = true;
+    save();
+    renderDays();
+    renderPlan();
+  }
+
+  function clearDay(){
+    ensureDay(currentDay);
+    state.days[currentDay] = {desayuno:false,col1:false,comida:false,col2:false,cena:false, concluded:false};
+    save();
+    renderDays();
+    renderPlan();
+  }
+
+  if(concludeDayBtn) concludeDayBtn.addEventListener('click', markDayConcluded);
+  if(resetDayBtn) resetDayBtn.addEventListener('click', clearDay);
+
+
+document.querySelectorAll('.dot').forEach(btn=>{
       const meal = btn.dataset.meal;
       btn.classList.toggle('done', !!m[meal]);
     });
@@ -91,7 +115,6 @@
       save();
       renderPlan();
       renderDays();
-    renderPlan();
     };
   });
 

@@ -1,12 +1,18 @@
+import { db } from "./firebase.js";
+import { doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
 (() => {
   'use strict';
 
   const params = new URLSearchParams(location.search);
-  const id = params.get('id') || 'demo';
+  const id = params.get('id');
+
+  if(!id){
+    alert("Falta el id en el link. Ejemplo: clean.html?id=juan15");
+  }
 
   const MEALS = ['desayuno','col1','comida','col2','cena'];
   const TOTAL = MEALS.length;
-  const KEY = (s)=>`np_clean_${s}_${id}`;
 
   const $ = (q)=>document.querySelector(q);
 
@@ -32,34 +38,38 @@
     }
   };
 
-  let state = JSON.parse(localStorage.getItem(KEY('state')) || '{}');
-  if(!state.days) state.days = {};
+  let currentDay = 1;
+  let patient = null;
 
-  const ensureDay = (d)=>{
-    if(!state.days[d]){
-      state.days[d] = {desayuno:false,col1:false,comida:false,col2:false,cena:false, concluded:false};
+  const patientRef = ()=>doc(db, "patients", id);
+
+  const ensureShape = (p)=>{
+    if(!p.meta) p.meta = {cal:"—", pro:"—", carb:"—", fat:"—"};
+    if(!p.plan) p.plan = {};
+    if(!p.progress) p.progress = {};
+    for(let d=1; d<=15; d++){
+      const k = String(d);
+      if(!p.plan[k]) p.plan[k] = {desayuno:"—", col1:"—", comida:"—", col2:"—", cena:"—"};
+      if(!p.progress[k]) p.progress[k] = {desayuno:false,col1:false,comida:false,col2:false,cena:false, concluded:false};
     }
+    return p;
   };
 
-  const save = ()=>localStorage.setItem(KEY('state'), JSON.stringify(state));
-
   const progressOf = (d)=>{
-    ensureDay(d);
-    const m = state.days[d];
-    const done = MEALS.reduce((acc,k)=>acc + (m[k] ? 1 : 0), 0);
+    const k = String(d);
+    const m = patient.progress[k];
+    const done = MEALS.reduce((acc,x)=>acc + (m[x] ? 1 : 0), 0);
     const pct = Math.round((done/TOTAL)*100);
     return {done,pct, concluded: !!m.concluded};
   };
 
-  let currentDay = 1;
-
   function setHeader(){
-    els.patientName.textContent = localStorage.getItem(KEY('name')) || id;
-    els.periodoTop.textContent = localStorage.getItem(KEY('periodo')) || '—';
-    els.cal.textContent = localStorage.getItem(KEY('cal')) || '—';
-    els.pro.textContent = localStorage.getItem(KEY('pro')) || '—';
-    els.carb.textContent = localStorage.getItem(KEY('carb')) || '—';
-    els.fat.textContent = localStorage.getItem(KEY('fat')) || '—';
+    els.patientName.textContent = patient.name || id;
+    els.periodoTop.textContent = patient.periodo || "—";
+    els.cal.textContent = patient.meta.cal ?? "—";
+    els.pro.textContent = patient.meta.pro ?? "—";
+    els.carb.textContent = patient.meta.carb ?? "—";
+    els.fat.textContent = patient.meta.fat ?? "—";
   }
 
   function setBarColor(done){
@@ -98,43 +108,71 @@
     els.barText.textContent = `${done} / 5 completado`;
     setBarColor(done);
 
-    // dots
-    const m = state.days[currentDay];
+    const plan = patient.plan[String(currentDay)];
+    els.texts.desayuno.textContent = plan.desayuno || "—";
+    els.texts.col1.textContent = plan.col1 || "—";
+    els.texts.comida.textContent = plan.comida || "—";
+    els.texts.col2.textContent = plan.col2 || "—";
+    els.texts.cena.textContent = plan.cena || "—";
+
+    const m = patient.progress[String(currentDay)];
     els.dots.forEach(btn=>{
       const meal = btn.dataset.meal;
       btn.classList.toggle('on', !!m[meal]);
     });
   }
 
-  function toggleMeal(meal){
-    ensureDay(currentDay);
-    state.days[currentDay][meal] = !state.days[currentDay][meal];
-    // if user changes meals, don't auto remove concluded (keep it)
-    save();
+  async function pushProgress(){
+    await updateDoc(patientRef(), {
+      progress: patient.progress
+    });
+  }
+
+  async function toggleMeal(meal){
+    const k = String(currentDay);
+    patient.progress[k][meal] = !patient.progress[k][meal];
+    await pushProgress();
     renderDays();
     renderPlan();
   }
 
-  function concludeDay(){
-    ensureDay(currentDay);
-    state.days[currentDay].concluded = true;
-    save();
-    renderDays();
-  }
-
-  function resetDay(){
-    state.days[currentDay] = {desayuno:false,col1:false,comida:false,col2:false,cena:false, concluded:false};
-    save();
+  async function concludeDay(){
+    const k = String(currentDay);
+    patient.progress[k].concluded = true;
+    await pushProgress();
     renderDays();
     renderPlan();
   }
 
-  function resetAll(){
-    localStorage.removeItem(KEY('state'));
-    state = {days:{}};
-    for(let d=1; d<=15; d++) ensureDay(d);
+  async function resetDay(){
+    const k = String(currentDay);
+    patient.progress[k] = {desayuno:false,col1:false,comida:false,col2:false,cena:false, concluded:false};
+    await pushProgress();
+    renderDays();
+    renderPlan();
+  }
+
+  async function resetAll(){
+    for(let d=1; d<=15; d++){
+      patient.progress[String(d)] = {desayuno:false,col1:false,comida:false,col2:false,cena:false, concluded:false};
+    }
+    await pushProgress();
     currentDay = 1;
-    save();
+    renderDays();
+    renderPlan();
+  }
+
+  async function load(){
+    const snap = await getDoc(patientRef());
+    if(!snap.exists()){
+      // create empty patient doc
+      const empty = ensureShape({name:id, periodo:"—", meta:{cal:"—",pro:"—",carb:"—",fat:"—"}});
+      await setDoc(patientRef(), empty);
+      patient = empty;
+    }else{
+      patient = ensureShape(snap.data());
+    }
+    setHeader();
     renderDays();
     renderPlan();
   }
@@ -145,18 +183,5 @@
   els.resetDay.addEventListener('click', resetDay);
   els.resetAll.addEventListener('click', resetAll);
 
-  // BOOT (guaranteed)
-  function boot(){
-    setHeader();
-    for(let d=1; d<=15; d++) ensureDay(d);
-    save();
-    renderDays();
-    renderPlan();
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', boot, {once:true});
-  }else{
-    boot();
-  }
+  load();
 })();

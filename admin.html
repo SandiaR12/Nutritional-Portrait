@@ -4,134 +4,67 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Admin · Portal Nutricional</title>
-  <link rel="stylesheet" href="./styles.css"/>
+  <link rel="stylesheet" href="./admin.css"/>
 </head>
 <body>
-  <div class="bg"></div>
-
-  <header class="topbar">
+  <header class="top">
     <div class="brand">
-      <div class="logo">NP</div>
-      <div class="titles">
-        <div class="t1">Admin · Portal Nutricional</div>
-        <div class="t2">Editor de planes (v3.0)</div>
+      <div class="logo">PN</div>
+      <div>
+        <div class="t">Admin</div>
+        <div class="s">Crea pacientes, edita planes y revisa progreso</div>
       </div>
     </div>
-    <div class="pill" id="userPill">No autenticado</div>
   </header>
 
   <main class="wrap">
-    <section class="card" id="loginCard">
-      <div class="cardHead">
-        <div class="cardTitle">Iniciar sesión</div>
-        <div class="cardSub">Solo tú puedes editar planes.</div>
+    <section class="card">
+      <div class="h">1) Crear / Abrir paciente</div>
+      <div class="grid">
+        <label>ID (link)<input id="pid" placeholder="ej: juan15"/></label>
+        <label>Nombre<input id="pname" placeholder="Juan Pérez"/></label>
+        <label>Periodo<input id="pperiodo" placeholder="01–15 Feb 2026"/></label>
+        <label>Calorías<input id="pcal" placeholder="2200"/></label>
+        <label>Proteína<input id="ppro" placeholder="180"/></label>
+        <label>Carbohidratos<input id="pcarb" placeholder="240"/></label>
+        <label>Grasas<input id="pfat" placeholder="60"/></label>
       </div>
-
-      <div class="adminGrid">
-        <div>
-          <div class="aLab">Correo</div>
-          <input id="email" class="aInp" placeholder="tucorreo@gmail.com"/>
-        </div>
-        <div>
-          <div class="aLab">Contraseña</div>
-          <input id="pass" type="password" class="aInp" placeholder="••••••••"/>
-        </div>
+      <div class="btnRow">
+        <button class="btn primary" id="savePatient">Guardar</button>
+        <button class="btn ghost" id="openPatient">Abrir</button>
+        <button class="btn ghost" id="copyLink">Copiar link WhatsApp</button>
       </div>
-
-      <div class="adminBtns">
-        <button class="btn primary" id="btnLogin">Entrar</button>
-      </div>
-
-      <div class="muted small" id="loginMsg">—</div>
+      <div class="hint" id="status">Listo.</div>
     </section>
 
-    <section class="card" id="editorCard" style="display:none;">
-      <div class="cardHead">
-        <div class="cardTitle">Editor de plan 15 días</div>
-        <div class="cardSub">Edita aquí. El paciente lo verá en su portal.</div>
+    <section class="card">
+      <div class="h">2) Plan (15 días)</div>
+      <div class="dayPick">
+        <button class="btn ghost" id="prevDay">◀</button>
+        <div class="pill" id="dayLabel">Día 1</div>
+        <button class="btn ghost" id="nextDay">▶</button>
       </div>
 
-      <div class="adminGrid">
-        <div>
-          <div class="aLab">Plan ID (clave única)</div>
-          <input id="planId" class="aInp" placeholder="Ej: juan15"/>
-        </div>
-        <div>
-          <div class="aLab">Paciente</div>
-          <input id="paciente" class="aInp" placeholder="Ej: Juan Pérez"/>
-        </div>
-        <div>
-          <div class="aLab">Calorías (kcal)</div>
-          <input id="calorias" class="aInp" placeholder="Ej: 2200"/>
-        </div>
-        <div>
-          <div class="aLab">Meta proteína (g)</div>
-          <input id="metaProteina" class="aInp" placeholder="Ej: 180"/>
-        </div>
+      <div class="grid2">
+        <label>Desayuno<textarea id="desayuno"></textarea></label>
+        <label>Colación 1<textarea id="col1"></textarea></label>
+        <label>Comida<textarea id="comida"></textarea></label>
+        <label>Colación 2<textarea id="col2"></textarea></label>
+        <label>Cena<textarea id="cena"></textarea></label>
       </div>
 
-      <div class="adminBtns">
-        <button class="btn ghost" id="btnLoad">Cargar</button>
-        <button class="btn primary" id="btnSave">Guardar</button>
-        <button class="btn ghost" id="btnLink">Generar link</button>
-        <button class="btn ghost" id="btnLogout">Salir</button>
+      <div class="btnRow">
+        <button class="btn primary" id="saveDay">Guardar día</button>
+        <button class="btn ghost" id="resetProgressDay">Reset progreso día</button>
       </div>
-
-      <div class="outBox" id="outLink">—</div>
-
-      <div class="divider"></div>
-
-      <div class="cardHead">
-        <div class="cardTitle">Día seleccionado</div>
-        <div class="cardSub">Edita comidas y guarda.</div>
-      </div>
-
-      <div class="days" id="dayPicker"></div>
-
-      <div class="mealTable" style="margin-top:12px">
-        <div class="mealRow">
-          <button class="mealCircle">D</button>
-          <div class="mealContent">
-            <div class="mealTitle">Desayuno</div>
-            <textarea id="desayuno" class="textarea" placeholder="Escribe aquí..."></textarea>
-          </div>
-        </div>
-
-        <div class="mealRow">
-          <button class="mealCircle">C</button>
-          <div class="mealContent">
-            <div class="mealTitle">Comida</div>
-            <textarea id="comida" class="textarea" placeholder="Escribe aquí..."></textarea>
-          </div>
-        </div>
-
-        <div class="mealRow">
-          <button class="mealCircle">Ce</button>
-          <div class="mealContent">
-            <div class="mealTitle">Cena</div>
-            <textarea id="cena" class="textarea" placeholder="Escribe aquí..."></textarea>
-          </div>
-        </div>
-
-        <div class="mealRow">
-          <button class="mealCircle">1</button>
-          <div class="mealContent">
-            <div class="mealTitle">Colación 1</div>
-            <textarea id="col1" class="textarea" placeholder="Escribe aquí..."></textarea>
-          </div>
-        </div>
-
-        <div class="mealRow">
-          <button class="mealCircle">2</button>
-          <div class="mealContent">
-            <div class="mealTitle">Colación 2</div>
-            <textarea id="col2" class="textarea" placeholder="Escribe aquí..."></textarea>
-          </div>
-        </div>
-      </div>
-
-      <div class="muted small" id="saveMsg">—</div>
     </section>
+
+    <section class="card">
+      <div class="h">3) Progreso (solo lectura)</div>
+      <div class="progressGrid" id="progressGrid"></div>
+    </section>
+
+    <footer class="foot">Admin Firebase v1</footer>
   </main>
 
   <script type="module" src="./admin.js"></script>

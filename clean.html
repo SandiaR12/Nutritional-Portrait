@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Portal Nutricional · Clean</title>
+  <link rel="stylesheet" href="./clean.css"/>
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <div class="logo">PN</div>
+      <div class="brandText">
+        <div class="t">Portal Nutricional</div>
+        <div class="s">By: Ricardo Sandoval Solorzano</div>
+      </div>
+    </div>
+    <div class="periodBox">
+      <div class="k">Periodo</div>
+      <div class="v" id="periodoTop">—</div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero card">
+      <h1 id="patientName">Nombre del paciente</h1>
+      <div class="metaRow">
+        <div class="metaLabel">META</div>
+        <div class="metaPill"><div class="k">Cal</div><div class="v" id="cal">—</div></div>
+        <div class="metaPill"><div class="k">Pro</div><div class="v" id="pro">—</div></div>
+        <div class="metaPill"><div class="k">Carb</div><div class="v" id="carb">—</div></div>
+        <div class="metaPill"><div class="k">Grasas</div><div class="v" id="fat">—</div></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="head">
+        <div>
+          <div class="h">Días (15)</div>
+          <div class="p">Toca un día para ver su dieta. 5/5 o Concluir = plateado.</div>
+        </div>
+        <div class="btnRow">
+          <button class="btn ghost" id="resetAll">Reiniciar todo</button>
+        </div>
+      </div>
+
+      <div class="days" id="days"></div>
+    </section>
+
+    <section class="card" id="plan">
+      <div class="head">
+        <div>
+          <div class="h" id="dayTitle">Día 1</div>
+          <div class="p">Desayuno · Colación 1 · Comida · Colación 2 · Cena</div>
+        </div>
+        <div class="pill" id="pct">0%</div>
+      </div>
+
+      <div class="barWrap">
+        <div class="bar"><div class="fill red" id="fill"></div></div>
+        <div class="barText" id="barText">0 / 5 completado</div>
+      </div>
+
+      <div class="meals">
+        <div class="meal"><button class="dot" data-meal="desayuno">D</button><div class="b"><div class="mt">Desayuno</div><div class="txt" id="t_desayuno">—</div></div></div>
+        <div class="meal"><button class="dot" data-meal="col1">1</button><div class="b"><div class="mt">Colación 1</div><div class="txt" id="t_col1">—</div></div></div>
+        <div class="meal"><button class="dot" data-meal="comida">C</button><div class="b"><div class="mt">Comida</div><div class="txt" id="t_comida">—</div></div></div>
+        <div class="meal"><button class="dot" data-meal="col2">2</button><div class="b"><div class="mt">Colación 2</div><div class="txt" id="t_col2">—</div></div></div>
+        <div class="meal"><button class="dot" data-meal="cena">CE</button><div class="b"><div class="mt">Cena</div><div class="txt" id="t_cena">—</div></div></div>
+      </div>
+
+      <div class="actions">
+        <button class="btn ghost" id="resetDay">Reiniciar día</button>
+        <button class="btn primary" id="concludeDay">Concluir día</button>
+      </div>
+    </section>
+
+    <footer class="foot">V.CLEAN-1</footer>
+  </main>
+
+  <script src="./clean.js"></script>
+</body>
+</html>

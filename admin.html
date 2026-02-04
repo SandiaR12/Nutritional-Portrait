@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin - NutriPlan</title>
+    <link rel="stylesheet" href="admin-styles.css">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-content">
+                <div>
+                    <h1 class="logo">NutriPlan Admin</h1>
+                    <p class="subtitle">Gestiona los planes nutricionales</p>
+                </div>
+                <div class="credit">By: Ricardo Sandoval Solorzano</div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Patients List -->
+            <section class="section" id="patientsSection">
+                <div class="section-header">
+                    <h2>👥 Pacientes</h2>
+                    <button class="btn btn-primary" id="newPatientBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Nuevo Paciente
+                    </button>
+                </div>
+                <div id="patientsList" class="patients-grid"></div>
+            </section>
+
+            <!-- Edit Section -->
+            <section class="section" id="editSection" style="display: none;">
+                <div class="section-header">
+                    <h2>✏️ Editar Plan</h2>
+                    <button class="btn btn-secondary" id="cancelEdit">Cancelar</button>
+                </div>
+
+                <form id="patientForm">
+                    <input type="hidden" id="patientId">
+                    
+                    <!-- Patient Info -->
+                    <div class="form-card">
+                        <h3>Información del Paciente</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Nombre Completo *</label>
+                                <input type="text" id="patientName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Edad *</label>
+                                <input type="number" id="patientAge" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Peso (kg) *</label>
+                                <input type="number" step="0.1" id="patientWeight" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Altura (cm) *</label>
+                                <input type="number" id="patientHeight" required>
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Objetivo *</label>
+                                <input type="text" id="patientGoal" placeholder="Ej: Pérdida de peso, ganancia muscular..." required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 15 Days Plan -->
+                    <div class="form-card">
+                        <h3>📅 Plan de 15 Días</h3>
+                        <p class="form-subtitle">Configura las 5 comidas diarias para cada día</p>
+                        
+                        <div class="days-tabs">
+                            ${Array.from({length: 15}, (_, i) => `
+                                <button type="button" class="day-tab ${i === 0 ? 'active' : ''}" data-day="${i + 1}">
+                                    Día ${i + 1}
+                                </button>
+                            `).join('')}
+                        </div>
+
+                        <div id="daysContainer"></div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-success">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                                <polyline points="7 3 7 8 15 8"></polyline>
+                            </svg>
+                            Guardar Plan
+                        </button>
+                        <button type="button" class="btn btn-info" id="generateLink" style="display: none;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                            </svg>
+                            Generar Link
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Generated Link -->
+                <div id="linkSection" class="link-card" style="display: none;">
+                    <h3>🔗 Enlace del Paciente</h3>
+                    <div class="link-container">
+                        <input type="text" id="patientLink" readonly>
+                        <button class="btn btn-primary" id="copyLink">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                            Copiar
+                        </button>
+                    </div>
+                    <p class="link-note">Comparte este enlace con tu paciente</p>
+                </div>
+            </section>
+        </main>
+
+        <!-- Delete Modal -->
+        <div id="deleteModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-icon warning">⚠️</div>
+                <h3>¿Eliminar paciente?</h3>
+                <p>Esta acción no se puede deshacer.</p>
+                <div class="modal-actions">
+                    <button class="btn btn-danger" id="confirmDelete">Eliminar</button>
+                    <button class="btn btn-secondary" id="cancelDelete">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast -->
+        <div id="toast" class="toast"></div>
+    </div>
+
+    <script type="module" src="admin-app.js"></script>
+</body>
+</html>

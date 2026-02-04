@@ -1,0 +1,326 @@
+import { db } from './firebase.js';
+import { 
+    collection, 
+    doc, 
+    getDoc, 
+    getDocs, 
+    setDoc, 
+    deleteDoc,
+    serverTimestamp 
+} from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js';
+
+// Estado
+let currentPatientId = null;
+let deletePatientId = null;
+let currentEditingDay = 1;
+
+// Elementos DOM
+const patientsList = document.getElementById('patientsList');
+const editSection = document.getElementById('editSection');
+const patientsSection = document.getElementById('patientsSection');
+const patientForm = document.getElementById('patientForm');
+const newPatientBtn = document.getElementById('newPatientBtn');
+const cancelEdit = document.getElementById('cancelEdit');
+const generateLink = document.getElementById('generateLink');
+const linkSection = document.getElementById('linkSection');
+const patientLink = document.getElementById('patientLink');
+const copyLink = document.getElementById('copyLink');
+const deleteModal = document.getElementById('deleteModal');
+const confirmDelete = document.getElementById('confirmDelete');
+const cancelDelete = document.getElementById('cancelDelete');
+
+// Inicializar
+loadPatients();
+
+// Event Listeners
+newPatientBtn.addEventListener('click', showNewPatientForm);
+cancelEdit.addEventListener('click', hideEditSection);
+patientForm.addEventListener('submit', savePatient);
+generateLink.addEventListener('click', showPatientLink);
+copyLink.addEventListener('click', copyLinkToClipboard);
+confirmDelete.addEventListener('click', deletePatient);
+cancelDelete.addEventListener('click', () => deleteModal.style.display = 'none');
+
+// Cargar pacientes
+async function loadPatients() {
+    try {
+        const querySnapshot = await getDocs(collection(db, 'patients'));
+        patientsList.innerHTML = '';
+        
+        if (querySnapshot.empty) {
+            patientsList.innerHTML = '<p style="text-align: center; color: var(--text-tertiary); padding: 40px;">No hay pacientes. ¡Crea el primero!</p>';
+            return;
+        }
+        
+        querySnapshot.forEach((doc) => {
+            const patient = doc.data();
+            const card = createPatientCard(doc.id, patient);
+            patientsList.appendChild(card);
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        showToast('Error al cargar pacientes', 'error');
+    }
+}
+
+function createPatientCard(id, patient) {
+    const card = document.createElement('div');
+    card.className = 'patient-card';
+    
+    const initial = patient.name ? patient.name.charAt(0).toUpperCase() : '?';
+    
+    card.innerHTML = `
+        <div class="patient-card-header">
+            <div class="patient-avatar">${initial}</div>
+            <div class="patient-info">
+                <h3>${patient.name}</h3>
+                <p class="patient-meta">${patient.age} años • ${patient.weight} kg • ${patient.goal}</p>
+            </div>
+        </div>
+        <div class="patient-actions">
+            <button class="btn btn-info btn-small" onclick="editPatient('${id}')">
+                Editar
+            </button>
+            <button class="btn btn-danger btn-small" onclick="confirmDeletePatient('${id}')">
+                Eliminar
+            </button>
+        </div>
+    `;
+    
+    return card;
+}
+
+window.editPatient = async function(id) {
+    currentPatientId = id;
+    const docRef = doc(db, 'patients', id);
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap.exists()) {
+        const patient = docSnap.data();
+        fillForm(patient);
+        showEditSection();
+        generateLink.style.display = 'inline-flex';
+    }
+};
+
+window.confirmDeletePatient = function(id) {
+    deletePatientId = id;
+    deleteModal.style.display = 'flex';
+};
+
+async function deletePatient() {
+    if (!deletePatientId) return;
+    
+    try {
+        await deleteDoc(doc(db, 'patients', deletePatientId));
+        
+        // También eliminar progreso
+        try {
+            await deleteDoc(doc(db, 'progress', deletePatientId));
+        } catch (e) {
+            // Ignorar si no existe
+        }
+        
+        showToast('Paciente eliminado', 'success');
+        deleteModal.style.display = 'none';
+        loadPatients();
+        
+        if (currentPatientId === deletePatientId) {
+            hideEditSection();
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showToast('Error al eliminar', 'error');
+    }
+}
+
+function showNewPatientForm() {
+    currentPatientId = null;
+    patientForm.reset();
+    currentEditingDay = 1;
+    renderDaysEditor();
+    showEditSection();
+    generateLink.style.display = 'none';
+    linkSection.style.display = 'none';
+}
+
+function showEditSection() {
+    patientsSection.style.display = 'none';
+    editSection.style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function hideEditSection() {
+    editSection.style.display = 'none';
+    patientsSection.style.display = 'block';
+    currentPatientId = null;
+}
+
+function fillForm(patient) {
+    document.getElementById('patientName').value = patient.name || '';
+    document.getElementById('patientAge').value = patient.age || '';
+    document.getElementById('patientWeight').value = patient.weight || '';
+    document.getElementById('patientHeight').value = patient.height || '';
+    document.getElementById('patientGoal').value = patient.goal || '';
+    
+    renderDaysEditor(patient.days);
+}
+
+function renderDaysEditor(existingDays = null) {
+    const container = document.getElementById('daysContainer');
+    container.innerHTML = '';
+    
+    // Crear editores para los 15 días
+    for (let day = 1; day <= 15; day++) {
+        const dayEditor = document.createElement('div');
+        dayEditor.className = `day-editor ${day === currentEditingDay ? 'active' : ''}`;
+        dayEditor.dataset.day = day;
+        
+        const dayData = existingDays && existingDays[`day${day}`] ? existingDays[`day${day}`] : {};
+        
+        dayEditor.innerHTML = `
+            <div class="meal-editor">
+                <h4>🌅 Desayuno</h4>
+                <textarea placeholder="Ej: 2 huevos revueltos, 1 taza de avena con fruta, té verde" name="day${day}_desayuno">${dayData.desayuno || ''}</textarea>
+            </div>
+            
+            <div class="meal-editor">
+                <h4>🍎 Colación</h4>
+                <textarea placeholder="Ej: 1 manzana con 10 almendras" name="day${day}_colacion1">${dayData.colacion1 || ''}</textarea>
+            </div>
+            
+            <div class="meal-editor">
+                <h4>🍽️ Comida</h4>
+                <textarea placeholder="Ej: 150g pechuga de pollo, 1 taza de arroz integral, ensalada" name="day${day}_comida">${dayData.comida || ''}</textarea>
+            </div>
+            
+            <div class="meal-editor">
+                <h4>🥤 Colación</h4>
+                <textarea placeholder="Ej: Yogurt griego con granola" name="day${day}_colacion2">${dayData.colacion2 || ''}</textarea>
+            </div>
+            
+            <div class="meal-editor">
+                <h4>🌙 Cena</h4>
+                <textarea placeholder="Ej: Ensalada de atún, 2 rebanadas de pan integral" name="day${day}_cena">${dayData.cena || ''}</textarea>
+            </div>
+        `;
+        
+        container.appendChild(dayEditor);
+    }
+    
+    // Tabs de días
+    document.querySelectorAll('.day-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            const day = parseInt(tab.dataset.day);
+            switchDay(day);
+        });
+    });
+}
+
+function switchDay(day) {
+    currentEditingDay = day;
+    
+    // Actualizar tabs
+    document.querySelectorAll('.day-tab').forEach(tab => {
+        tab.classList.toggle('active', parseInt(tab.dataset.day) === day);
+    });
+    
+    // Actualizar editores
+    document.querySelectorAll('.day-editor').forEach(editor => {
+        editor.classList.toggle('active', parseInt(editor.dataset.day) === day);
+    });
+}
+
+async function savePatient(e) {
+    e.preventDefault();
+    
+    // Recopilar datos básicos
+    const patientData = {
+        name: document.getElementById('patientName').value,
+        age: parseInt(document.getElementById('patientAge').value),
+        weight: parseFloat(document.getElementById('patientWeight').value),
+        height: parseInt(document.getElementById('patientHeight').value),
+        goal: document.getElementById('patientGoal').value,
+        days: {},
+        updatedAt: serverTimestamp()
+    };
+    
+    // Recopilar los 15 días
+    for (let day = 1; day <= 15; day++) {
+        const desayuno = document.querySelector(`[name="day${day}_desayuno"]`).value;
+        const colacion1 = document.querySelector(`[name="day${day}_colacion1"]`).value;
+        const comida = document.querySelector(`[name="day${day}_comida"]`).value;
+        const colacion2 = document.querySelector(`[name="day${day}_colacion2"]`).value;
+        const cena = document.querySelector(`[name="day${day}_cena"]`).value;
+        
+        patientData.days[`day${day}`] = {
+            desayuno,
+            colacion1,
+            comida,
+            colacion2,
+            cena
+        };
+    }
+    
+    try {
+        if (currentPatientId) {
+            // Actualizar existente
+            await setDoc(doc(db, 'patients', currentPatientId), patientData, { merge: true });
+            showToast('Plan actualizado', 'success');
+        } else {
+            // Crear nuevo
+            const newDocRef = doc(collection(db, 'patients'));
+            currentPatientId = newDocRef.id;
+            patientData.createdAt = serverTimestamp();
+            await setDoc(newDocRef, patientData);
+            
+            // Inicializar progreso vacío
+            const progressData = {};
+            for (let day = 1; day <= 15; day++) {
+                progressData[`day${day}`] = {
+                    desayuno: false,
+                    colacion1: false,
+                    comida: false,
+                    colacion2: false,
+                    cena: false
+                };
+            }
+            await setDoc(doc(db, 'progress', currentPatientId), progressData);
+            
+            showToast('Paciente creado', 'success');
+        }
+        
+        generateLink.style.display = 'inline-flex';
+        loadPatients();
+    } catch (error) {
+        console.error('Error:', error);
+        showToast('Error al guardar', 'error');
+    }
+}
+
+function showPatientLink() {
+    if (!currentPatientId) return;
+    
+    const baseUrl = window.location.origin + window.location.pathname.replace('admin.html', 'index.html');
+    const link = `${baseUrl}?id=${currentPatientId}`;
+    
+    patientLink.value = link;
+    linkSection.style.display = 'block';
+    linkSection.scrollIntoView({ behavior: 'smooth' });
+}
+
+function copyLinkToClipboard() {
+    patientLink.select();
+    document.execCommand('copy');
+    showToast('¡Link copiado!', 'success');
+}
+
+function showToast(message, type = 'success') {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.className = `toast ${type} show`;
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3000);
+}

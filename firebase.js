@@ -9,13 +9,12 @@ import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.12.5/firebas
 // 4. Copia la configuración y pégala aquí
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAB82hupqdQvlOfbM0xusNY5oPsEAHCcY4",
-  authDomain: "portal-nutricional-693fb.firebaseapp.com",
-  projectId: "portal-nutricional-693fb",
-  storageBucket: "portal-nutricional-693fb.firebasestorage.app",
-  messagingSenderId: "208066338229",
-  appId: "1:208066338229:web:b4c16b54daa2aec9c24dfc",
-  measurementId: "G-TFJCYE4PW4"
+    apiKey: "TU_API_KEY_AQUI",
+    authDomain: "tu-proyecto.firebaseapp.com",
+    projectId: "tu-proyecto-id",
+    storageBucket: "tu-proyecto.appspot.com",
+    messagingSenderId: "123456789",
+    appId: "1:123456789:web:abcdef123456"
 };
 
 // Inicializar Firebase

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Plan Nutricional</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Cargando tu plan nutricional...</p>
+    </div>
+
+    <div id="app" style="display: none;">
+        <header class="header">
+            <div class="container">
+                <h1>🥗 Tu Plan Nutricional</h1>
+                <p class="subtitle">Plan personalizado por tu nutriólogo</p>
+            </div>
+        </header>
+
+        <main class="container">
+            <div id="patientInfo" class="card patient-card">
+                <h2>Información del Paciente</h2>
+                <div id="patientDetails"></div>
+            </div>
+
+            <div id="mealPlan" class="card">
+                <h2>📋 Plan de Comidas</h2>
+                <div id="mealsList"></div>
+            </div>
+
+            <div id="requirements" class="card">
+                <h2>🎯 Requerimientos Nutricionales</h2>
+                <div id="requirementsList"></div>
+            </div>
+
+            <div id="notes" class="card">
+                <h2>📝 Notas y Recomendaciones</h2>
+                <div id="notesList"></div>
+            </div>
+
+            <div id="error" class="error-message" style="display: none;">
+                <p>No se pudo cargar el plan nutricional. Verifica el enlace.</p>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <p>© 2026 Portal Nutricional | Creado con 💚 para tu salud</p>
+                <p class="easter-egg-hint">Pst... presiona las teclas mágicas: ⬆️⬆️⬇️⬇️⬅️➡️⬅️➡️BA</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Easter Egg Modal -->
+    <div id="easterEggModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>🎉 ¡Encontraste el Huevo de Pascua! 🎉</h2>
+            <div id="easterEggContent"></div>
+        </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>

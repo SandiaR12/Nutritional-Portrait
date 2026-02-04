@@ -194,7 +194,7 @@ function renderDaysEditor(existingDays = null) {
         
         dayEditor.innerHTML = `
             <div class="meal-editor">
-                <label for="day${day}_desayuno">🌅 Desayuno</label>
+                <h4>🌅 Desayuno</h4>
                 <textarea 
                     class="meal-input" 
                     data-day="${day}" 
@@ -205,7 +205,7 @@ function renderDaysEditor(existingDays = null) {
             </div>
             
             <div class="meal-editor">
-                <label for="day${day}_colacion1">🍎 Colación</label>
+                <h4>🍎 Colación</h4>
                 <textarea 
                     class="meal-input" 
                     data-day="${day}" 
@@ -216,7 +216,7 @@ function renderDaysEditor(existingDays = null) {
             </div>
             
             <div class="meal-editor">
-                <label for="day${day}_comida">🍽️ Comida</label>
+                <h4>🍽️ Comida</h4>
                 <textarea 
                     class="meal-input" 
                     data-day="${day}" 
@@ -227,7 +227,7 @@ function renderDaysEditor(existingDays = null) {
             </div>
             
             <div class="meal-editor">
-                <label for="day${day}_colacion2">🥤 Colación</label>
+                <h4>🥤 Colación</h4>
                 <textarea 
                     class="meal-input" 
                     data-day="${day}" 
@@ -238,7 +238,7 @@ function renderDaysEditor(existingDays = null) {
             </div>
             
             <div class="meal-editor">
-                <label for="day${day}_cena">🌙 Cena</label>
+                <h4>🌙 Cena</h4>
                 <textarea 
                     class="meal-input" 
                     data-day="${day}" 
@@ -331,7 +331,10 @@ async function savePatient(e) {
             showToast('Paciente creado exitosamente', 'success');
         }
         
+        console.log('✅ Guardado exitoso, mostrando botón de link...');
+        console.log('Botón generateLink:', generateLink);
         generateLink.style.display = 'inline-flex';
+        console.log('Botón display ahora es:', generateLink.style.display);
         loadPatients();
     } catch (error) {
         console.error('Error:', error);

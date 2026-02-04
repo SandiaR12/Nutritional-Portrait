@@ -239,6 +239,7 @@ function switchDay(day) {
 
 async function savePatient(e) {
     e.preventDefault();
+    console.log('🔥 Función savePatient ejecutada');
     
     // Recopilar datos básicos
     const patientData = {
@@ -252,6 +253,7 @@ async function savePatient(e) {
     };
     
     // Recopilar los 15 días usando data attributes
+    console.log('📝 Recopilando datos de los 15 días...');
     for (let day = 1; day <= 15; day++) {
         const desayuno = document.querySelector(`[data-day="${day}"][data-meal="desayuno"]`).value;
         const colacion1 = document.querySelector(`[data-day="${day}"][data-meal="colacion1"]`).value;
@@ -267,6 +269,9 @@ async function savePatient(e) {
             cena
         };
     }
+    
+    console.log('💾 Datos recopilados:', patientData);
+    console.log('🔑 currentPatientId:', currentPatientId);
     
     try {
         if (currentPatientId) {

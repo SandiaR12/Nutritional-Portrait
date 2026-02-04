@@ -195,27 +195,57 @@ function renderDaysEditor(existingDays = null) {
         dayEditor.innerHTML = `
             <div class="meal-editor">
                 <h4>🌅 Desayuno</h4>
-                <textarea class="meal-input" data-day="${day}" data-meal="desayuno" placeholder="Ej: 2 huevos revueltos, 1 taza de avena con fruta, té verde">${dayData.desayuno || ''}</textarea>
+                <textarea 
+                    class="meal-input" 
+                    data-day="${day}" 
+                    data-meal="desayuno" 
+                    id="day${day}_desayuno"
+                    name="day${day}_desayuno"
+                    placeholder="Ej: 2 huevos revueltos, 1 taza de avena con fruta, té verde">${dayData.desayuno || ''}</textarea>
             </div>
             
             <div class="meal-editor">
                 <h4>🍎 Colación</h4>
-                <textarea class="meal-input" data-day="${day}" data-meal="colacion1" placeholder="Ej: 1 manzana con 10 almendras">${dayData.colacion1 || ''}</textarea>
+                <textarea 
+                    class="meal-input" 
+                    data-day="${day}" 
+                    data-meal="colacion1" 
+                    id="day${day}_colacion1"
+                    name="day${day}_colacion1"
+                    placeholder="Ej: 1 manzana con 10 almendras">${dayData.colacion1 || ''}</textarea>
             </div>
             
             <div class="meal-editor">
                 <h4>🍽️ Comida</h4>
-                <textarea class="meal-input" data-day="${day}" data-meal="comida" placeholder="Ej: 150g pechuga de pollo, 1 taza de arroz integral, ensalada">${dayData.comida || ''}</textarea>
+                <textarea 
+                    class="meal-input" 
+                    data-day="${day}" 
+                    data-meal="comida" 
+                    id="day${day}_comida"
+                    name="day${day}_comida"
+                    placeholder="Ej: 150g pechuga de pollo, 1 taza de arroz integral, ensalada">${dayData.comida || ''}</textarea>
             </div>
             
             <div class="meal-editor">
                 <h4>🥤 Colación</h4>
-                <textarea class="meal-input" data-day="${day}" data-meal="colacion2" placeholder="Ej: Yogurt griego con granola">${dayData.colacion2 || ''}</textarea>
+                <textarea 
+                    class="meal-input" 
+                    data-day="${day}" 
+                    data-meal="colacion2" 
+                    id="day${day}_colacion2"
+                    name="day${day}_colacion2"
+                    placeholder="Ej: Yogurt griego con granola">${dayData.colacion2 || ''}</textarea>
             </div>
             
             <div class="meal-editor">
                 <h4>🌙 Cena</h4>
-                <textarea class="meal-input" data-day="${day}" data-meal="cena" placeholder="Ej: Ensalada de atún, 2 rebanadas de pan integral">${dayData.cena || ''}</textarea>
+                <textarea 
+                    class="meal-input" 
+                    data-day="${day}" 
+                    data-meal="cena" 
+                    id="day${day}_cena"
+                    name="day${day}_cena"
+                    placeholder="Ej: Ensalada de atún, 2 rebanadas de pan integral">${dayData.cena || ''}</textarea>
             </div>
         `;
         

@@ -5,8 +5,7 @@ import {
     getDoc, 
     getDocs, 
     setDoc, 
-    deleteDoc,
-    serverTimestamp 
+    deleteDoc
 } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js';
 
 // Estado
@@ -279,7 +278,7 @@ async function savePatient(e) {
         height: parseInt(document.getElementById('patientHeight').value),
         goal: document.getElementById('patientGoal').value,
         days: {},
-        updatedAt: serverTimestamp()
+        updatedAt: new Date().toISOString()
     };
     
     // Recopilar los 15 días usando data attributes
@@ -317,7 +316,8 @@ async function savePatient(e) {
             const newDocRef = doc(collection(db, 'patients'));
             currentPatientId = newDocRef.id;
             console.log('🆔 Nuevo ID generado:', currentPatientId);
-            patientData.createdAt = serverTimestamp();
+            patientData.createdAt = new Date().toISOString();
+            patientData.updatedAt = new Date().toISOString();
             await setDoc(newDocRef, patientData);
             console.log('✅ Paciente guardado en Firebase');
             

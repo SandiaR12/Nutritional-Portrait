@@ -304,18 +304,25 @@ async function savePatient(e) {
     console.log('🔑 currentPatientId:', currentPatientId);
     
     try {
+        console.log('🚀 Intentando guardar en Firebase...');
         if (currentPatientId) {
             // Actualizar existente
+            console.log('📝 Actualizando paciente existente...');
             await setDoc(doc(db, 'patients', currentPatientId), patientData, { merge: true });
+            console.log('✅ Paciente actualizado en Firebase');
             showToast('Plan actualizado exitosamente', 'success');
         } else {
             // Crear nuevo
+            console.log('➕ Creando nuevo paciente...');
             const newDocRef = doc(collection(db, 'patients'));
             currentPatientId = newDocRef.id;
+            console.log('🆔 Nuevo ID generado:', currentPatientId);
             patientData.createdAt = serverTimestamp();
             await setDoc(newDocRef, patientData);
+            console.log('✅ Paciente guardado en Firebase');
             
             // Inicializar progreso vacío
+            console.log('📊 Inicializando progreso...');
             const progressData = {};
             for (let day = 1; day <= 15; day++) {
                 progressData[`day${day}`] = {
@@ -327,17 +334,21 @@ async function savePatient(e) {
                 };
             }
             await setDoc(doc(db, 'progress', currentPatientId), progressData);
+            console.log('✅ Progreso inicializado');
             
             showToast('Paciente creado exitosamente', 'success');
         }
         
-        console.log('✅ Guardado exitoso, mostrando botón de link...');
+        console.log('✅ TODO GUARDADO, mostrando botón de link...');
         console.log('Botón generateLink:', generateLink);
         generateLink.style.display = 'inline-flex';
         console.log('Botón display ahora es:', generateLink.style.display);
         loadPatients();
+        console.log('✅ PROCESO COMPLETADO');
     } catch (error) {
-        console.error('Error:', error);
+        console.error('❌ ERROR COMPLETO:', error);
+        console.error('❌ Error mensaje:', error.message);
+        console.error('❌ Error stack:', error.stack);
         showToast('Error al guardar: ' + error.message, 'error');
     }
 }

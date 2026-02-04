@@ -78,10 +78,10 @@ function createPatientCard(id, patient) {
             </div>
         </div>
         <div class="patient-actions">
-            <button class="btn btn-info btn-small" onclick="editPatient('${id}')">
+            <button class="btn btn-info btn-small" onclick="window.editPatient('${id}')">
                 Editar
             </button>
-            <button class="btn btn-danger btn-small" onclick="confirmDeletePatient('${id}')">
+            <button class="btn btn-danger btn-small" onclick="window.confirmDeletePatient('${id}')">
                 Eliminar
             </button>
         </div>
@@ -168,7 +168,21 @@ function fillForm(patient) {
 
 function renderDaysEditor(existingDays = null) {
     const container = document.getElementById('daysContainer');
+    const tabsContainer = document.getElementById('daysTabs');
+    
     container.innerHTML = '';
+    tabsContainer.innerHTML = '';
+    
+    // Crear tabs de días
+    for (let i = 1; i <= 15; i++) {
+        const tab = document.createElement('button');
+        tab.type = 'button';
+        tab.className = `day-tab ${i === 1 ? 'active' : ''}`;
+        tab.dataset.day = i;
+        tab.textContent = `Día ${i}`;
+        tab.addEventListener('click', () => switchDay(i));
+        tabsContainer.appendChild(tab);
+    }
     
     // Crear editores para los 15 días
     for (let day = 1; day <= 15; day++) {
@@ -181,40 +195,32 @@ function renderDaysEditor(existingDays = null) {
         dayEditor.innerHTML = `
             <div class="meal-editor">
                 <h4>🌅 Desayuno</h4>
-                <textarea placeholder="Ej: 2 huevos revueltos, 1 taza de avena con fruta, té verde" name="day${day}_desayuno">${dayData.desayuno || ''}</textarea>
+                <textarea class="meal-input" data-day="${day}" data-meal="desayuno" placeholder="Ej: 2 huevos revueltos, 1 taza de avena con fruta, té verde">${dayData.desayuno || ''}</textarea>
             </div>
             
             <div class="meal-editor">
                 <h4>🍎 Colación</h4>
-                <textarea placeholder="Ej: 1 manzana con 10 almendras" name="day${day}_colacion1">${dayData.colacion1 || ''}</textarea>
+                <textarea class="meal-input" data-day="${day}" data-meal="colacion1" placeholder="Ej: 1 manzana con 10 almendras">${dayData.colacion1 || ''}</textarea>
             </div>
             
             <div class="meal-editor">
                 <h4>🍽️ Comida</h4>
-                <textarea placeholder="Ej: 150g pechuga de pollo, 1 taza de arroz integral, ensalada" name="day${day}_comida">${dayData.comida || ''}</textarea>
+                <textarea class="meal-input" data-day="${day}" data-meal="comida" placeholder="Ej: 150g pechuga de pollo, 1 taza de arroz integral, ensalada">${dayData.comida || ''}</textarea>
             </div>
             
             <div class="meal-editor">
                 <h4>🥤 Colación</h4>
-                <textarea placeholder="Ej: Yogurt griego con granola" name="day${day}_colacion2">${dayData.colacion2 || ''}</textarea>
+                <textarea class="meal-input" data-day="${day}" data-meal="colacion2" placeholder="Ej: Yogurt griego con granola">${dayData.colacion2 || ''}</textarea>
             </div>
             
             <div class="meal-editor">
                 <h4>🌙 Cena</h4>
-                <textarea placeholder="Ej: Ensalada de atún, 2 rebanadas de pan integral" name="day${day}_cena">${dayData.cena || ''}</textarea>
+                <textarea class="meal-input" data-day="${day}" data-meal="cena" placeholder="Ej: Ensalada de atún, 2 rebanadas de pan integral">${dayData.cena || ''}</textarea>
             </div>
         `;
         
         container.appendChild(dayEditor);
     }
-    
-    // Tabs de días
-    document.querySelectorAll('.day-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            const day = parseInt(tab.dataset.day);
-            switchDay(day);
-        });
-    });
 }
 
 function switchDay(day) {
@@ -245,13 +251,13 @@ async function savePatient(e) {
         updatedAt: serverTimestamp()
     };
     
-    // Recopilar los 15 días
+    // Recopilar los 15 días usando data attributes
     for (let day = 1; day <= 15; day++) {
-        const desayuno = document.querySelector(`[name="day${day}_desayuno"]`).value;
-        const colacion1 = document.querySelector(`[name="day${day}_colacion1"]`).value;
-        const comida = document.querySelector(`[name="day${day}_comida"]`).value;
-        const colacion2 = document.querySelector(`[name="day${day}_colacion2"]`).value;
-        const cena = document.querySelector(`[name="day${day}_cena"]`).value;
+        const desayuno = document.querySelector(`[data-day="${day}"][data-meal="desayuno"]`).value;
+        const colacion1 = document.querySelector(`[data-day="${day}"][data-meal="colacion1"]`).value;
+        const comida = document.querySelector(`[data-day="${day}"][data-meal="comida"]`).value;
+        const colacion2 = document.querySelector(`[data-day="${day}"][data-meal="colacion2"]`).value;
+        const cena = document.querySelector(`[data-day="${day}"][data-meal="cena"]`).value;
         
         patientData.days[`day${day}`] = {
             desayuno,
@@ -266,7 +272,7 @@ async function savePatient(e) {
         if (currentPatientId) {
             // Actualizar existente
             await setDoc(doc(db, 'patients', currentPatientId), patientData, { merge: true });
-            showToast('Plan actualizado', 'success');
+            showToast('Plan actualizado exitosamente', 'success');
         } else {
             // Crear nuevo
             const newDocRef = doc(collection(db, 'patients'));
@@ -287,14 +293,14 @@ async function savePatient(e) {
             }
             await setDoc(doc(db, 'progress', currentPatientId), progressData);
             
-            showToast('Paciente creado', 'success');
+            showToast('Paciente creado exitosamente', 'success');
         }
         
         generateLink.style.display = 'inline-flex';
         loadPatients();
     } catch (error) {
         console.error('Error:', error);
-        showToast('Error al guardar', 'error');
+        showToast('Error al guardar: ' + error.message, 'error');
     }
 }
 
@@ -312,7 +318,7 @@ function showPatientLink() {
 function copyLinkToClipboard() {
     patientLink.select();
     document.execCommand('copy');
-    showToast('¡Link copiado!', 'success');
+    showToast('¡Link copiado al portapapeles!', 'success');
 }
 
 function showToast(message, type = 'success') {

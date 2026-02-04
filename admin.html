@@ -78,13 +78,7 @@
                         <h3>📅 Plan de 15 Días</h3>
                         <p class="form-subtitle">Configura las 5 comidas diarias para cada día</p>
                         
-                        <div class="days-tabs">
-                            ${Array.from({length: 15}, (_, i) => `
-                                <button type="button" class="day-tab ${i === 0 ? 'active' : ''}" data-day="${i + 1}">
-                                    Día ${i + 1}
-                                </button>
-                            `).join('')}
-                        </div>
+                        <div class="days-tabs" id="daysTabs"></div>
 
                         <div id="daysContainer"></div>
                     </div>

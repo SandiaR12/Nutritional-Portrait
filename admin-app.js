@@ -284,18 +284,18 @@ async function savePatient(e) {
     // Recopilar los 15 días usando data attributes
     console.log('📝 Recopilando datos de los 15 días...');
     for (let day = 1; day <= 15; day++) {
-        const desayuno = document.querySelector(`[data-day="${day}"][data-meal="desayuno"]`).value;
-        const colacion1 = document.querySelector(`[data-day="${day}"][data-meal="colacion1"]`).value;
-        const comida = document.querySelector(`[data-day="${day}"][data-meal="comida"]`).value;
-        const colacion2 = document.querySelector(`[data-day="${day}"][data-meal="colacion2"]`).value;
-        const cena = document.querySelector(`[data-day="${day}"][data-meal="cena"]`).value;
+        const desayunoEl = document.querySelector(`[data-day="${day}"][data-meal="desayuno"]`);
+        const colacion1El = document.querySelector(`[data-day="${day}"][data-meal="colacion1"]`);
+        const comidaEl = document.querySelector(`[data-day="${day}"][data-meal="comida"]`);
+        const colacion2El = document.querySelector(`[data-day="${day}"][data-meal="colacion2"]`);
+        const cenaEl = document.querySelector(`[data-day="${day}"][data-meal="cena"]`);
         
         patientData.days[`day${day}`] = {
-            desayuno,
-            colacion1,
-            comida,
-            colacion2,
-            cena
+            desayuno: desayunoEl ? desayunoEl.value : '',
+            colacion1: colacion1El ? colacion1El.value : '',
+            comida: comidaEl ? comidaEl.value : '',
+            colacion2: colacion2El ? colacion2El.value : '',
+            cena: cenaEl ? cenaEl.value : ''
         };
     }
     

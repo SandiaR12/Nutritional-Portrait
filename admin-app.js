@@ -307,7 +307,13 @@ async function savePatient(e) {
         if (currentPatientId) {
             // Actualizar existente
             console.log('📝 Actualizando paciente existente...');
-            await setDoc(doc(db, 'patients', currentPatientId), patientData, { merge: true });
+            console.log('Datos a guardar:', patientData);
+            
+            await Promise.race([
+                setDoc(doc(db, 'patients', currentPatientId), patientData, { merge: true }),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout después de 10 segundos')), 10000))
+            ]);
+            
             console.log('✅ Paciente actualizado en Firebase');
             showToast('Plan actualizado exitosamente', 'success');
         } else {
@@ -318,7 +324,13 @@ async function savePatient(e) {
             console.log('🆔 Nuevo ID generado:', currentPatientId);
             patientData.createdAt = new Date().toISOString();
             patientData.updatedAt = new Date().toISOString();
-            await setDoc(newDocRef, patientData);
+            
+            console.log('Guardando en Firestore...');
+            await Promise.race([
+                setDoc(newDocRef, patientData),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout después de 10 segundos')), 10000))
+            ]);
+            
             console.log('✅ Paciente guardado en Firebase');
             
             // Inicializar progreso vacío
@@ -333,7 +345,12 @@ async function savePatient(e) {
                     cena: false
                 };
             }
-            await setDoc(doc(db, 'progress', currentPatientId), progressData);
+            
+            await Promise.race([
+                setDoc(doc(db, 'progress', currentPatientId), progressData),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout en progreso')), 10000))
+            ]);
+            
             console.log('✅ Progreso inicializado');
             
             showToast('Paciente creado exitosamente', 'success');

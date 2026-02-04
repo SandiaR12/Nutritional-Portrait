@@ -194,7 +194,7 @@ function renderDaysEditor(existingDays = null) {
         
         dayEditor.innerHTML = `
             <div class="meal-editor">
-                <h4>🌅 Desayuno</h4>
+                <label for="day${day}_desayuno">🌅 Desayuno</label>
                 <textarea 
                     class="meal-input" 
                     data-day="${day}" 
@@ -205,7 +205,7 @@ function renderDaysEditor(existingDays = null) {
             </div>
             
             <div class="meal-editor">
-                <h4>🍎 Colación</h4>
+                <label for="day${day}_colacion1">🍎 Colación</label>
                 <textarea 
                     class="meal-input" 
                     data-day="${day}" 
@@ -216,7 +216,7 @@ function renderDaysEditor(existingDays = null) {
             </div>
             
             <div class="meal-editor">
-                <h4>🍽️ Comida</h4>
+                <label for="day${day}_comida">🍽️ Comida</label>
                 <textarea 
                     class="meal-input" 
                     data-day="${day}" 
@@ -227,7 +227,7 @@ function renderDaysEditor(existingDays = null) {
             </div>
             
             <div class="meal-editor">
-                <h4>🥤 Colación</h4>
+                <label for="day${day}_colacion2">🥤 Colación</label>
                 <textarea 
                     class="meal-input" 
                     data-day="${day}" 
@@ -238,7 +238,7 @@ function renderDaysEditor(existingDays = null) {
             </div>
             
             <div class="meal-editor">
-                <h4>🌙 Cena</h4>
+                <label for="day${day}_cena">🌙 Cena</label>
                 <textarea 
                     class="meal-input" 
                     data-day="${day}" 

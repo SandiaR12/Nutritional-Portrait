@@ -373,7 +373,7 @@ async function savePatient(e) {
 function showPatientLink() {
     if (!currentPatientId) return;
     
-    const baseUrl = window.location.origin + window.location.pathname.replace('admin.html', 'index.html');
+    const baseUrl = window.location.origin + window.location.pathname.replace('admin.html', 'patient-view.html');
     const link = `${baseUrl}?id=${currentPatientId}`;
     
     patientLink.value = link;

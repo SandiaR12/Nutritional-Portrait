@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Plan Nutricional</title>
+    <link rel="stylesheet" href="patient-view.css">
+</head>
+<body>
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Cargando tu plan...</p>
+    </div>
+
+    <div id="app" style="display: none;">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">🥭</span>
+                    <span class="logo-text">NutriPlan</span>
+                </div>
+                <div class="credit">By: Ricardo Sandoval Solorzano</div>
+            </div>
+        </header>
+
+        <!-- Main Container -->
+        <main class="container">
+            <!-- Patient Info Card -->
+            <section class="patient-info-card">
+                <div class="info-header">
+                    <div class="avatar" id="patientAvatar"></div>
+                    <div class="info-details">
+                        <h1 id="patientName">Cargando...</h1>
+                        <div class="stats-grid" id="patientStats"></div>
+                    </div>
+                </div>
+
+                <!-- Macros Section -->
+                <div class="macros-section">
+                    <h3 class="macros-title">🎯 Requerimientos Diarios</h3>
+                    <div class="macros-grid">
+                        <div class="macro-card calories">
+                            <div class="macro-icon">🔥</div>
+                            <div class="macro-info">
+                                <span class="macro-value" id="calories">0</span>
+                                <span class="macro-label">Calorías</span>
+                            </div>
+                        </div>
+                        <div class="macro-card protein">
+                            <div class="macro-icon">💪</div>
+                            <div class="macro-info">
+                                <span class="macro-value" id="protein">0g</span>
+                                <span class="macro-label">Proteína</span>
+                            </div>
+                        </div>
+                        <div class="macro-card carbs">
+                            <div class="macro-icon">🌾</div>
+                            <div class="macro-info">
+                                <span class="macro-value" id="carbs">0g</span>
+                                <span class="macro-label">Carbohidratos</span>
+                            </div>
+                        </div>
+                        <div class="macro-card fats">
+                            <div class="macro-icon">🥑</div>
+                            <div class="macro-info">
+                                <span class="macro-value" id="fats">0g</span>
+                                <span class="macro-label">Grasas</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Overview -->
+                <div class="progress-overview">
+                    <div class="overall-progress">
+                        <svg class="progress-ring" width="120" height="120">
+                            <defs>
+                                <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#34C759;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#30D158;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <circle class="progress-ring-circle-bg" cx="60" cy="60" r="52" />
+                            <circle class="progress-ring-circle" id="overallProgressCircle" cx="60" cy="60" r="52" />
+                        </svg>
+                        <div class="progress-text">
+                            <span class="progress-value" id="overallProgress">0%</span>
+                            <span class="progress-label">Completado</span>
+                        </div>
+                    </div>
+                    <div class="days-completed">
+                        <div class="stat">
+                            <span class="stat-icon">✅</span>
+                            <span class="stat-value" id="daysCompleted">0</span>
+                            <span class="stat-label">Días completados</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-icon">🍽️</span>
+                            <span class="stat-value" id="mealsCompleted">0</span>
+                            <span class="stat-label">Comidas totales</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Calendar Section -->
+            <section class="calendar-section">
+                <div class="section-header">
+                    <h2 class="section-title">📅 Plan Quincenal</h2>
+                    <p class="section-subtitle">Selecciona un día para ver tu plan de comidas</p>
+                </div>
+                <div class="calendar-grid" id="calendarGrid"></div>
+            </section>
+
+            <!-- Day Details -->
+            <section class="day-details" id="dayDetails" style="display: none;">
+                <div class="day-header">
+                    <div class="day-title-section">
+                        <h2 id="dayTitle">Día 1</h2>
+                        <p class="day-subtitle">Marca las comidas que ya consumiste</p>
+                    </div>
+                    <button class="close-btn" id="closeDayDetails">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div class="day-progress">
+                    <svg class="day-progress-ring" width="90" height="90">
+                        <circle class="progress-ring-circle-bg" cx="45" cy="45" r="40" />
+                        <circle class="progress-ring-circle" id="dayProgressCircle" cx="45" cy="45" r="40" />
+                    </svg>
+                    <div class="day-progress-info">
+                        <span class="day-progress-value" id="dayProgressValue">0/5</span>
+                        <span class="day-progress-label">comidas</span>
+                    </div>
+                </div>
+                <div class="meals-list" id="mealsList"></div>
+            </section>
+
+            <!-- Confetti Container -->
+            <div id="confettiContainer"></div>
+        </main>
+
+        <!-- Success Modal -->
+        <div id="successModal" class="modal">
+            <div class="modal-content celebration">
+                <div class="celebration-icon">🎉</div>
+                <h2>¡Día Completado!</h2>
+                <p>Has completado todas las comidas del día. ¡Excelente trabajo!</p>
+                <button class="btn-primary" onclick="closeSuccessModal()">Continuar</button>
+            </div>
+        </div>
+
+        <!-- Easter Egg Modal -->
+        <div id="easterEggModal" class="modal">
+            <div class="modal-content easter-egg">
+                <span class="close" onclick="closeEasterEgg()">&times;</span>
+                <h2>🎮 ¡Konami Code!</h2>
+                <div id="easterEggContent"></div>
+            </div>
+        </div>
+
+        <!-- Error -->
+        <div id="error" class="error-message" style="display: none;">
+            <p>No se pudo cargar el plan. Verifica el enlace.</p>
+        </div>
+    </div>
+
+    <script type="module" src="patient-view.js"></script>
+</body>
+</html>

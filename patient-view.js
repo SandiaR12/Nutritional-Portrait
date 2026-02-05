@@ -341,7 +341,19 @@ function updateDayProgress(dayData) {
     const circumference = 2 * Math.PI * 35;
     const offset = circumference - (percentage / 100) * circumference;
     circle.style.strokeDashoffset = offset;
-    circle.style.stroke = '#007AFF'; // Siempre azul primario
+    
+    // Sistema de colores progresivos SOLO para círculos de progreso
+    if (completedMeals === 0) {
+        circle.style.stroke = '#E5E5EA'; // Gris cuando no hay progreso
+    } else if (completedMeals <= 2) {
+        circle.style.stroke = '#FF3B30'; // Rojo (1-2 comidas)
+    } else if (completedMeals <= 3) {
+        circle.style.stroke = '#FF9500'; // Naranja (3 comidas)
+    } else if (completedMeals <= 4) {
+        circle.style.stroke = '#FFCC00'; // Amarillo (4 comidas)
+    } else {
+        circle.style.stroke = '#34C759'; // Verde (5 comidas - completado)
+    }
 }
 
 function updateOverallProgress() {
@@ -366,7 +378,19 @@ function updateOverallProgress() {
     const circumference = 2 * Math.PI * 52;
     const offset = circumference - (percentage / 100) * circumference;
     circle.style.strokeDashoffset = offset;
-    circle.style.stroke = '#007AFF'; // Siempre azul primario
+    
+    // Sistema de colores progresivos para progreso general
+    if (percentage === 0) {
+        circle.style.stroke = '#E5E5EA'; // Gris cuando no hay progreso
+    } else if (percentage <= 30) {
+        circle.style.stroke = '#FF3B30'; // Rojo (0-30%)
+    } else if (percentage <= 60) {
+        circle.style.stroke = '#FF9500'; // Naranja (30-60%)
+    } else if (percentage < 100) {
+        circle.style.stroke = '#FFCC00'; // Amarillo (60-99%)
+    } else {
+        circle.style.stroke = '#34C759'; // Verde (100% - completado)
+    }
 }
 
 async function updateProgress() {

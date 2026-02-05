@@ -215,19 +215,6 @@ function renderMacros() {
     document.getElementById('fatsValue').textContent = fats + 'g';
 }
 
-// Función para determinar el color del progreso (rojo/naranja/verde)
-function getProgressColor(completedMeals) {
-    const percentage = (completedMeals / 5) * 100;
-    
-    if (percentage <= 40) {
-        return 'progress-red'; // 0-2 comidas (0-40%)
-    } else if (percentage <= 60) {
-        return 'progress-orange'; // 2-3 comidas (40-60%)
-    } else {
-        return 'progress-green'; // 3+ comidas (60-100%)
-    }
-}
-
 function renderCalendar() {
     const grid = document.getElementById('calendarGrid');
     grid.innerHTML = '';
@@ -236,10 +223,9 @@ function renderCalendar() {
         const dayData = progressData[`day${day}`];
         const completedMeals = Object.values(dayData).filter(v => v).length;
         const isCompleted = completedMeals === 5;
-        const progressColorClass = getProgressColor(completedMeals);
         
         const card = document.createElement('div');
-        card.className = `day-card ${isCompleted ? 'completed' : progressColorClass}`;
+        card.className = `day-card ${isCompleted ? 'completed' : ''}`;
         card.innerHTML = `
             <div class="day-number">${day}</div>
             <div class="day-label">Día</div>
@@ -355,15 +341,7 @@ function updateDayProgress(dayData) {
     const circumference = 2 * Math.PI * 35;
     const offset = circumference - (percentage / 100) * circumference;
     circle.style.strokeDashoffset = offset;
-    
-    // Aplicar color según progreso
-    if (percentage <= 40) {
-        circle.style.stroke = '#FF3B30'; // Rojo
-    } else if (percentage <= 60) {
-        circle.style.stroke = '#FF9500'; // Naranja
-    } else {
-        circle.style.stroke = '#34C759'; // Verde
-    }
+    circle.style.stroke = '#007AFF'; // Siempre azul primario
 }
 
 function updateOverallProgress() {
@@ -388,15 +366,7 @@ function updateOverallProgress() {
     const circumference = 2 * Math.PI * 52;
     const offset = circumference - (percentage / 100) * circumference;
     circle.style.strokeDashoffset = offset;
-    
-    // Aplicar color al progreso general
-    if (percentage <= 40) {
-        circle.style.stroke = '#FF3B30';
-    } else if (percentage <= 60) {
-        circle.style.stroke = '#FF9500';
-    } else {
-        circle.style.stroke = '#34C759';
-    }
+    circle.style.stroke = '#007AFF'; // Siempre azul primario
 }
 
 async function updateProgress() {

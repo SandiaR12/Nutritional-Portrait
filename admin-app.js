@@ -141,6 +141,12 @@ function showNewPatientForm() {
     showEditSection();
     generateLink.style.display = 'none';
     linkSection.style.display = 'none';
+    
+    // Valores por defecto para macros
+    document.getElementById('patientCalories').value = 2000;
+    document.getElementById('patientProtein').value = 150;
+    document.getElementById('patientCarbs').value = 250;
+    document.getElementById('patientFats').value = 65;
 }
 
 function showEditSection() {
@@ -161,6 +167,35 @@ function fillForm(patient) {
     document.getElementById('patientWeight').value = patient.weight || '';
     document.getElementById('patientHeight').value = patient.height || '';
     document.getElementById('patientGoal').value = patient.goal || '';
+    
+    // NUEVO: Llenar campos de macros
+    if (patient.macros) {
+        document.getElementById('patientCalories').value = patient.macros.calories || 2000;
+        document.getElementById('patientProtein').value = patient.macros.protein || 150;
+        document.getElementById('patientCarbs').value = patient.macros.carbs || 250;
+        document.getElementById('patientFats').value = patient.macros.fats || 65;
+    } else {
+        // Calcular valores automáticos basados en peso
+        const weight = patient.weight || 70;
+        const goal = (patient.goal || '').toLowerCase();
+        
+        if (goal.includes('pérdida') || goal.includes('bajar')) {
+            document.getElementById('patientCalories').value = Math.round(weight * 26);
+            document.getElementById('patientProtein').value = Math.round(weight * 2.2);
+            document.getElementById('patientCarbs').value = Math.round(weight * 2);
+            document.getElementById('patientFats').value = Math.round(weight * 0.8);
+        } else if (goal.includes('ganancia') || goal.includes('músculo')) {
+            document.getElementById('patientCalories').value = Math.round(weight * 40);
+            document.getElementById('patientProtein').value = Math.round(weight * 2.5);
+            document.getElementById('patientCarbs').value = Math.round(weight * 5);
+            document.getElementById('patientFats').value = Math.round(weight * 1);
+        } else {
+            document.getElementById('patientCalories').value = Math.round(weight * 33);
+            document.getElementById('patientProtein').value = Math.round(weight * 2);
+            document.getElementById('patientCarbs').value = Math.round(weight * 3.5);
+            document.getElementById('patientFats').value = Math.round(weight * 0.9);
+        }
+    }
     
     renderDaysEditor(patient.days);
 }
@@ -277,6 +312,13 @@ async function savePatient(e) {
         weight: parseFloat(document.getElementById('patientWeight').value),
         height: parseInt(document.getElementById('patientHeight').value),
         goal: document.getElementById('patientGoal').value,
+        // NUEVO: Guardar macros
+        macros: {
+            calories: parseInt(document.getElementById('patientCalories').value),
+            protein: parseInt(document.getElementById('patientProtein').value),
+            carbs: parseInt(document.getElementById('patientCarbs').value),
+            fats: parseInt(document.getElementById('patientFats').value)
+        },
         days: {},
         updatedAt: new Date().toISOString()
     };
@@ -307,7 +349,6 @@ async function savePatient(e) {
         if (currentPatientId) {
             // Actualizar existente
             console.log('📝 Actualizando paciente existente...');
-            console.log('Datos a guardar:', patientData);
             
             await Promise.race([
                 setDoc(doc(db, 'patients', currentPatientId), patientData, { merge: true }),
@@ -323,9 +364,7 @@ async function savePatient(e) {
             currentPatientId = newDocRef.id;
             console.log('🆔 Nuevo ID generado:', currentPatientId);
             patientData.createdAt = new Date().toISOString();
-            patientData.updatedAt = new Date().toISOString();
             
-            console.log('Guardando en Firestore...');
             await Promise.race([
                 setDoc(newDocRef, patientData),
                 new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout después de 10 segundos')), 10000))
@@ -352,20 +391,15 @@ async function savePatient(e) {
             ]);
             
             console.log('✅ Progreso inicializado');
-            
             showToast('Paciente creado exitosamente', 'success');
         }
         
         console.log('✅ TODO GUARDADO, mostrando botón de link...');
-        console.log('Botón generateLink:', generateLink);
         generateLink.style.display = 'inline-flex';
-        console.log('Botón display ahora es:', generateLink.style.display);
         loadPatients();
         console.log('✅ PROCESO COMPLETADO');
     } catch (error) {
         console.error('❌ ERROR COMPLETO:', error);
-        console.error('❌ Error mensaje:', error.message);
-        console.error('❌ Error stack:', error.stack);
         showToast('Error al guardar: ' + error.message, 'error');
     }
 }

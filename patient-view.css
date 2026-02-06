@@ -471,15 +471,15 @@ body {
 
 .calendar-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
 }
 
 /* Day Card - Diseño Minimalista Premium con Sombras Plateadas */
 .day-card {
     background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
     border-radius: 20px;
-    padding: 16px 12px;
+    padding: 20px 14px;
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 
@@ -491,7 +491,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    aspect-ratio: 1 / 1.1;
+    aspect-ratio: 1 / 1.15;
 }
 
 .day-card::after {
@@ -525,9 +525,9 @@ body {
 }
 
 .day-number {
-    font-size: 26px;
+    font-size: 32px;
     font-weight: 700;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
     background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -544,11 +544,11 @@ body {
 }
 
 .day-label {
-    font-size: 9px;
+    font-size: 10px;
     color: var(--text-tertiary);
     text-transform: uppercase;
     letter-spacing: 1.2px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     font-weight: 600;
     z-index: 1;
 }
@@ -558,14 +558,14 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px;
-    margin: 10px 0 8px 0;
+    gap: 6px;
+    margin: 12px 0 10px 0;
     z-index: 1;
 }
 
 .progress-dot {
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     background: rgba(148, 163, 184, 0.25);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -626,10 +626,10 @@ body {
 
 /* Texto de comidas */
 .day-meals {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--text-tertiary);
     font-weight: 500;
-    margin-top: 4px;
+    margin-top: 6px;
     transition: color 0.3s ease;
     z-index: 1;
 }
@@ -934,11 +934,14 @@ body {
 @media (min-width: 640px) {
     .calendar-grid {
         grid-template-columns: repeat(5, 1fr);
-        gap: 12px;
     }
     
     .day-card {
-        padding: 20px 16px;
+        padding: 18px 14px;
+    }
+    
+    .day-number {
+        font-size: 28px;
     }
 }
 
@@ -948,7 +951,11 @@ body {
     }
     
     .stats-grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(5, 1fr);
+    }
+    
+    .stats-grid .stat-item:last-child {
+        grid-column: auto;
     }
     
     .macros-grid {

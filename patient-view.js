@@ -160,6 +160,10 @@ function renderPatientInfo() {
             <span class="stat-item-value">${patientData.age || '-'} años</span>
         </div>
         <div class="stat-item">
+            <span class="stat-item-label">Sexo</span>
+            <span class="stat-item-value">${patientData.sex || '-'}</span>
+        </div>
+        <div class="stat-item">
             <span class="stat-item-label">Peso</span>
             <span class="stat-item-value">${patientData.weight || '-'} kg</span>
         </div>
@@ -172,6 +176,16 @@ function renderPatientInfo() {
             <span class="stat-item-value">${patientData.goal || '-'}</span>
         </div>
     `;
+    
+    // NUEVO: Mostrar período de dieta
+    if (patientData.dietStartDate && patientData.dietEndDate) {
+        const startDate = new Date(patientData.dietStartDate);
+        const endDate = new Date(patientData.dietEndDate);
+        const options = { month: 'short', day: 'numeric' };
+        const formattedStart = startDate.toLocaleDateString('es-ES', options);
+        const formattedEnd = endDate.toLocaleDateString('es-ES', options);
+        document.getElementById('periodDates').textContent = `${formattedStart} - ${formattedEnd}`;
+    }
 }
 
 // NUEVA FUNCIÓN: Renderizar macros nutricionales

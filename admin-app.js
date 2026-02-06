@@ -164,11 +164,16 @@ function hideEditSection() {
 function fillForm(patient) {
     document.getElementById('patientName').value = patient.name || '';
     document.getElementById('patientAge').value = patient.age || '';
+    document.getElementById('patientSex').value = patient.sex || '';
     document.getElementById('patientWeight').value = patient.weight || '';
     document.getElementById('patientHeight').value = patient.height || '';
     document.getElementById('patientGoal').value = patient.goal || '';
     
-    // NUEVO: Llenar campos de macros
+    // NUEVO: Llenar fechas de período
+    document.getElementById('dietStartDate').value = patient.dietStartDate || '';
+    document.getElementById('dietEndDate').value = patient.dietEndDate || '';
+    
+    // Llenar campos de macros
     if (patient.macros) {
         document.getElementById('patientCalories').value = patient.macros.calories || 2000;
         document.getElementById('patientProtein').value = patient.macros.protein || 150;
@@ -309,10 +314,14 @@ async function savePatient(e) {
     const patientData = {
         name: document.getElementById('patientName').value,
         age: parseInt(document.getElementById('patientAge').value),
+        sex: document.getElementById('patientSex').value,
         weight: parseFloat(document.getElementById('patientWeight').value),
         height: parseInt(document.getElementById('patientHeight').value),
         goal: document.getElementById('patientGoal').value,
-        // NUEVO: Guardar macros
+        // NUEVO: Guardar fechas de período
+        dietStartDate: document.getElementById('dietStartDate').value,
+        dietEndDate: document.getElementById('dietEndDate').value,
+        // Guardar macros
         macros: {
             calories: parseInt(document.getElementById('patientCalories').value),
             protein: parseInt(document.getElementById('patientProtein').value),

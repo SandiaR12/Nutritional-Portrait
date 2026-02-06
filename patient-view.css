@@ -113,6 +113,12 @@ body {
     align-items: center;
 }
 
+.logo-section {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
 .logo {
     display: flex;
     align-items: center;
@@ -140,9 +146,38 @@ body {
     background-clip: text;
 }
 
-.credit {
-    font-size: 11px;
+.credit-bottom {
+    font-size: 10px;
     color: var(--text-tertiary);
+    padding-left: 40px;
+}
+
+.diet-period {
+    background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%);
+    padding: 8px 16px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+    box-shadow: 
+        0 2px 6px rgba(148, 163, 184, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(226, 232, 240, 0.5);
+}
+
+.period-label {
+    font-size: 9px;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.period-dates {
+    font-size: 12px;
+    color: var(--text-primary);
+    font-weight: 600;
 }
 
 /* Container */
@@ -159,17 +194,19 @@ body {
     padding: 28px;
     margin-bottom: 20px;
     box-shadow: 
-        0 4px 16px rgba(148, 163, 184, 0.12),
-        0 8px 32px rgba(148, 163, 184, 0.08),
+        0 0 0 1px rgba(148, 163, 184, 0.15),
+        0 4px 16px rgba(148, 163, 184, 0.15),
+        0 8px 32px rgba(148, 163, 184, 0.1),
         inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    border: 1px solid rgba(226, 232, 240, 0.6);
+    border: 1px solid rgba(203, 213, 225, 0.5);
     transition: all 0.4s ease;
 }
 
 .patient-info-card:hover {
     box-shadow: 
-        0 6px 24px rgba(148, 163, 184, 0.15),
-        0 12px 40px rgba(148, 163, 184, 0.1),
+        0 0 0 1px rgba(148, 163, 184, 0.2),
+        0 6px 24px rgba(148, 163, 184, 0.18),
+        0 12px 40px rgba(148, 163, 184, 0.12),
         inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
@@ -212,6 +249,10 @@ body {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
+}
+
+.stats-grid .stat-item:last-child {
+    grid-column: 1 / -1;
 }
 
 .stat-item {
@@ -282,6 +323,12 @@ body {
 .macro-icon {
     font-size: 32px;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    animation: floatMacro 3s ease-in-out infinite;
+}
+
+@keyframes floatMacro {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
 }
 
 .macro-info {
@@ -408,10 +455,11 @@ body {
     padding: 28px 24px;
     margin-bottom: 20px;
     box-shadow: 
-        0 4px 16px rgba(148, 163, 184, 0.12),
-        0 8px 32px rgba(148, 163, 184, 0.08),
+        0 0 0 1px rgba(148, 163, 184, 0.15),
+        0 4px 16px rgba(148, 163, 184, 0.15),
+        0 8px 32px rgba(148, 163, 184, 0.1),
         inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    border: 1px solid rgba(226, 232, 240, 0.6);
+    border: 1px solid rgba(203, 213, 225, 0.5);
 }
 
 .section-title {
@@ -431,7 +479,7 @@ body {
 .day-card {
     background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
     border-radius: 20px;
-    padding: 18px 14px;
+    padding: 16px 12px;
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 
@@ -443,6 +491,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    aspect-ratio: 1 / 1.1;
 }
 
 .day-card::after {
@@ -459,7 +508,7 @@ body {
 }
 
 .day-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-3px);
     box-shadow: 
         0 8px 24px rgba(148, 163, 184, 0.15),
         0 12px 32px rgba(148, 163, 184, 0.1),
@@ -472,11 +521,11 @@ body {
 }
 
 .day-card:active {
-    transform: translateY(-2px);
+    transform: translateY(-1px);
 }
 
 .day-number {
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 700;
     margin-bottom: 2px;
     background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
@@ -495,11 +544,11 @@ body {
 }
 
 .day-label {
-    font-size: 10px;
+    font-size: 9px;
     color: var(--text-tertiary);
     text-transform: uppercase;
     letter-spacing: 1.2px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     font-weight: 600;
     z-index: 1;
 }
@@ -655,7 +704,7 @@ body {
     font-weight: 700;
 }
 
-/* Meals List Mejorado */
+/* Meals List Mejorado - Animaciones Sutiles Optimizadas */
 .meals-list {
     display: flex;
     flex-direction: column;
@@ -670,30 +719,31 @@ body {
     gap: 16px;
     align-items: flex-start;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.25s ease-out;
     box-shadow: var(--shadow-2);
-    border-left: 4px solid transparent;
+    border-left: 3px solid transparent;
+    will-change: transform;
 }
 
 .meal-item:hover {
-    transform: translateX(4px);
-    box-shadow: var(--shadow-4);
+    transform: translateX(3px);
+    box-shadow: var(--shadow-3);
     border-left-color: var(--primary);
 }
 
 .meal-item:active {
-    transform: translateX(2px) scale(0.98);
+    transform: translateX(1px) scale(0.99);
 }
 
 .meal-item.completed {
     background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
     border-left-color: var(--success);
-    animation: completePop 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    animation: completePopSubtle 0.3s ease-out;
 }
 
-@keyframes completePop {
+@keyframes completePopSubtle {
     0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
+    50% { transform: scale(1.02); }
     100% { transform: scale(1); }
 }
 
@@ -705,20 +755,20 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease-out;
     flex-shrink: 0;
     margin-top: 2px;
 }
 
 .meal-item:hover .meal-checkbox {
     border-color: var(--primary);
-    transform: scale(1.1);
+    transform: scale(1.08);
 }
 
 .meal-item.completed .meal-checkbox {
     background: var(--success);
     border-color: var(--success);
-    box-shadow: 0 0 12px rgba(52, 199, 89, 0.4);
+    box-shadow: 0 0 10px rgba(52, 199, 89, 0.3);
 }
 
 .meal-checkbox svg {
@@ -727,7 +777,7 @@ body {
     stroke-width: 3;
     opacity: 0;
     transform: scale(0);
-    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transition: all 0.25s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .meal-item.completed .meal-checkbox svg {

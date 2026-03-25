@@ -16,6 +16,9 @@
                     <p class="subtitle">Gestiona los planes nutricionales</p>
                 </div>
                 <div class="credit">By: Ricardo Sandoval Solorzano</div>
+                <a href="calculadora-libre.html" target="_blank" class="btn btn-success btn-small" style="margin-left:auto;text-decoration:none;display:inline-flex;align-items:center;gap:6px;font-size:13px">
+                    🧮 Calculadora libre
+                </a>
             </div>
         </header>
 
@@ -150,20 +153,51 @@
                     </div>
                 </form>
 
-                <!-- Generated Link -->
+                <!-- Generated Links -->
                 <div id="linkSection" class="link-card" style="display: none;">
-                    <h3>🔗 Enlace del Paciente</h3>
-                    <div class="link-container">
-                        <input type="text" id="patientLink" readonly>
-                        <button class="btn btn-primary" id="copyLink">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            Copiar
-                        </button>
+                    <h3>🔗 Enlaces del Paciente</h3>
+
+                    <div class="link-block">
+                        <div class="link-block-header">
+                            <span class="link-icon">📅</span>
+                            <div>
+                                <div class="link-block-title">Plan de Dieta Personalizada</div>
+                                <div class="link-block-desc">Muestra el plan de 15 días con checklist de comidas</div>
+                            </div>
+                        </div>
+                        <div class="link-container">
+                            <input type="text" id="patientLink" readonly>
+                            <button class="btn btn-primary" id="copyLink">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copiar
+                            </button>
+                        </div>
                     </div>
-                    <p class="link-note">Comparte este enlace con tu paciente</p>
+
+                    <div class="link-block link-block-calc">
+                        <div class="link-block-header">
+                            <span class="link-icon">🧮</span>
+                            <div>
+                                <div class="link-block-title">Calculadora Nutricional</div>
+                                <div class="link-block-desc">Registra lo que come y compara contra sus requerimientos</div>
+                            </div>
+                        </div>
+                        <div class="link-container">
+                            <input type="text" id="calcLink" readonly>
+                            <button class="btn btn-success" id="copyCalcLink">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copiar
+                            </button>
+                        </div>
+                    </div>
+
+                    <p class="link-note">📲 Comparte ambos enlaces con tu paciente por WhatsApp o correo</p>
                 </div>
             </section>
         </main>

@@ -24,6 +24,8 @@ const generateLink = document.getElementById('generateLink');
 const linkSection = document.getElementById('linkSection');
 const patientLink = document.getElementById('patientLink');
 const copyLink = document.getElementById('copyLink');
+const calcLink = document.getElementById('calcLink');
+const copyCalcLink = document.getElementById('copyCalcLink');
 const deleteModal = document.getElementById('deleteModal');
 const confirmDelete = document.getElementById('confirmDelete');
 const cancelDelete = document.getElementById('cancelDelete');
@@ -37,6 +39,7 @@ cancelEdit.addEventListener('click', hideEditSection);
 patientForm.addEventListener('submit', savePatient);
 generateLink.addEventListener('click', showPatientLink);
 copyLink.addEventListener('click', copyLinkToClipboard);
+copyCalcLink.addEventListener('click', copyCalcLinkToClipboard);
 confirmDelete.addEventListener('click', deletePatient);
 cancelDelete.addEventListener('click', () => deleteModal.style.display = 'none');
 
@@ -78,16 +81,24 @@ function createPatientCard(id, patient) {
         </div>
         <div class="patient-actions">
             <button class="btn btn-info btn-small" onclick="window.editPatient('${id}')">
-                Editar
+                ✏️ Editar
+            </button>
+            <button class="btn btn-success btn-small" onclick="window.openCalc('${id}')" title="Abrir calculadora del paciente">
+                🧮 Calc
             </button>
             <button class="btn btn-danger btn-small" onclick="window.confirmDeletePatient('${id}')">
-                Eliminar
+                🗑️ Eliminar
             </button>
         </div>
     `;
     
     return card;
 }
+
+window.openCalc = function(id) {
+    const base = window.location.origin + window.location.pathname.replace('admin.html', '');
+    window.open(`${base}calculadora-paciente.html?id=${id}`, '_blank');
+};
 
 window.editPatient = async function(id) {
     currentPatientId = id;
@@ -321,13 +332,18 @@ async function savePatient(e) {
         // NUEVO: Guardar fechas de período
         dietStartDate: document.getElementById('dietStartDate').value,
         dietEndDate: document.getElementById('dietEndDate').value,
-        // Guardar macros
+        // Guardar macros (nested para compatibilidad interna + flat para calculadora)
         macros: {
             calories: parseInt(document.getElementById('patientCalories').value),
             protein: parseInt(document.getElementById('patientProtein').value),
             carbs: parseInt(document.getElementById('patientCarbs').value),
             fats: parseInt(document.getElementById('patientFats').value)
         },
+        // Campos flat que lee la calculadora
+        calories: parseInt(document.getElementById('patientCalories').value),
+        protein: parseInt(document.getElementById('patientProtein').value),
+        carbs: parseInt(document.getElementById('patientCarbs').value),
+        fats: parseInt(document.getElementById('patientFats').value),
         days: {},
         updatedAt: new Date().toISOString()
     };
@@ -416,10 +432,14 @@ async function savePatient(e) {
 function showPatientLink() {
     if (!currentPatientId) return;
     
-    const baseUrl = window.location.origin + window.location.pathname.replace('admin.html', 'patient-view.html');
-    const link = `${baseUrl}?id=${currentPatientId}`;
+    const base = window.location.origin + window.location.pathname.replace('admin.html', '');
     
-    patientLink.value = link;
+    const dietUrl = `${base}patient-view.html?id=${currentPatientId}`;
+    const calcUrl = `${base}calculadora-paciente.html?id=${currentPatientId}`;
+    
+    patientLink.value = dietUrl;
+    calcLink.value = calcUrl;
+    
     linkSection.style.display = 'block';
     linkSection.scrollIntoView({ behavior: 'smooth' });
 }
@@ -427,7 +447,13 @@ function showPatientLink() {
 function copyLinkToClipboard() {
     patientLink.select();
     document.execCommand('copy');
-    showToast('¡Link copiado al portapapeles!', 'success');
+    showToast('✅ Link de dieta copiado', 'success');
+}
+
+function copyCalcLinkToClipboard() {
+    calcLink.select();
+    document.execCommand('copy');
+    showToast('✅ Link de calculadora copiado', 'success');
 }
 
 function showToast(message, type = 'success') {

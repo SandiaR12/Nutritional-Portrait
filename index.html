@@ -137,7 +137,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .dsub{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--txt3);font-weight:500}
 
 /* DAY PANEL */
-.dp{display:none;border-radius:var(--r3xl);border:1.5px solid var(--bdr2);overflow:hidden;margin-bottom:1rem;background:var(--surf);box-shadow:var(--sh3)}
+.dp{display:none;border-radius:var(--r3xl);border:1.5px solid var(--bdr2);overflow:visible;margin-bottom:1rem;background:var(--surf);box-shadow:var(--sh3)}
 .dp.open{display:block;animation:dpIn .32s var(--ease-spring)}
 @keyframes dpIn{from{opacity:0;transform:translateY(20px) scale(.96)}to{opacity:1;transform:none}}
 
@@ -162,7 +162,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .tab.on{color:var(--blue);border-bottom-color:var(--blue);background:rgba(99,102,241,.05)}
 .tab.on .tab-ico{transform:scale(1.15)}
 
-.tb{display:none;padding:1.75rem}
+.tb{display:none;padding:1.75rem;overflow:visible}
 .tb.on{display:block;animation:tbIn .28s var(--ease-spring)}
 @keyframes tbIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media(max-width:520px){.tb{padding:1.2rem 1rem}}
@@ -500,8 +500,9 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .usrch-hero{
   background:linear-gradient(150deg,#0f172a,#1e293b 60%,rgba(15,23,42,.97));
   border-radius:20px;padding:1.5rem 1.5rem 1.35rem;margin-bottom:1rem;
-  position:relative;overflow:hidden;
+  position:relative;overflow:visible;
   box-shadow:0 8px 32px rgba(15,23,42,.2),0 24px 64px rgba(15,23,42,.22);
+  clip-path:none;
 }
 .usrch-blob1{position:absolute;top:-50px;right:-50px;width:220px;height:220px;
   background:radial-gradient(circle,rgba(37,99,235,.2),transparent 65%);pointer-events:none;
@@ -666,6 +667,30 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 /* Meal time section */
 .umeal-lbl{font-size:.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
   color:var(--txt4,#94a3b8);margin:.85rem 0 .55rem}
+
+/* ── CRITICAL OVERFLOW FIXES ──────────────────────────── */
+/* Log entries scrollable */
+#lw{max-height:360px;overflow-y:auto;padding-bottom:.5rem}
+#lw::-webkit-scrollbar{width:3px}
+#lw::-webkit-scrollbar-thumb{background:rgba(37,99,235,.2);border-radius:2px}
+/* Dropdowns always on top, never clipped */
+.udrop,.rd,.calc-drop{z-index:9000!important;position:absolute}
+.usw-wrap,.calc-sw,.sw{position:relative;z-index:2}
+/* Hero doesn't clip dropdown */
+.usrch-hero{overflow:visible!important}
+.dp{overflow:visible!important}
+.tb.on{overflow:visible!important}
+/* Blobs stay within hero visually via border-radius clip trick */
+.usrch-blob1,.usrch-blob2{
+  position:absolute;pointer-events:none;
+  border-radius:50%;
+  z-index:0;
+}
+.usrch-hero>*:not(.usrch-blob1):not(.usrch-blob2){position:relative;z-index:1}
+/* Chips scroll if overflow */
+.ch-chips{max-height:200px;overflow-y:auto}
+.ch-chips::-webkit-scrollbar{width:3px}
+.ch-chips::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:2px}
 </style>
 </head>
 <body>
@@ -1167,15 +1192,16 @@ window.uSearch = function() {
   if(q.trim().length < 1){ drop.style.display='none'; return; }
   const nq = _un(q.trim());
 
+  const stem = nq.endsWith('s')&&nq.length>4 ? nq.slice(0,-1) : nq;
   const score = f => {
     const fn  = _un(f.nombre||'');
     const als = (f.alias||[]).map(_un);
-    if(fn===nq)                              return 100;
+    if(fn===nq||fn===stem)                   return 100;
     if(fn.startsWith(nq))                    return 90;
     if(als.some(a=>a===nq))                  return 87;
     if(als.some(a=>a.startsWith(nq)))        return 78;
-    if(nq.length>=2 && fn.includes(nq))      return 65;
-    if(nq.length>=2 && als.some(a=>a.includes(nq))) return 55;
+    if(nq.length>=2 && (fn.includes(nq)||fn.includes(stem)))      return 65;
+    if(nq.length>=2 && als.some(a=>a.includes(nq)||a.includes(stem))) return 55;
     if(nq.length>=3){
       const ws=nq.split(/\s+/).filter(w=>w.length>2);
       const h=ws.filter(w=>fn.includes(w)||als.some(a=>a.includes(w)));
@@ -1406,8 +1432,13 @@ window.calcAI = async function(){
       chips.classList.add('on');
     }
   }catch(err){
-    const words=_un(q).split(/\s+/).filter(w=>w.length>3);
-    const fb=ALL.filter(f=>words.some(w=>_un(f.nombre||'').includes(w)||(f.alias||[]).some(a=>_un(a).includes(w)))).slice(0,5);
+    const words=_un(q).split(/\s+/).filter(w=>w.length>2);
+    const stems=words.map(w=>w.endsWith('s')&&w.length>4?w.slice(0,-1):w);
+    const allTerms=[...new Set([...words,...stems])];
+    const fb=ALL.filter(f=>{
+      const fn=_un(f.nombre||''); const als=(f.alias||[]).map(_un);
+      return allTerms.some(w=>fn.includes(w)||als.some(a=>a.includes(w)));
+    }).slice(0,6);
     window._aiItems=fb.map(f=>({food:f,idx:ALL.indexOf(f),qty:1,
       k:f.kcal,p:f.proteina_g,c:f.carbohidratos_g,l:f.lipidos_g,
       g:f.porcion_g||f.peso_neto_g||100}));

@@ -495,6 +495,177 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   font-family:inherit;font-weight:600;padding:3px 8px;border-radius:6px;transition:all .15s}
 .calc-log-clear:hover{color:#ef4444;background:rgba(239,68,68,.07)}
 .clog-empty{text-align:center;padding:1.5rem;color:#94a3b8;font-size:.82rem}
+
+/* ══ UNIFIED SEARCH HERO ════════════════════════════════════════════ */
+.usrch-hero{
+  background:linear-gradient(150deg,#0f172a,#1e293b 60%,rgba(15,23,42,.97));
+  border-radius:20px;padding:1.5rem 1.5rem 1.35rem;margin-bottom:1rem;
+  position:relative;overflow:hidden;
+  box-shadow:0 8px 32px rgba(15,23,42,.2),0 24px 64px rgba(15,23,42,.22);
+}
+.usrch-blob1{position:absolute;top:-50px;right:-50px;width:220px;height:220px;
+  background:radial-gradient(circle,rgba(37,99,235,.2),transparent 65%);pointer-events:none;
+  animation:ublob 7s ease-in-out infinite}
+.usrch-blob2{position:absolute;bottom:-35px;left:-35px;width:170px;height:170px;
+  background:radial-gradient(circle,rgba(99,102,241,.14),transparent 65%);pointer-events:none;
+  animation:ublob 9s ease-in-out infinite reverse}
+@keyframes ublob{0%,100%{transform:translate(0,0)}50%{transform:translate(-10px,8px)}}
+.usrch-hero::before{content:'';position:absolute;inset:0;border-radius:inherit;
+  background-image:linear-gradient(rgba(59,130,246,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(59,130,246,.05) 1px,transparent 1px);
+  background-size:28px 28px;
+  mask-image:radial-gradient(ellipse 90% 80% at 50% 50%,black,transparent);pointer-events:none}
+.usrch-title{font-size:1.2rem;font-weight:800;color:#fff;letter-spacing:-.5px;
+  margin-bottom:.2rem;position:relative;z-index:1}
+.usrch-sub{font-size:.74rem;color:rgba(255,255,255,.4);margin-bottom:1rem;
+  position:relative;z-index:1;font-weight:300}
+
+/* MODE TOGGLE */
+.usrch-mode{display:flex;gap:.5rem;margin-bottom:1rem;position:relative;z-index:1}
+.umode-btn{flex:1;border:1.5px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);
+  border-radius:12px;padding:.65rem .5rem;cursor:pointer;text-align:left;
+  transition:all .22s cubic-bezier(.34,1.56,.64,1);font-family:inherit;
+  -webkit-tap-highlight-color:transparent}
+.umode-btn:hover{border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.08)}
+.umode-btn.active{border-color:rgba(59,130,246,.5);background:rgba(37,99,235,.18);
+  box-shadow:0 0 0 1px rgba(37,99,235,.3) inset}
+.umode-ico{font-size:1.2rem;display:block;margin-bottom:.2rem}
+.umode-lbl{font-size:.78rem;font-weight:700;color:#fff;display:block;line-height:1.2}
+.umode-hint{font-size:.62rem;color:rgba(255,255,255,.38);display:block;margin-top:2px;font-weight:300}
+
+/* PANELS */
+.upanel{position:relative;z-index:1}
+
+/* Natural language */
+.unl-bar{display:flex;gap:.45rem;margin-bottom:.55rem}
+.unl-input{flex:1;padding:.8rem 1rem;border:none;border-radius:11px;
+  font-size:.88rem;font-family:inherit;font-weight:500;
+  background:rgba(255,255,255,.95);color:#0f172a;outline:none;
+  box-shadow:0 4px 18px rgba(0,0,0,.2);transition:box-shadow .2s;-webkit-appearance:none}
+.unl-input::placeholder{color:#94a3b8;font-weight:400}
+.unl-input:focus{box-shadow:0 4px 22px rgba(0,0,0,.28),0 0 0 3px rgba(96,165,250,.4)}
+.unl-btn{padding:.8rem 1.1rem;background:linear-gradient(135deg,#1d4ed8,#3b82f6);
+  color:#fff;border:none;border-radius:11px;font-size:.82rem;font-weight:700;
+  cursor:pointer;font-family:inherit;white-space:nowrap;
+  box-shadow:0 4px 14px rgba(37,99,235,.38);transition:all .2s cubic-bezier(.34,1.56,.64,1);
+  -webkit-appearance:none;touch-action:manipulation}
+.unl-btn:hover{transform:translateY(-2px) scale(1.04);box-shadow:0 8px 22px rgba(37,99,235,.45)}
+.unl-btn:active{transform:scale(.96)}
+.unl-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* Thinking */
+.ch-think{display:none;align-items:center;gap:.5rem;font-size:.73rem;
+  color:rgba(255,255,255,.5);padding:.35rem 0}
+.ch-think.on{display:flex}
+.chtd{display:flex;gap:3px}
+.chtdot{width:5px;height:5px;border-radius:50%;background:#60a5fa;
+  animation:chtdot 1.2s ease-in-out infinite}
+.chtdot:nth-child(2){animation-delay:.18s}
+.chtdot:nth-child(3){animation-delay:.36s}
+@keyframes chtdot{0%,100%{opacity:.2;transform:scale(.7)}50%{opacity:1;transform:scale(1.3)}}
+
+/* AI chips */
+.ch-chips{display:none;flex-wrap:wrap;gap:.4rem;margin-top:.5rem}
+.ch-chips.on{display:flex;animation:chipsIn .25s cubic-bezier(.34,1.56,.64,1)}
+@keyframes chipsIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.cchip{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);
+  border-radius:10px;padding:.48rem .8rem;cursor:pointer;
+  transition:all .2s cubic-bezier(.34,1.56,.64,1);-webkit-tap-highlight-color:transparent}
+.cchip:hover{background:rgba(59,130,246,.28);border-color:rgba(96,165,250,.45);
+  transform:translateY(-2px) scale(1.03)}
+.cchip.cchip-added{opacity:.4;pointer-events:none}
+.cchip-name{font-size:.8rem;font-weight:700;color:#fff}
+.cchip-mac{font-size:.65rem;color:rgba(255,255,255,.5);font-family:'JetBrains Mono',monospace;margin-top:1px}
+
+/* Examples */
+.unl-examples{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.55rem;align-items:center}
+.uex-lbl{font-size:.66rem;color:rgba(255,255,255,.28);font-weight:500}
+.uex{font-size:.67rem;color:rgba(255,255,255,.36);background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.09);padding:3px 9px;border-radius:20px;
+  cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.uex:hover{background:rgba(255,255,255,.1);color:rgba(255,255,255,.75)}
+
+/* SEARCH panel */
+.usw-wrap{position:relative;margin-bottom:.65rem}
+.usw-wrap input{width:100%;padding:.75rem 1rem .75rem 2.35rem;border:none;border-radius:11px;
+  font-size:.88rem;font-family:inherit;background:rgba(255,255,255,.95);color:#0f172a;outline:none;
+  box-shadow:0 4px 18px rgba(0,0,0,.2);transition:box-shadow .2s;-webkit-appearance:none}
+.usw-wrap input::placeholder{color:#94a3b8;font-weight:400}
+.usw-wrap input:focus{box-shadow:0 4px 22px rgba(0,0,0,.28),0 0 0 3px rgba(96,165,250,.4)}
+.usw-ico{position:absolute;left:.75rem;top:50%;transform:translateY(-50%);
+  font-size:.95rem;pointer-events:none;opacity:.5;z-index:1}
+.udrop{position:absolute;top:calc(100% + 5px);left:0;right:0;
+  background:#fff;border:1.5px solid rgba(59,130,246,.18);border-radius:14px;
+  max-height:280px;overflow-y:auto;z-index:600;
+  box-shadow:0 8px 32px rgba(15,23,42,.12),0 32px 80px rgba(15,23,42,.14);
+  animation:udropIn .2s cubic-bezier(.34,1.56,.64,1)}
+@keyframes udropIn{from{opacity:0;transform:translateY(-8px) scale(.96)}to{opacity:1;transform:none}}
+.udrop::-webkit-scrollbar{width:4px}
+.udrop::-webkit-scrollbar-thumb{background:rgba(59,130,246,.2);border-radius:2px}
+.udi{padding:.6rem .95rem;cursor:pointer;font-size:.82rem;
+  border-bottom:1px solid rgba(59,130,246,.06);transition:background .12s;
+  -webkit-tap-highlight-color:transparent}
+.udi:last-child{border-bottom:none}
+.udi:hover,.udi:active{background:rgba(37,99,235,.05)}
+.udi-top{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;margin-bottom:2px}
+.udi-name{font-weight:700;color:#0f172a;font-size:.82rem}
+.udi-grp{font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:20px;
+  background:rgba(37,99,235,.09);color:#2563eb;flex-shrink:0}
+.udi-mac{font-size:.67rem;color:#64748b;font-family:'JetBrains Mono',monospace}
+
+/* Selected food card */
+.usel-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);
+  border-radius:12px;padding:.8rem .85rem;margin-bottom:.6rem;
+  animation:uselIn .22s cubic-bezier(.34,1.56,.64,1)}
+@keyframes uselIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+.usel-top{display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem;margin-bottom:.65rem}
+.usel-name{font-weight:700;color:#fff;font-size:.86rem;line-height:1.3}
+.usel-info{font-size:.66rem;color:rgba(255,255,255,.45);margin-top:2px;font-family:'JetBrains Mono',monospace;line-height:1.4}
+.usel-clear{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.5);border-radius:50%;width:26px;height:26px;
+  cursor:pointer;font-size:.8rem;flex-shrink:0;transition:all .15s;
+  display:flex;align-items:center;justify-content:center}
+.usel-clear:hover{background:rgba(239,68,68,.2);border-color:rgba(239,68,68,.3);color:#fca5a5}
+
+/* Quantity row */
+.uqrow{display:flex;flex-direction:column;gap:.5rem}
+.uqfield{}
+.uql{font-size:.62rem;font-weight:700;color:rgba(255,255,255,.45);
+  text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:.35rem}
+.uqinputs{display:flex;align-items:center;gap:.35rem;flex-wrap:wrap}
+.uqmult{width:50px;padding:.52rem .4rem;border:1.5px solid rgba(255,255,255,.15);
+  border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:.88rem;
+  text-align:center;background:rgba(255,255,255,.08);color:#fff;outline:none;
+  transition:border-color .2s;-webkit-appearance:none}
+.uqmult:focus{border-color:rgba(96,165,250,.5)}
+.uqtimes{font-size:.72rem;color:rgba(255,255,255,.4);font-weight:700}
+.uqamt{width:65px;padding:.52rem .4rem;border:1.5px solid rgba(255,255,255,.15);
+  border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:.88rem;
+  text-align:center;background:rgba(255,255,255,.08);color:#fff;outline:none;
+  transition:border-color .2s;-webkit-appearance:none}
+.uqamt:focus{border-color:rgba(96,165,250,.5)}
+.uqunit{flex:1;min-width:90px;padding:.52rem .5rem;border:1.5px solid rgba(255,255,255,.15);
+  border-radius:8px;font-size:.77rem;font-family:inherit;
+  background:rgba(255,255,255,.08);color:#fff;outline:none;-webkit-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(255,255,255,0.4)'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right .45rem center;padding-right:1.5rem}
+.uqunit option{background:#1e293b;color:#fff}
+.uqpreview{font-size:.72rem;color:rgba(255,255,255,.55);font-family:'JetBrains Mono',monospace;
+  background:rgba(255,255,255,.05);border-radius:7px;padding:.35rem .65rem}
+.uadd-btn{width:100%;padding:.65rem 1rem;background:linear-gradient(135deg,#1d4ed8,#3b82f6);
+  color:#fff;border:none;border-radius:9px;font-size:.85rem;font-weight:700;
+  cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(37,99,235,.32);
+  transition:all .22s cubic-bezier(.34,1.56,.64,1);-webkit-appearance:none;
+  touch-action:manipulation;min-height:42px}
+.uadd-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(37,99,235,.42)}
+.uadd-btn:active{transform:scale(.96)}
+.uadd-btn:disabled{opacity:.28;cursor:not-allowed;box-shadow:none;transform:none}
+.usearch-hint{font-size:.66rem;color:rgba(255,255,255,.3);text-align:center;
+  margin-top:.6rem;font-style:italic}
+
+/* Meal time section */
+.umeal-lbl{font-size:.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--txt4,#94a3b8);margin:.85rem 0 .55rem}
 </style>
 </head>
 <body>
@@ -606,97 +777,118 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   </div>
   <div class="tb" id="tabCalc">
 
-    <!-- ═══ HERO: AI ANALYZER ═══ -->
-    <div class="calc-hero">
-      <div class="ch-blob1"></div><div class="ch-blob2"></div>
-      <div class="ch-title">¿Qué comiste hoy? 🍽️</div>
-      <div class="ch-sub">Escribe lo que comiste — el sistema lo interpreta automáticamente</div>
-      <div class="ch-bar">
-        <input type="text" class="ch-input" id="chInput"
-          placeholder="Ej: 3 tacos de bistec, horchata y un gansito..."
-          autocomplete="off" enterkeyhint="search">
-        <button class="ch-go" id="chBtn" onclick="calcAI()">✨ Analizar</button>
-      </div>
-      <div class="ch-think" id="chThink">
-        <div class="chtd"><div class="chtdot"></div><div class="chtdot"></div><div class="chtdot"></div></div>
-        <span id="chThinkTxt">Interpretando lo que comiste...</span>
-      </div>
-      <div class="ch-chips" id="chChips"></div>
-      <div class="ch-qex">
-        <span style="font-size:.66rem;color:rgba(255,255,255,.28);align-self:center">Ejemplos:</span>
-        <span class="chqex" onclick="calcExAI(this)">3 tacos de bistec</span>
-        <span class="chqex" onclick="calcExAI(this)">pozole rojo</span>
-        <span class="chqex" onclick="calcExAI(this)">big mac con papas</span>
-        <span class="chqex" onclick="calcExAI(this)">chilaquiles verdes con huevo</span>
-        <span class="chqex" onclick="calcExAI(this)">torta de jamón mediana</span>
-        <span class="chqex" onclick="calcExAI(this)">yogurt con granola</span>
-      </div>
-    </div>
+    <!-- STATUS -->
+    <div class="cst cs-i" id="cst"><span class="cst-ico">ℹ️</span>Agrega alimentos para ver tu análisis nutricional del día.</div>
 
-    <!-- ═══ STATUS ═══ -->
-    <div class="cst cs-i" id="cst"><span class="cst-ico">ℹ️</span>Agrega alimentos para ver tu análisis nutricional.</div>
+    <!-- UNIFIED SEARCH HERO -->
+    <div class="usrch-hero">
+      <div class="usrch-blob1"></div>
+      <div class="usrch-blob2"></div>
 
-    <!-- ═══ MANUAL SEARCH ═══ -->
-    <div class="calc-srch">
-      <div class="calc-srch-top">
-        <span class="calc-srch-lbl">Agregar alimento</span>
-        <div class="calc-srch-tog">
-          <button class="cstbtn on" id="cstDish" onclick="calcSetMode('dish',this)">🍽️ Platillos</button>
-          <button class="cstbtn" id="cstIngr" onclick="calcSetMode('ingr',this)">🥕 SMAE</button>
+      <div class="usrch-title">¿Qué comiste? 🍽️</div>
+      <div class="usrch-sub">Describe tu comida o busca un alimento específico</div>
+
+      <!-- MODE TOGGLE — intuitive, no jargon -->
+      <div class="usrch-mode">
+        <button class="umode-btn active" id="umodeNL" onclick="uSetMode('nl',this)">
+          <span class="umode-ico">✍️</span>
+          <span class="umode-lbl">Describir</span>
+          <span class="umode-hint">Ej: 3 tacos, pozole...</span>
+        </button>
+        <button class="umode-btn" id="umodeSearch" onclick="uSetMode('search',this)">
+          <span class="umode-ico">🔍</span>
+          <span class="umode-lbl">Buscar alimento</span>
+          <span class="umode-hint">Pollo, arroz, fruta...</span>
+        </button>
+      </div>
+
+      <!-- MODE A: NATURAL LANGUAGE -->
+      <div id="panelNL" class="upanel">
+        <div class="unl-bar">
+          <input type="text" class="unl-input" id="chInput"
+            placeholder="Ej: 3 tacos de bistec, una horchata y un gansito..."
+            autocomplete="off" enterkeyhint="done">
+          <button class="unl-btn" id="chBtn" onclick="calcAI()">Interpretar</button>
+        </div>
+        <div class="ch-think" id="chThink">
+          <div class="chtd"><div class="chtdot"></div><div class="chtdot"></div><div class="chtdot"></div></div>
+          <span id="chThinkTxt">Analizando lo que comiste...</span>
+        </div>
+        <div class="ch-chips" id="chChips"></div>
+        <div class="unl-examples">
+          <span class="uex-lbl">Prueba:</span>
+          <span class="uex" onclick="calcExAI(this)">3 tacos de bistec</span>
+          <span class="uex" onclick="calcExAI(this)">pozole rojo con tostadas</span>
+          <span class="uex" onclick="calcExAI(this)">big mac con papas y coca</span>
+          <span class="uex" onclick="calcExAI(this)">chilaquiles verdes con huevo</span>
+          <span class="uex" onclick="calcExAI(this)">torta de jamón grande</span>
+          <span class="uex" onclick="calcExAI(this)">yogurt griego con granola</span>
         </div>
       </div>
 
-      <!-- Meal selector -->
-      <div class="calc-meal">
-        <div class="cms on" onclick="calcSetMeal('Desayuno',this)"><span class="cms-ico">☀️</span><span class="cms-lbl">Desayuno</span></div>
-        <div class="cms" onclick="calcSetMeal('Colación AM',this)"><span class="cms-ico">🍎</span><span class="cms-lbl">Col. AM</span></div>
-        <div class="cms" onclick="calcSetMeal('Comida',this)"><span class="cms-ico">🍽️</span><span class="cms-lbl">Comida</span></div>
-        <div class="cms" onclick="calcSetMeal('Colación PM',this)"><span class="cms-ico">🍌</span><span class="cms-lbl">Col. PM</span></div>
-        <div class="cms" onclick="calcSetMeal('Cena',this)"><span class="cms-ico">🌙</span><span class="cms-lbl">Cena</span></div>
+      <!-- MODE B: INDIVIDUAL FOOD SEARCH -->
+      <div id="panelSearch" class="upanel" style="display:none">
+        <div class="usw-wrap" id="uswWrap">
+          <span class="usw-ico">🔍</span>
+          <input type="text" id="uSI"
+            placeholder="Buscar cualquier alimento — pollo, tortilla, avena, big mac..."
+            autocomplete="off"
+            oninput="uSearch()" onfocus="uSearch()"
+            enterkeyhint="search">
+          <div class="udrop" id="uDrop" style="display:none"></div>
+        </div>
+        <!-- Selected food card -->
+        <div class="usel-card" id="uSelCard" style="display:none">
+          <div class="usel-top">
+            <div>
+              <div class="usel-name" id="uSelName"></div>
+              <div class="usel-info" id="uSelInfo"></div>
+            </div>
+            <button class="usel-clear" onclick="uClearSel()">✕</button>
+          </div>
+          <!-- Quantity row -->
+          <div class="uqrow">
+            <div class="uqfield">
+              <label class="uql">Cantidad</label>
+              <div class="uqinputs">
+                <input type="number" class="uqmult" id="uqMult"
+                  value="1" min="1" max="99" inputmode="numeric"
+                  oninput="uCalcMacros()" title="Cuántas porciones">
+                <span class="uqtimes">×</span>
+                <input type="number" class="uqamt" id="uqAmt"
+                  value="1" min="0.5" max="9999" step="0.5" inputmode="decimal"
+                  oninput="uCalcMacros()">
+                <select class="uqunit" id="uqUnit" onchange="uCalcMacros()">
+                  <option value="porcion">porción</option>
+                  <option value="g">gramos</option>
+                  <option value="pieza">pieza</option>
+                  <option value="taza">taza</option>
+                  <option value="cdita">cdita</option>
+                  <option value="cda">cda</option>
+                </select>
+              </div>
+            </div>
+            <div class="uqpreview" id="uqPrev" style="display:none"></div>
+            <button class="uadd-btn" id="uAddBtn"
+              onclick="uAddFood()" disabled
+              data-fidx="-1">+ Agregar</button>
+          </div>
+        </div>
+        <div class="usearch-hint">Busca desde platillos completos hasta ingredientes individuales — todo en un lugar</div>
       </div>
-
-      <!-- Category pills -->
-      <div class="calc-cats" id="calcCats"></div>
-
-      <!-- Search input -->
-      <div class="calc-sw" id="calcSW">
-        <span class="calc-sw-ico">🔍</span>
-        <input type="text" id="calcSI" placeholder="Buscar platillo o alimento..."
-          autocomplete="off" oninput="calcSearch()" onfocus="calcSearch()"
-          enterkeyhint="search">
-        <div class="calc-drop" id="calcDrop" style="display:none"></div>
-      </div>
-
-      <!-- Selected food display -->
-      <div class="calc-sel" id="calcSel">
-        <div class="calc-sel-name" id="calcSelName"></div>
-        <div class="calc-sel-info" id="calcSelInfo"></div>
-      </div>
-
-      <!-- Smart quantity: mult × amount unit [Agregar] -->
-      <div class="calc-qrow">
-        <input type="number" class="cqmult" id="cqMult" value="1" min="1" max="99"
-          inputmode="numeric" oninput="calcOQ()">
-        <span class="cqx">×</span>
-        <input type="number" class="cqamt" id="cqAmt" value="1" min="0.5" max="9999" step="0.5"
-          inputmode="decimal" oninput="calcOQ()">
-        <select class="cqsel" id="cqUnit" onchange="calcOQ()">
-          <option value="porcion">porción</option>
-          <option value="g">gramos</option>
-          <option value="pieza">pieza</option>
-          <option value="taza">taza (240ml)</option>
-          <option value="cdita">cdita (5ml)</option>
-          <option value="cda">cda (15ml)</option>
-        </select>
-        <button class="calc-add" id="calcAddBtn"
-          onclick="calcAdd()" disabled
-          data-fidx="-1" data-fmeal="Desayuno">+ Agregar</button>
-      </div>
-      <div class="calc-qty-hint">Multiplicador: 3 × 1 porción = 3 tacos en un clic</div>
-      <div class="calc-prev" id="calcPrev"></div>
     </div>
 
-    <!-- ═══ LOG ═══ -->
+    <!-- MEAL TIME SELECTOR -->
+    <div class="umeal-lbl">¿A qué hora fue esta comida?</div>
+    <div class="calc-meal" id="uMealSel">
+      <div class="cms on" onclick="calcSetMeal('Desayuno',this)"><span class="cms-ico">☀️</span><span class="cms-lbl">Desayuno</span></div>
+      <div class="cms" onclick="calcSetMeal('Colación AM',this)"><span class="cms-ico">🍎</span><span class="cms-lbl">Col. AM</span></div>
+      <div class="cms" onclick="calcSetMeal('Comida',this)"><span class="cms-ico">🍽️</span><span class="cms-lbl">Comida</span></div>
+      <div class="cms" onclick="calcSetMeal('Colación PM',this)"><span class="cms-ico">🍌</span><span class="cms-lbl">Col. PM</span></div>
+      <div class="cms" onclick="calcSetMeal('Cena',this)"><span class="cms-ico">🌙</span><span class="cms-lbl">Cena</span></div>
+    </div>
+
+    <!-- LOG -->
     <div class="calc-log-hdr">
       <span>Registro del día</span>
       <button class="calc-log-clear" onclick="cl()">Limpiar</button>
@@ -952,275 +1144,11 @@ const _norm     = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLower
 // ALL is already defined: [...MEGA, ...SMAE]
 
 // ── Category pills ────────────────────────────────────────────────────
-;(function calcBuildCats(){
-  const wrap = document.getElementById('calcCats');
-  if(!wrap) return;
-  const CATS = [
-    {l:'🌮 Tacos',f:'Tacos'},{l:'🥖 Tortas',f:'Tortas y Sándwiches'},
-    {l:'🫔 Tamales',f:'Tamales'},{l:'🧀 Quesadillas',f:'Quesadillas'},
-    {l:'🍲 Enchiladas',f:'Enchiladas y Similares'},
-    {l:'🥘 Platillos',f:'Platillos Mexicanos'},{l:'🍜 Sopas',f:'Caldos y Sopas'},
-    {l:'🌅 Desayuno',f:'Desayuno Mexicano'},{l:'🍟 Fast Food',f:'Fast Food'},
-    {l:'🍕 Pizza',f:'Pizza'},{l:'🍣 Sushi',f:'Sushi'},
-    {l:'🥡 Asiática',f:'Comida Asiática'},{l:'🧃 Bebidas',f:'Bebidas'},
-    {l:'🍺 Alcohol',f:'Bebidas Alcohólicas'},{l:'🍭 Snacks',f:'Snacks'},
-    {l:'🍰 Postres',f:'Postres'},{l:'🥗 Saludable',f:'Saludable'},
-    {l:'🌊 Mariscos',f:'Mariscos'},{l:'🎪 Antojitos',f:'Antojitos'},
-    {l:'🍎 Frutas',f:'Frutas'},{l:'🥕 Verduras',f:'Verduras'},
-    {l:'💪 Proteína',f:'Proteína'},
-  ];
-  const allP = document.createElement('div');
-  allP.className='ccpill on'; allP.textContent='🍽️ Todos';
-  allP.onclick=()=>{
-    _calcCatF=null;
-    document.querySelectorAll('.ccpill').forEach(p=>p.classList.remove('on'));
-    allP.classList.add('on'); calcSearch();
-  };
-  wrap.appendChild(allP);
-  CATS.forEach(c=>{
-    const p=document.createElement('div'); p.className='ccpill'; p.textContent=c.l;
-    p.onclick=()=>{
-      _calcCatF=c.f;
-      document.querySelectorAll('.ccpill').forEach(x=>x.classList.remove('on'));
-      p.classList.add('on');
-      document.getElementById('calcSI').focus(); calcSearch();
-    };
-    wrap.appendChild(p);
-  });
-})();
-
-// ── Mode toggle ───────────────────────────────────────────────────────
-window.calcSetMode = function(m, btn) {
-  _calcMode = m;
-  document.querySelectorAll('.cstbtn').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  const si = document.getElementById('calcSI');
-  si.placeholder = m==='dish'
-    ? 'Buscar platillo, comida o producto...'
-    : 'Buscar ingrediente SMAE (ingrediente base)...';
-  si.value='';
-  document.getElementById('calcDrop').style.display='none';
-  document.getElementById('calcSel').style.display='none';
-  document.getElementById('calcAddBtn').disabled=true;
-  document.getElementById('calcAddBtn').dataset.fidx='-1';
-  _calcCatF=null;
-  document.querySelectorAll('.ccpill').forEach(p=>p.classList.remove('on'));
-  document.getElementById('calcCats').querySelector('.ccpill').classList.add('on');
-  if(m==='ingr'){
-    document.getElementById('calcCats').style.display='none';
-  } else {
-    document.getElementById('calcCats').style.display='flex';
-  }
-};
-
-// ── Meal selector ─────────────────────────────────────────────────────
-window.calcSetMeal = function(m, el) {
-  _calcMeal = m;
-  cmeal = m; // sync with patient-view cmeal
-  document.querySelectorAll('.cms').forEach(x=>x.classList.remove('on'));
-  el.classList.add('on');
-  document.getElementById('calcAddBtn').dataset.fmeal = m;
-};
-
-// ── Search ────────────────────────────────────────────────────────────
-window.calcSearch = function() {
-  const q   = document.getElementById('calcSI').value.trim();
-  const drop = document.getElementById('calcDrop');
-  const pool = _calcMode==='ingr' ? SMAE : MEGA;
-  const filtered = _calcCatF ? pool.filter(f=>f.grupo===_calcCatF) : pool;
-
-  if(q.length<1 && !_calcCatF){ drop.style.display='none'; return; }
-  const nq = _norm(q);
-
-  const score = f => {
-    const fn  = _norm(f.nombre);
-    const als = (f.alias||[]).map(_norm);
-    if(fn===nq)                            return 100;
-    if(fn.startsWith(nq))                  return 88;
-    if(als.some(a=>a===nq))                return 85;
-    if(als.some(a=>a.startsWith(nq)))      return 74;
-    if(nq.length>=2 && fn.includes(nq))    return 62;
-    if(nq.length>=2 && als.some(a=>a.includes(nq))) return 52;
-    if(nq.length>=3){
-      const ws=nq.split(/\s+/).filter(w=>w.length>2);
-      const h=ws.filter(w=>fn.includes(w)||als.some(a=>a.includes(w)));
-      if(h.length>0) return Math.round(h.length/Math.max(ws.length,1)*38);
-    }
-    return 0;
-  };
-
-  const show = (q.length<1 && _calcCatF)
-    ? filtered.slice(0,38)
-    : filtered.map(f=>({f,s:score(f)})).filter(x=>x.s>0)
-        .sort((a,b)=>b.s-a.s).slice(0,38).map(x=>x.f);
-
-  if(!show.length){ drop.style.display='none'; return; }
-
-  const srcB = f => {
-    const s=f.fuente||'SMAE';
-    if(s==='Receta'||s==='Receta estándar') return '<span class="cdi-src cdi-r">Receta</span>';
-    if(s==='USDA') return '<span class="cdi-src cdi-u">USDA</span>';
-    return '<span class="cdi-src cdi-s">SMAE</span>';
-  };
-
-  drop.innerHTML = show.map(f => {
-    const idx = ALL.indexOf(f);
-    const pg  = f.porcion_g||f.peso_neto_g||100;
-    return `<div class="cdi" ontouchstart="" onclick="calcPick(${idx})">
-      <div class="cdi-top">
-        <span class="cdi-grp">${f.grupo}</span>
-        <span class="cdi-name">${f.nombre}</span>
-        ${srcB(f)}
-      </div>
-      <div class="cdi-mac">🔥${f.kcal} kcal · 💪${f.proteina_g}g · 🌾${f.carbohidratos_g}g · 🥑${f.lipidos_g}g · ${pg}g/porción</div>
-    </div>`;
-  }).join('');
-  drop.style.display='block';
-};
-
-document.addEventListener('click', e=>{
-  const sw = document.getElementById('calcSW');
-  if(sw && !sw.contains(e.target)) document.getElementById('calcDrop').style.display='none';
-});
-
-// ── Pick food — stores idx in DOM (mobile-safe) ───────────────────────
-window.calcPick = function(idx) {
-  const f = ALL[idx];
-  if(!f) return;
-
-  // Store in DOM — survives mobile keyboard dismissal
-  const addBtn = document.getElementById('calcAddBtn');
-  addBtn.dataset.fidx = String(idx);
-  addBtn.dataset.fmeal = _calcMeal;
-  addBtn.disabled = false;
-
-  document.getElementById('calcSI').value = f.nombre;
-  document.getElementById('calcDrop').style.display='none';
-
-  const pg = f.porcion_g||f.peso_neto_g||100;
-  document.getElementById('calcSelName').textContent = f.nombre;
-  document.getElementById('calcSelInfo').textContent = [
-    f.grupo,
-    pg+'g por porción',
-    `🔥${f.kcal} kcal · 💪${f.proteina_g}g · 🌾${f.carbohidratos_g}g · 🥑${f.lipidos_g}g`,
-    f.fuente ? 'Fuente: '+f.fuente : ''
-  ].filter(Boolean).join(' · ');
-  document.getElementById('calcSel').style.display='block';
-
-  // Auto-set defaults
-  document.getElementById('cqMult').value='1';
-  document.getElementById('cqAmt').value='1';
-  document.getElementById('cqUnit').value='porcion';
-  calcOQ();
-};
-
-// ── Qty calculator ────────────────────────────────────────────────────
-window.calcOQ = function() {
-  const fidx = parseInt(document.getElementById('calcAddBtn').dataset.fidx||'-1');
-  if(fidx<0){ document.getElementById('calcPrev').style.display='none'; return; }
-  const f = ALL[fidx]; if(!f) return;
-
-  const mult = parseFloat(document.getElementById('cqMult').value)||1;
-  const amt  = parseFloat(document.getElementById('cqAmt').value)||0;
-  const unit = document.getElementById('cqUnit').value;
-  if(!amt){ document.getElementById('calcPrev').style.display='none'; return; }
-
-  const pg = f.porcion_g||f.peso_neto_g||100;
-  let grams, k, p, c, l;
-
-  if(unit==='porcion'||unit==='pieza'){
-    grams=pg*amt*mult; k=f.kcal*amt*mult;
-    p=f.proteina_g*amt*mult; c=f.carbohidratos_g*amt*mult; l=f.lipidos_g*amt*mult;
-  } else {
-    let g1=amt;
-    if(unit==='taza')g1=amt*240; else if(unit==='cdita')g1=amt*5; else if(unit==='cda')g1=amt*15;
-    grams=g1*mult;
-    const k100=f.kcal_100g||(f.kcal/pg*100);
-    const p100=f.prot_100g||(f.proteina_g/pg*100);
-    const c100=f.carb_100g||(f.carbohidratos_g/pg*100);
-    const l100=f.lip_100g||(f.lipidos_g/pg*100);
-    const fac=grams/100;
-    k=k100*fac; p=p100*fac; c=c100*fac; l=l100*fac;
-  }
-
-  // Store computed result in dataset for ae() to read
-  const addBtn = document.getElementById('calcAddBtn');
-  addBtn.dataset.rk = Math.round(k*10)/10;
-  addBtn.dataset.rp = Math.round(p*10)/10;
-  addBtn.dataset.rc = Math.round(c*10)/10;
-  addBtn.dataset.rl = Math.round(l*10)/10;
-  addBtn.dataset.rg = Math.round(grams);
-
-  const prev = document.getElementById('calcPrev');
-  prev.style.display='block';
-  const ms = mult>1 ? `${mult}× ` : '';
-  prev.textContent=`${ms}${Math.round(grams)}g → 🔥${Math.round(k)} kcal · 💪${p.toFixed(1)}g · 🌾${c.toFixed(1)}g · 🥑${l.toFixed(1)}g`;
-};
-
-// ── ADD — reads everything from DOM (mobile-safe) ─────────────────────
-window.calcAdd = async function() {
-  const addBtn = document.getElementById('calcAddBtn');
-
-  // Read food from DOM index — survives keyboard events on mobile
-  const fidx = parseInt(addBtn.dataset.fidx||'-1');
-  if(fidx<0 || !day) return;
-  const f = ALL[fidx]; if(!f) return;
-
-  // Read pre-computed result from dataset
-  const k = parseFloat(addBtn.dataset.rk||'0');
-  const p = parseFloat(addBtn.dataset.rp||'0');
-  const c = parseFloat(addBtn.dataset.rc||'0');
-  const l = parseFloat(addBtn.dataset.rl||'0');
-  const g = parseFloat(addBtn.dataset.rg||'0');
-  if(!k && !p && !c) { calcOQ(); return; }
-
-  const mult = parseFloat(document.getElementById('cqMult').value)||1;
-  const amt  = document.getElementById('cqAmt').value;
-  const unitEl = document.getElementById('cqUnit');
-  const unitTxt= unitEl.options[unitEl.selectedIndex].text;
-  const qd = (mult>1?mult+'× ':'')+amt+' '+unitTxt;
-  const mealToSave = addBtn.dataset.fmeal || _calcMeal;
-
-  // Disable to prevent double-tap
-  addBtn.disabled = true;
-
-  const entry = {
-    id:Date.now(), meal:mealToSave,
-    nombre:f.nombre, grupo:f.grupo,
-    g, k, p, c, l, qd
-  };
-
-  const key = `day${day}`;
-  if(!logs[key]) logs[key]=[];
-  logs[key].push(entry);
-
-  try {
-    await setDoc(doc(db,'calcLogs',pid), logs, {merge:true});
-  } catch(err) {
-    console.error('Firebase save error:', err);
-  }
-
-  // Reset UI
-  addBtn.dataset.fidx = '-1';
-  addBtn.dataset.rk=addBtn.dataset.rp=addBtn.dataset.rc=addBtn.dataset.rl=addBtn.dataset.rg='0';
-  document.getElementById('calcSI').value='';
-  document.getElementById('cqMult').value='1';
-  document.getElementById('cqAmt').value='1';
-  document.getElementById('calcSel').style.display='none';
-  document.getElementById('calcPrev').style.display='none';
-  addBtn.disabled = true;
-
-  rLog(); rProg(); uO(); rCal();
-};
-
-// ── AI ANALYZER ───────────────────────────────────────────────────────
-window.calcExAI = function(el) {
-  document.getElementById('chInput').value = el.textContent.trim();
+document.getElementById('chInput').value = el.textContent.trim();
   calcAI();
 };
 
-window.calcAI = async function() {
-  const q = document.getElementById('chInput').value.trim();
+document.getElementById('chInput').value.trim();
   if(!q) return;
   const btn   = document.getElementById('chBtn');
   const think = document.getElementById('chThink');
@@ -1303,8 +1231,7 @@ unidad puede ser: porcion, g, taza, pieza`,
   }
 };
 
-window.calcAIAdd = async function(i) {
-  const m = (window._calcAIItems||[])[i]; if(!m||!day) return;
+window._calcAIItems||[])[i]; if(!m||!day) return;
   const chip = document.getElementById('cchip_'+i);
   if(chip){ chip.classList.add('cchip-added'); chip.innerHTML+='<div style="font-size:.62rem;color:rgba(255,255,255,.4);margin-top:2px">✓ Agregado</div>'; }
 
@@ -1324,6 +1251,299 @@ window.calcAIAdd = async function(i) {
 // Enter key on AI input
 document.getElementById('chInput').addEventListener('keydown', e=>{
   if(e.key==='Enter'){ e.preventDefault(); calcAI(); }
+});
+
+
+// ══════════════════════════════════════════════════════════════════
+// UNIFIED SEARCH — single interface, all foods, no jargon
+// ══════════════════════════════════════════════════════════════════
+let _uMode   = 'nl';       // 'nl' (natural language) | 'search' (direct)
+let _calcMeal = 'Desayuno';
+const _unorm  = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+// ALL = [...MEGA,...SMAE] already defined
+
+// ── Mode toggle ──────────────────────────────────────────────────
+window.uSetMode = function(mode, btn) {
+  _uMode = mode;
+  document.querySelectorAll('.umode-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panelNL').style.display     = mode==='nl'     ? 'block' : 'none';
+  document.getElementById('panelSearch').style.display = mode==='search' ? 'block' : 'none';
+  if(mode==='search') document.getElementById('uSI').focus();
+};
+
+// ── Meal selector ────────────────────────────────────────────────
+window.calcSetMeal = function(m, el) {
+  _calcMeal = m; cmeal = m;
+  document.querySelectorAll('.cms').forEach(x=>x.classList.remove('on'));
+  el.classList.add('on');
+  // Update add button dataset
+  const ab = document.getElementById('uAddBtn');
+  if(ab) ab.dataset.fmeal = m;
+};
+
+// ── SEARCH MODE ─────────────────────────────────────────────────
+window.uSearch = function() {
+  const q    = document.getElementById('uSI').value.trim();
+  const drop = document.getElementById('uDrop');
+  if(q.length < 1){ drop.style.display='none'; return; }
+  const nq = _unorm(q);
+
+  const score = f => {
+    const fn  = _unorm(f.nombre);
+    const als = (f.alias||[]).map(_unorm);
+    if(fn===nq)                             return 100;
+    if(fn.startsWith(nq))                   return 90;
+    if(als.some(a=>a===nq))                 return 87;
+    if(als.some(a=>a.startsWith(nq)))       return 78;
+    if(nq.length>=2 && fn.includes(nq))     return 65;
+    if(nq.length>=2 && als.some(a=>a.includes(nq))) return 55;
+    if(nq.length>=3){
+      const ws=nq.split(/\s+/).filter(w=>w.length>2);
+      const h=ws.filter(w=>fn.includes(w)||als.some(a=>a.includes(w)));
+      if(h.length>0) return Math.round(h.length/Math.max(ws.length,1)*42);
+    }
+    return 0;
+  };
+
+  const results = ALL
+    .map(f=>({f,s:score(f)})).filter(x=>x.s>0)
+    .sort((a,b)=>b.s-a.s).slice(0,40).map(x=>x.f);
+
+  if(!results.length){ drop.style.display='none'; return; }
+
+  drop.innerHTML = results.map(f => {
+    const idx = ALL.indexOf(f);
+    const pg  = f.porcion_g||f.peso_neto_g||100;
+    return `<div class="udi" ontouchstart="" onclick="uPickFood(${idx})">
+      <div class="udi-top">
+        <span class="udi-grp">${f.grupo}</span>
+        <span class="udi-name">${f.nombre}</span>
+      </div>
+      <div class="udi-mac">🔥${f.kcal} kcal · 💪${f.proteina_g}g · 🌾${f.carbohidratos_g}g · 🥑${f.lipidos_g}g · ${pg}g/porción</div>
+    </div>`;
+  }).join('');
+  drop.style.display='block';
+};
+
+document.addEventListener('click', e=>{
+  const sw=document.getElementById('uswWrap');
+  if(sw&&!sw.contains(e.target)) document.getElementById('uDrop').style.display='none';
+});
+
+window.uPickFood = function(idx) {
+  const f=ALL[idx]; if(!f) return;
+  const addBtn=document.getElementById('uAddBtn');
+  addBtn.dataset.fidx=String(idx);
+  addBtn.dataset.fmeal=_calcMeal;
+  addBtn.disabled=false;
+
+  document.getElementById('uSI').value=f.nombre;
+  document.getElementById('uDrop').style.display='none';
+  document.getElementById('uSelName').textContent=f.nombre;
+  const pg=f.porcion_g||f.peso_neto_g||100;
+  document.getElementById('uSelInfo').textContent=
+    `${f.grupo} · ${pg}g por porción · 🔥${f.kcal} kcal · 💪${f.proteina_g}g prot · 🌾${f.carbohidratos_g}g carb · 🥑${f.lipidos_g}g gras${f.fuente?' · '+f.fuente:''}`;
+  document.getElementById('uSelCard').style.display='block';
+
+  document.getElementById('uqMult').value='1';
+  document.getElementById('uqAmt').value='1';
+  document.getElementById('uqUnit').value='porcion';
+  uCalcMacros();
+};
+
+window.uClearSel = function() {
+  const ab=document.getElementById('uAddBtn');
+  ab.dataset.fidx='-1'; ab.disabled=true;
+  document.getElementById('uSI').value='';
+  document.getElementById('uSelCard').style.display='none';
+  document.getElementById('uqPrev').style.display='none';
+  document.getElementById('uSI').focus();
+};
+
+window.uCalcMacros = function() {
+  const fidx=parseInt(document.getElementById('uAddBtn').dataset.fidx||'-1');
+  if(fidx<0){ document.getElementById('uqPrev').style.display='none'; return; }
+  const f=ALL[fidx]; if(!f) return;
+
+  const mult=parseFloat(document.getElementById('uqMult').value)||1;
+  const amt =parseFloat(document.getElementById('uqAmt').value)||0;
+  const unit=document.getElementById('uqUnit').value;
+  if(!amt){ document.getElementById('uqPrev').style.display='none'; return; }
+
+  const pg=f.porcion_g||f.peso_neto_g||100;
+  let grams,k,p,c,l;
+  if(unit==='porcion'||unit==='pieza'){
+    grams=pg*amt*mult; k=f.kcal*amt*mult;
+    p=f.proteina_g*amt*mult; c=f.carbohidratos_g*amt*mult; l=f.lipidos_g*amt*mult;
+  } else {
+    let g1=amt;
+    if(unit==='taza')g1=amt*240; else if(unit==='cdita')g1=amt*5; else if(unit==='cda')g1=amt*15;
+    grams=g1*mult;
+    const k100=f.kcal_100g||(f.kcal/pg*100);
+    const p100=f.prot_100g||(f.proteina_g/pg*100);
+    const c100=f.carb_100g||(f.carbohidratos_g/pg*100);
+    const l100=f.lip_100g||(f.lipidos_g/pg*100);
+    const fac=grams/100;
+    k=k100*fac; p=p100*fac; c=c100*fac; l=l100*fac;
+  }
+  // Store in dataset (mobile-safe)
+  const ab=document.getElementById('uAddBtn');
+  ab.dataset.rk=Math.round(k*10)/10;
+  ab.dataset.rp=Math.round(p*10)/10;
+  ab.dataset.rc=Math.round(c*10)/10;
+  ab.dataset.rl=Math.round(l*10)/10;
+  ab.dataset.rg=Math.round(grams);
+
+  const prev=document.getElementById('uqPrev');
+  const ms=mult>1?`${mult}× `:'';
+  prev.textContent=`${ms}${Math.round(grams)}g → 🔥${Math.round(k)} kcal · 💪${p.toFixed(1)}g · 🌾${c.toFixed(1)}g · 🥑${l.toFixed(1)}g`;
+  prev.style.display='block';
+};
+
+window.uAddFood = async function() {
+  const ab=document.getElementById('uAddBtn');
+  const fidx=parseInt(ab.dataset.fidx||'-1');
+  if(fidx<0||!day) return;
+  const f=ALL[fidx]; if(!f) return;
+
+  const k=parseFloat(ab.dataset.rk||'0');
+  const p=parseFloat(ab.dataset.rp||'0');
+  const c=parseFloat(ab.dataset.rc||'0');
+  const l=parseFloat(ab.dataset.rl||'0');
+  const g=parseFloat(ab.dataset.rg||'0');
+  if(!k&&!p&&!c){ uCalcMacros(); return; }
+
+  ab.disabled=true;
+  const mult=parseFloat(document.getElementById('uqMult').value)||1;
+  const amt =document.getElementById('uqAmt').value;
+  const unitEl=document.getElementById('uqUnit');
+  const unitTxt=unitEl.options[unitEl.selectedIndex].text;
+  const qd=(mult>1?mult+'× ':'')+amt+' '+unitTxt;
+  const mealToSave=ab.dataset.fmeal||_calcMeal;
+
+  const entry={id:Date.now(),meal:mealToSave,nombre:f.nombre,grupo:f.grupo,g,k,p,c,l,qd};
+  const key=`day${day}`;
+  if(!logs[key]) logs[key]=[];
+  logs[key].push(entry);
+  try{ await setDoc(doc(db,'calcLogs',pid),logs,{merge:true}); }catch(e){}
+
+  // Reset
+  ab.dataset.fidx='-1';
+  ab.dataset.rk=ab.dataset.rp=ab.dataset.rc=ab.dataset.rl=ab.dataset.rg='0';
+  document.getElementById('uSI').value='';
+  document.getElementById('uqMult').value='1';
+  document.getElementById('uqAmt').value='1';
+  document.getElementById('uSelCard').style.display='none';
+  document.getElementById('uqPrev').style.display='none';
+  ab.disabled=true;
+  rLog(); rProg(); uO(); rCal();
+};
+
+// Enter key on search
+document.getElementById('uSI').addEventListener('keydown', e=>{
+  if(e.key==='Enter'){ e.preventDefault(); document.getElementById('uDrop').style.display='none'; }
+});
+
+// ── AI MODE ─────────────────────────────────────────────────────
+window.calcExAI = function(el){
+  document.getElementById('chInput').value=el.textContent.trim(); calcAI();
+};
+
+window.calcAI = async function(){
+  const q=document.getElementById('chInput').value.trim(); if(!q) return;
+  const btn=document.getElementById('chBtn');
+  const think=document.getElementById('chThink');
+  const chips=document.getElementById('chChips');
+  btn.disabled=true; think.classList.add('on'); chips.classList.remove('on'); chips.innerHTML='';
+
+  const sample=MEGA.slice(0,80).map(f=>f.nombre).join(', ');
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',max_tokens:800,
+        system:`Eres un asistente nutricional mexicano. Analiza lo que el usuario comió.
+Platillos disponibles (muestra): ${sample}
+Responde SOLO con JSON válido sin texto extra:
+{"items":[{"texto":"como lo escribió","buscar":"término exacto para buscar","cantidad":1,"unidad":"porcion"}]}
+unidad puede ser: porcion, g, taza, pieza`,
+        messages:[{role:'user',content:q}]
+      })
+    });
+    const data=await res.json();
+    const txt=data.content?.[0]?.text||'{}';
+    let parsed;
+    try{ parsed=JSON.parse(txt.replace(/```json|```/g,'').trim()); }
+    catch(e){ throw new Error('parse'); }
+
+    const items=parsed.items||[];
+    const matched=items.map(item=>{
+      const nq=_unorm(item.buscar||item.texto||'');
+      const sc=f=>{
+        const fn=_unorm(f.nombre); const als=(f.alias||[]).map(_unorm);
+        if(fn===nq) return 100; if(fn.includes(nq)) return 62;
+        if(als.some(a=>a.includes(nq))) return 52;
+        const ws=nq.split(/\s+/).filter(w=>w.length>2);
+        const h=ws.filter(w=>fn.includes(w)||als.some(a=>a.includes(w)));
+        return h.length>0?Math.round(h.length/Math.max(ws.length,1)*42):0;
+      };
+      const best=ALL.map(f=>({f,s:sc(f)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s)[0]?.f;
+      if(!best) return null;
+      const qty=item.cantidad||1;
+      const pg=best.porcion_g||best.peso_neto_g||100;
+      const k=best.kcal*qty, pp=best.proteina_g*qty;
+      const cc=best.carbohidratos_g*qty, ll=best.lipidos_g*qty;
+      return{food:best,idx:ALL.indexOf(best),qty,
+        k:Math.round(k*10)/10,p:Math.round(pp*10)/10,
+        c:Math.round(cc*10)/10,l:Math.round(ll*10)/10,
+        g:Math.round(pg*qty)};
+    }).filter(Boolean);
+
+    window._calcAIItems=matched;
+    chips.innerHTML=matched.length
+      ? matched.map((m,i)=>`
+          <div class="cchip" id="cchip_${i}" onclick="calcAIAdd(${i})">
+            <div class="cchip-name">✅ ${m.qty>1?m.qty+'× ':''}${m.food.nombre}</div>
+            <div class="cchip-mac">🔥${m.k} kcal · 💪${m.p}g · 🌾${m.c}g · 🥑${m.l}g</div>
+          </div>`).join('')
+      : '<div style="color:rgba(255,255,255,.4);font-size:.8rem">Sin coincidencias. Cambia a Buscar alimento.</div>';
+    chips.classList.add('on');
+  }catch(err){
+    const words=_unorm(q).split(/\s+/).filter(w=>w.length>3);
+    const fb=ALL.filter(f=>words.some(w=>_unorm(f.nombre).includes(w)||(f.alias||[]).some(a=>_unorm(a).includes(w)))).slice(0,5);
+    window._calcAIItems=fb.map(f=>({food:f,idx:ALL.indexOf(f),qty:1,
+      k:f.kcal,p:f.proteina_g,c:f.carbohidratos_g,l:f.lipidos_g,
+      g:f.porcion_g||f.peso_neto_g||100}));
+    chips.innerHTML=fb.length
+      ? fb.map((f2,i)=>`<div class="cchip" id="cchip_${i}" onclick="calcAIAdd(${i})">
+            <div class="cchip-name">✅ ${f2.food.nombre}</div>
+            <div class="cchip-mac">🔥${f2.food.kcal} kcal · 💪${f2.food.proteina_g}g · 🌾${f2.food.carbohidratos_g}g · 🥑${f2.food.lipidos_g}g</div>
+          </div>`).join('')
+      : '<div style="color:rgba(255,255,255,.4);font-size:.8rem">Sin resultados. Usa Buscar alimento.</div>';
+    chips.classList.add('on');
+  }finally{
+    btn.disabled=false; think.classList.remove('on');
+  }
+};
+
+window.calcAIAdd = async function(i){
+  const m=(window._calcAIItems||[])[i]; if(!m||!day) return;
+  const chip=document.getElementById('cchip_'+i);
+  if(chip){chip.classList.add('cchip-added');
+    chip.innerHTML+='<div style="font-size:.61rem;color:rgba(255,255,255,.4);margin-top:2px">✓ Agregado</div>';}
+  const entry={id:Date.now(),meal:_calcMeal,nombre:m.food.nombre,grupo:m.food.grupo,
+    g:m.g,k:m.k,p:m.p,c:m.c,l:m.l,qd:m.qty>1?m.qty+' porciones':'1 porción'};
+  const key=`day${day}`;
+  if(!logs[key]) logs[key]=[];
+  logs[key].push(entry);
+  try{await setDoc(doc(db,'calcLogs',pid),logs,{merge:true});}catch(e){}
+  rLog(); rProg(); uO(); rCal();
+};
+
+document.getElementById('chInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter'){e.preventDefault();calcAI();}
 });
 
 </script>

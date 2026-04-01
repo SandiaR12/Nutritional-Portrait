@@ -11,22 +11,52 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 :root{
-  --bg:#eef2ff;--bg2:#e0e7ff;
-  --surf:#ffffff;--surf2:rgba(255,255,255,0.75);
-  --bdr:rgba(99,102,241,0.12);--bdr2:rgba(99,102,241,0.22);--bdr3:rgba(99,102,241,0.4);
-  --blue:#4f46e5;--blue2:#6366f1;--blue3:#3730a3;--blueL:#818cf8;--blueXL:#c7d2fe;
-  --navy:#1e1b4b;--navyM:#312e81;--navyL:#4338ca;
-  --txt:#1e1b4b;--txt2:#3730a3;--txt3:#6b7280;--txt4:#9ca3af;
-  --mk:#f97316;--mp:#6366f1;--mc:#a855f7;--ml:#10b981;
+  /* ── Dark glass palette ─────────────────────── */
+  --bg:#080c14;
+  --bg2:#0d1220;
+  --surf:rgba(255,255,255,.04);
+  --surf2:rgba(255,255,255,.07);
+  --surf3:rgba(255,255,255,.11);
+  --bdr:rgba(255,255,255,.08);
+  --bdr2:rgba(255,255,255,.14);
+  --bdr3:rgba(255,255,255,.22);
+  /* Accent blues */
+  --blue:#3b82f6;
+  --blue2:#2563eb;
+  --blue3:#1d4ed8;
+  --blueL:#60a5fa;
+  --blueXL:#93c5fd;
+  --cyan:#06b6d4;
+  --cyanL:#22d3ee;
+  /* Text */
+  --navy:#f8fafc;
+  --navyM:#e2e8f0;
+  --navyL:#cbd5e1;
+  --txt:#f8fafc;
+  --txt2:#e2e8f0;
+  --txt3:#94a3b8;
+  --txt4:#64748b;
+  /* Macro vivid */
+  --mk:#f97316;
+  --mp:#3b82f6;
+  --mc:#a855f7;
+  --ml:#10b981;
+  /* Status */
   --ok:#10b981;--warn:#f59e0b;--err:#ef4444;
-  --sh1:0 1px 3px rgba(30,27,75,.06),0 4px 16px rgba(30,27,75,.08);
-  --sh2:0 4px 12px rgba(30,27,75,.08),0 12px 40px rgba(30,27,75,.12);
-  --sh3:0 8px 24px rgba(30,27,75,.1),0 24px 64px rgba(30,27,75,.14);
-  --shB:0 4px 20px rgba(99,102,241,.25),0 0 0 1px rgba(99,102,241,.12);
+  /* Shadows — deep */
+  --sh1:0 1px 3px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.4);
+  --sh2:0 4px 12px rgba(0,0,0,.4),0 12px 40px rgba(0,0,0,.5);
+  --sh3:0 8px 24px rgba(0,0,0,.5),0 24px 64px rgba(0,0,0,.6);
+  --shB:0 4px 20px rgba(59,130,246,.25),0 0 0 1px rgba(59,130,246,.18);
+  --shM:0 0 0 1px rgba(255,255,255,.08),0 4px 24px rgba(0,0,0,.5);
+  /* Radii */
   --r:14px;--rL:20px;--rXL:28px;--r3xl:36px;
+  /* Easing */
   --ease-spring:cubic-bezier(.34,1.56,.64,1);
   --ease-smooth:cubic-bezier(.4,0,.2,1);
+  --ease-out:cubic-bezier(0,0,.2,1);
 }
+
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;-webkit-font-smoothing:antialiased;
@@ -901,6 +931,362 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .dp{overflow:visible!important}
 .tb.on{overflow:visible!important}
 .rcsw{overflow:visible}
+
+/* ══ DARK GLASS OVERRIDES ══════════════════════════════════════════ */
+body{
+  background:var(--bg)!important;
+  color:var(--txt)!important;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%,rgba(59,130,246,.1),transparent),
+    radial-gradient(ellipse 50% 40% at 90% 110%,rgba(6,182,212,.06),transparent)!important;
+}
+
+/* Glass card */
+.card{
+  background:var(--surf)!important;
+  border:1px solid var(--bdr)!important;
+  box-shadow:var(--shM)!important;
+}
+.card::before{
+  background:linear-gradient(145deg,rgba(255,255,255,.07) 0%,transparent 60%)!important;
+}
+
+/* Hero — keep dark */
+.hero{
+  background:linear-gradient(150deg,#030712,#0f172a 60%,#0c1525)!important;
+  border:1px solid rgba(255,255,255,.07)!important;
+  box-shadow:var(--sh3),0 0 60px rgba(59,130,246,.08)!important;
+}
+
+/* Header */
+.hdr{
+  background:rgba(8,12,20,.88)!important;
+  border-bottom:1px solid var(--bdr)!important;
+  backdrop-filter:blur(28px) saturate(1.6)!important;
+  -webkit-backdrop-filter:blur(28px) saturate(1.6)!important;
+}
+.brand-name{color:#f8fafc!important}
+.brand-by,.hlabel{color:var(--txt4)!important}
+.hchip{
+  background:rgba(59,130,246,.12)!important;
+  border-color:rgba(59,130,246,.25)!important;
+  color:var(--blueL)!important;
+}
+
+/* Calendar cells — dark glass with mirror animations */
+.dc{
+  background:var(--surf)!important;
+  border:1px solid var(--bdr)!important;
+  box-shadow:var(--shM)!important;
+  position:relative;overflow:hidden;
+}
+.dc::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(135deg,rgba(255,255,255,.06) 0%,transparent 55%);
+  pointer-events:none;transition:opacity .25s;
+}
+.dc:hover{
+  border-color:rgba(59,130,246,.4)!important;
+  background:rgba(59,130,246,.08)!important;
+  transform:translateY(-4px) scale(1.04)!important;
+  box-shadow:0 16px 40px rgba(0,0,0,.5),0 0 0 1px rgba(59,130,246,.25)!important;
+}
+.dc:hover::before{opacity:1.5}
+.dc.sel{
+  border-color:var(--blue)!important;
+  background:rgba(37,99,235,.12)!important;
+  box-shadow:var(--shB)!important;
+}
+.dc.done{
+  border-color:rgba(16,185,129,.3)!important;
+  background:rgba(16,185,129,.06)!important;
+}
+/* Stagger animation on calendar render */
+.dc{animation:dcIn .35s var(--ease-spring) both}
+@keyframes dcIn{from{opacity:0;transform:scale(.84) translateY(8px)}to{opacity:1;transform:none}}
+.dn{color:var(--txt)!important}
+.dl{color:var(--txt4)!important}
+.dsub{color:var(--txt3)!important}
+.ddot{background:rgba(255,255,255,.1)!important}
+.ddot.on{background:var(--ok)!important;box-shadow:0 0 7px var(--ok)!important}
+
+/* Macro pills */
+.mp{overflow:hidden}
+/* Calories — orange (unchanged, vivid against dark) */
+.mp-k{background:linear-gradient(145deg,rgba(249,115,22,.25),rgba(234,88,12,.15))!important;border-color:rgba(249,115,22,.35)!important;box-shadow:0 0 28px rgba(249,115,22,.15) inset,0 6px 24px rgba(249,115,22,.2)!important}
+/* Protein — pure blue (not indigo/purple) */
+.mp-p{background:linear-gradient(145deg,rgba(59,130,246,.25),rgba(37,99,235,.15))!important;border-color:rgba(59,130,246,.35)!important;box-shadow:0 0 28px rgba(59,130,246,.15) inset,0 6px 24px rgba(59,130,246,.2)!important}
+.mp-p .mp-val{color:#93c5fd!important}
+/* Carbs — purple */
+.mp-c{background:linear-gradient(145deg,rgba(168,85,247,.25),rgba(147,51,234,.15))!important;border-color:rgba(168,85,247,.35)!important;box-shadow:0 0 28px rgba(168,85,247,.15) inset,0 6px 24px rgba(168,85,247,.2)!important}
+/* Fats — emerald */
+.mp-l{background:linear-gradient(145deg,rgba(16,185,129,.25),rgba(5,150,105,.15))!important;border-color:rgba(16,185,129,.35)!important;box-shadow:0 0 28px rgba(16,185,129,.15) inset,0 6px 24px rgba(16,185,129,.2)!important}
+
+/* Macro totals in analysis */
+.tc-k{background:linear-gradient(145deg,rgba(249,115,22,.18),rgba(249,115,22,.08))!important;border-color:rgba(249,115,22,.22)!important}
+.tc-p{background:linear-gradient(145deg,rgba(59,130,246,.18),rgba(59,130,246,.08))!important;border-color:rgba(59,130,246,.22)!important}
+.tc-p .tv{color:#93c5fd!important}
+.tc-c{background:linear-gradient(145deg,rgba(168,85,247,.18),rgba(168,85,247,.08))!important;border-color:rgba(168,85,247,.22)!important}
+.tc-l{background:linear-gradient(145deg,rgba(16,185,129,.18),rgba(16,185,129,.08))!important;border-color:rgba(16,185,129,.22)!important}
+
+/* Day panel */
+.dp{background:rgba(8,12,20,.98)!important;border-color:rgba(255,255,255,.1)!important}
+.dph{background:linear-gradient(145deg,rgba(15,20,35,.98),rgba(20,30,50,.96))!important;border-bottom:1px solid rgba(255,255,255,.08)!important}
+.tabs{background:rgba(0,0,0,.3)!important;border-bottom:1px solid var(--bdr)!important}
+.tab{color:var(--txt3)!important}
+.tab.on{color:var(--blueL)!important;border-bottom-color:var(--blue)!important}
+
+/* Meals in diet tab */
+.meal{
+  background:var(--surf)!important;
+  border-color:var(--bdr)!important;
+}
+.meal::before{background:var(--bdr2)!important}
+.meal:hover{border-color:var(--bdr3)!important;background:var(--surf2)!important}
+.meal.done{border-color:rgba(16,185,129,.25)!important;background:rgba(16,185,129,.05)!important}
+.meal.done::before{background:var(--ok)!important}
+.mname{color:var(--txt)!important}
+.mdesc{color:var(--txt3)!important}
+
+/* Search dropdowns */
+.rd,.rcdrop,.calc-drop,.udrop{
+  background:#0d1524!important;
+  border-color:rgba(59,130,246,.22)!important;
+  box-shadow:0 8px 32px rgba(0,0,0,.7),0 32px 80px rgba(0,0,0,.6)!important;
+}
+.ri,.rcdi,.udi{border-bottom-color:rgba(255,255,255,.06)!important}
+.ri:hover,.rcdi:hover,.udi:hover{background:rgba(59,130,246,.08)!important}
+.ri-n .ri-tag,.rcdi-grp,.udi-grp{background:rgba(59,130,246,.15)!important;color:var(--blueL)!important}
+
+/* Inputs */
+.rcsw-input,.sw input,.calc-sw input,.usw-wrap input{
+  background:rgba(255,255,255,.05)!important;
+  border-color:var(--bdr)!important;
+  color:var(--txt)!important;
+}
+.rcsw-input:focus,.sw input:focus,.calc-sw input:focus,.usw-wrap input:focus{
+  border-color:rgba(59,130,246,.5)!important;
+  box-shadow:0 0 0 4px rgba(59,130,246,.1)!important;
+  background:rgba(255,255,255,.07)!important;
+}
+.rcsw-input::placeholder,.sw input::placeholder{color:var(--txt4)!important}
+
+/* Calc sections */
+.calc-srch,.rc-section .rctab,.rcsel{
+  background:var(--surf)!important;
+  border-color:var(--bdr)!important;
+}
+.rctab.active{
+  background:rgba(59,130,246,.14)!important;
+  border-color:rgba(59,130,246,.35)!important;
+  box-shadow:none!important;
+}
+.rctab-lbl{color:var(--txt)!important}
+.rctab.active .rctab-lbl{color:var(--blueL)!important}
+.rctab-hint{color:var(--txt4)!important}
+.rctab.active .rctab-hint{color:var(--txt3)!important}
+.rc-hint{background:rgba(59,130,246,.06)!important;border-color:rgba(59,130,246,.15)!important;color:var(--txt3)!important}
+.rcsel{background:rgba(59,130,246,.06)!important;border-color:rgba(59,130,246,.2)!important}
+.rcsel-name{color:var(--blueL)!important}
+.rcsel-macros{color:var(--txt3)!important}
+.smae-ref{background:rgba(249,115,22,.06)!important;border-color:rgba(249,115,22,.2)!important;color:var(--txt3)!important}
+.rc-title{color:var(--txt)!important}
+.rc-clear{color:var(--txt3)!important}
+.rc-clear:hover{color:var(--err)!important;background:rgba(239,68,68,.08)!important}
+
+/* Qty inputs */
+.rcqty-num,.rcqty-sel,.cqsel,.qty,.cqmult,.cqamt{
+  background:rgba(255,255,255,.06)!important;
+  border-color:var(--bdr)!important;
+  color:var(--txt)!important;
+}
+.rcqty-minus,.rcqty-plus{background:rgba(255,255,255,.06)!important;border-color:var(--bdr)!important;color:var(--blueL)!important}
+.rcqty-minus:hover,.rcqty-plus:hover{background:var(--blue2)!important;color:#fff!important;border-color:var(--blue2)!important}
+.rcqty-label,.rcqty-unit,.uql{color:var(--txt3)!important}
+
+/* Log entries */
+.lf,.log-food{color:var(--txt)!important}
+.ls,.log-sub{color:var(--txt3)!important}
+.lg,.log-group{animation:lgIn .25s var(--ease-spring)}
+.lgh,.log-gh{color:var(--txt3)!important;border-bottom-color:var(--bdr)!important}
+.lr,.log-row{border-bottom-color:rgba(255,255,255,.05)!important}
+.lr:hover,.log-row:hover{background:rgba(255,255,255,.03)!important}
+
+/* SMAE badge */
+.smae-badge{background:rgba(249,115,22,.15)!important;color:#fb923c!important}
+.rcdi-smae{background:rgba(249,115,22,.15)!important;color:#fb923c!important}
+
+/* Progress bars */
+.btrack,.bar-track{background:rgba(255,255,255,.07)!important}
+.bf-ok,.bar-f.bf-ok{background:linear-gradient(90deg,var(--blue3),var(--blue),var(--blueL))!important}
+
+/* Status banners */
+.cst.cs-i{background:rgba(255,255,255,.04)!important;border-color:rgba(255,255,255,.1)!important;color:var(--txt3)!important}
+.cst.cs-ok{background:rgba(16,185,129,.07)!important;border-color:rgba(16,185,129,.22)!important;color:var(--ok)!important}
+.cst.cs-w{background:rgba(245,158,11,.07)!important;border-color:rgba(245,158,11,.22)!important;color:var(--warn)!important}
+.cst.cs-e{background:rgba(239,68,68,.07)!important;border-color:rgba(239,68,68,.22)!important;color:var(--err)!important}
+
+/* Req pills */
+.req-p,.req-in.req-p{background:rgba(59,130,246,.12)!important;border-color:rgba(59,130,246,.22)!important}
+.req-in.req-p label{color:#93c5fd!important}
+.req-in{border:1.5px solid transparent}
+.req-in.req-k{background:rgba(249,115,22,.1)!important;border-color:rgba(249,115,22,.2)!important}
+.req-in.req-c{background:rgba(168,85,247,.1)!important;border-color:rgba(168,85,247,.2)!important}
+.req-in.req-l{background:rgba(16,185,129,.1)!important;border-color:rgba(16,185,129,.2)!important}
+.req-in input{background:rgba(255,255,255,.08)!important;border-color:rgba(255,255,255,.12)!important;color:var(--txt)!important}
+
+/* Ring */
+.rbg{stroke:rgba(255,255,255,.08)!important}
+.rs span{color:rgba(255,255,255,.4)!important}
+.rs strong{color:rgba(255,255,255,.9)!important}
+.rpct{color:#fff!important}
+
+/* Charts */
+.ch canvas{filter:none}
+
+/* Footer */
+.footer{color:var(--txt4)!important}
+.footer strong{color:var(--txt3)!important}
+
+/* Scrollbar */
+*{scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.12) transparent}
+*::-webkit-scrollbar{width:4px;height:4px}
+*::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:2px}
+
+/* ══ POPOUT TUTORIAL PANELS ═══════════════════════════════════════ */
+.popout-overlay{
+  position:fixed;inset:0;z-index:8000;
+  background:rgba(0,0,0,.7);backdrop-filter:blur(12px);
+  display:flex;align-items:center;justify-content:center;padding:1.25rem;
+  animation:mf .25s var(--ease-smooth);
+}
+.popout-box{
+  background:linear-gradient(145deg,rgba(15,20,40,.98),rgba(8,12,24,.99));
+  border:1px solid rgba(255,255,255,.12);border-radius:var(--rXL);
+  padding:2rem 1.75rem 1.5rem;max-width:440px;width:100%;
+  box-shadow:0 32px 96px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.06);
+  animation:popIn .32s var(--ease-spring);position:relative;
+}
+@keyframes popIn{from{opacity:0;transform:scale(.88) translateY(20px)}to{opacity:1;transform:none}}
+.popout-icon{font-size:2.5rem;display:block;text-align:center;margin-bottom:.75rem;animation:icoIn .4s var(--ease-spring)}
+@keyframes icoIn{from{transform:scale(.4) rotate(-10deg)}to{transform:none}}
+.popout-title{font-size:1.15rem;font-weight:800;color:#fff;text-align:center;letter-spacing:-.4px;margin-bottom:.5rem}
+.popout-body{font-size:.82rem;color:rgba(255,255,255,.55);line-height:1.65;text-align:center;margin-bottom:1.25rem;font-weight:300}
+.popout-steps{display:flex;flex-direction:column;gap:.45rem;margin-bottom:1.35rem}
+.popout-step{display:flex;align-items:flex-start;gap:.6rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:.55rem .75rem}
+.pstep-num{width:22px;height:22px;border-radius:50%;background:var(--blue2);color:#fff;font-size:.68rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.pstep-txt{font-size:.78rem;color:rgba(255,255,255,.7);line-height:1.45;font-weight:400}
+.pstep-txt strong{color:#fff;font-weight:700}
+.popout-btns{display:flex;gap:.5rem;flex-direction:column}
+.popout-btn-main{
+  padding:.68rem 1.5rem;background:linear-gradient(135deg,var(--blue3),var(--blue));
+  color:#fff;border:none;border-radius:11px;font-size:.88rem;font-weight:700;
+  cursor:pointer;font-family:inherit;box-shadow:0 4px 16px rgba(59,130,246,.3);
+  transition:all .2s var(--ease-spring);
+}
+.popout-btn-main:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(59,130,246,.4)}
+.popout-btn-skip{
+  padding:.5rem;background:none;border:none;font-size:.75rem;
+  color:rgba(255,255,255,.3);cursor:pointer;font-family:inherit;transition:color .15s;
+}
+.popout-btn-skip:hover{color:rgba(255,255,255,.6)}
+/* Help button (floating) */
+.help-fab{
+  position:fixed;right:1rem;bottom:1.5rem;z-index:500;
+  width:42px;height:42px;border-radius:50%;
+  background:rgba(59,130,246,.15);border:1px solid rgba(59,130,246,.3);
+  color:var(--blueL);font-size:.95rem;font-weight:700;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 16px rgba(0,0,0,.4);transition:all .2s var(--ease-spring);
+  backdrop-filter:blur(8px);
+}
+.help-fab:hover{background:rgba(59,130,246,.28);transform:scale(1.12);box-shadow:var(--shB)}
+
+/* ══ IMPROVED COMPLETION MODAL ═══════════════════<!-- MODALS -->
+<div class="modal" id="cm">
+  <div class="mbox" style="text-align:center;padding:2.5rem 2rem">
+    <span class="mbox-ico">🎉</span>
+    <h2 style="font-size:1.35rem;font-weight:800;letter-spacing:-.5px;margin-bottom:.5rem">¡Día completado!</h2>
+    <p style="font-size:.86rem;line-height:1.6;margin-bottom:.5rem">Completaste las cinco comidas del día.</p>
+    <p style="font-size:.78rem;margin-bottom:1.5rem;color:rgba(255,255,255,.35)">Excelente disciplina nutricional 💪</p>
+    <div style="display:flex;gap:.75rem;flex-direction:column">
+      <button class="mbtn" onclick="document.getElementById('cm').classList.remove('open')" style="padding:.72rem 2rem;font-size:.92rem">
+        ¡Seguir así! →
+      </button>
+    </div>
+  </div>
+</div>
+<div class="modal" id="em">
+  <div class="mbox" style="text-align:center;padding:2rem">
+    <span class="mbox-ico">🎮</span>
+    <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:.5rem">Konami Code</h2>
+    <div class="etxt" id="etxt" style="color:rgba(255,255,255,.5);font-size:.85rem;line-height:1.6;margin-bottom:1.25rem"></div>
+    <button class="mbtn" onclick="document.getElementById('em').classList.remove('open')">Cerrar</button>
+  </div>
+</div>
+
+<!-- POPOUT TUTORIALS -->
+<div class="popout-overlay" id="popDiet" style="display:none">
+  <div class="popout-box">
+    <span class="popout-icon">🥗</span>
+    <div class="popout-title">Plan del día</div>
+    <div class="popout-body">Aquí puedes ver y marcar las comidas de tu plan nutricional personalizado.</div>
+    <div class="popout-steps">
+      <div class="popout-step"><div class="pstep-num">1</div><div class="pstep-txt">Ve cada comida del día — desayuno, colaciones, comida y cena.</div></div>
+      <div class="popout-step"><div class="pstep-num">2</div><div class="pstep-txt"><strong>Toca cualquier comida</strong> para marcarla como completada ✅</div></div>
+      <div class="popout-step"><div class="pstep-num">3</div><div class="pstep-txt">Al completar las 5 comidas recibirás una notificación especial 🎉</div></div>
+    </div>
+    <div class="popout-btns">
+      <button class="popout-btn-main" onclick="closePop('popDiet')">¡Entendido!</button>
+      <button class="popout-btn-skip" onclick="closePop('popDiet',true)">No volver a mostrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="popout-overlay" id="popCalc" style="display:none">
+  <div class="popout-box">
+    <span class="popout-icon">📋</span>
+    <div class="popout-title">Registro de alimentos</div>
+    <div class="popout-body">Registra todo lo que comiste durante el día para ver tu análisis nutricional.</div>
+    <div class="popout-steps">
+      <div class="popout-step"><div class="pstep-num">1</div><div class="pstep-txt">Selecciona <strong>¿Cuándo fue?</strong> — elige el tiempo de comida.</div></div>
+      <div class="popout-step"><div class="pstep-num">2</div><div class="pstep-txt">Elige <strong>Comida preparada</strong> (tacos, pozole, big mac…) o <strong>Alimento individual</strong> (pollo, arroz, fruta…)</div></div>
+      <div class="popout-step"><div class="pstep-num">3</div><div class="pstep-txt">Busca, ajusta la <strong>cantidad</strong> y toca <em>Agregar</em>. ¡Así de fácil!</div></div>
+    </div>
+    <div class="popout-btns">
+      <button class="popout-btn-main" onclick="closePop('popCalc')">¡Entendido!</button>
+      <button class="popout-btn-skip" onclick="closePop('popCalc',true)">No volver a mostrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="popout-overlay" id="popAnalysis" style="display:none">
+  <div class="popout-box">
+    <span class="popout-icon">📊</span>
+    <div class="popout-title">Análisis nutricional</div>
+    <div class="popout-body">Visualiza en tiempo real cómo va tu consumo del día versus tus metas.</div>
+    <div class="popout-steps">
+      <div class="popout-step"><div class="pstep-num">1</div><div class="pstep-txt">Las <strong>barras de progreso</strong> muestran qué % de tu meta llevas.</div></div>
+      <div class="popout-step"><div class="pstep-num">2</div><div class="pstep-txt">Verde ✅ = en rango · Amarillo ⚠️ = falta más · Rojo = excediste</div></div>
+      <div class="popout-step"><div class="pstep-num">3</div><div class="pstep-txt">Las gráficas muestran la distribución de <strong>macronutrimentos</strong> del día.</div></div>
+    </div>
+    <div class="popout-btns">
+      <button class="popout-btn-main" onclick="closePop('popAnalysis')">¡Entendido!</button>
+      <button class="popout-btn-skip" onclick="closePop('popAnalysis',true)">No volver a mostrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Help FAB -->
+<button class="help-fab" id="helpFab" style="display:none" onclick="showHelp()">?</button>
+
+;
+}
+.mbtn:hover{transform:translateY(-2px)!important;box-shadow:0 8px 24px rgba(59,130,246,.4)!important}
+.mbox-ico{font-size:3.5rem!important;display:block!important;text-align:center!important;margin-bottom:.85rem!important;animation:icoIn .45s var(--ease-spring)!important}
+
+/* ══ CONFETTI PARTICLES ═════════════════════════════════════════ */
+.cp{border-radius:3px}
 </style>
 </head>
 <body>
@@ -1414,293 +1800,68 @@ function rProg(){
 function snow(n){const r=$('cpr');const C=['#f97316','#6366f1','#a855f7','#10b981','#f59e0b','#4f46e5'];for(let i=0;i<n;i++)setTimeout(()=>{const e=document.createElement('div');e.className='cp';e.style.left=Math.random()*100+'%';e.style.background=C[Math.floor(Math.random()*C.length)];e.style.animationDuration=(Math.random()*2+1.5)+'s';r.appendChild(e);setTimeout(()=>e.remove(),5000);},i*16);}
 init();
 
-// ══════════════════════════════════════════════════════════════════
-// PESTAÑA REGISTRO — Two separate databases, two panels
-// MEGA = comidas preparadas | SMAE = alimentos individuales
-// ══════════════════════════════════════════════════════════════════
+// ══ POPOUT TUTORIALS ════════════════════════════════════════════════
+const _popKeys = {popDiet:'np_diet',popCalc:'np_calc',popAnalysis:'np_analysis'};
 
-let _rcMeal = cmeal || 'Desayuno';
-let _rcTab  = 'meal';   // 'meal' | 'ingr'
-const _rcn  = s => (s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
-
-// ── Meal time ────────────────────────────────────────────────────
-window.calcSetMeal = function(m, el) {
-  _rcMeal = m; cmeal = m;
-  document.querySelectorAll('.cms').forEach(x=>x.classList.remove('on'));
-  el.classList.add('on');
-};
-
-// ── Tab toggle ───────────────────────────────────────────────────
-window.rcSetTab = function(tab, btn) {
-  _rcTab = tab;
-  document.querySelectorAll('.rctab').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('panelMeal').style.display = tab==='meal' ? 'block':'none';
-  document.getElementById('panelIngr').style.display = tab==='ingr' ? 'block':'none';
-  if(tab==='meal') document.getElementById('mealSI').focus();
-  else             document.getElementById('ingrSI').focus();
-};
-
-// ── SEARCH HELPERS ───────────────────────────────────────────────
-function _rcScore(f, nq) {
-  const fn  = _rcn(f.nombre||'');
-  const als = (f.alias||[]).map(_rcn);
-  const stem = nq.endsWith('s')&&nq.length>4 ? nq.slice(0,-1) : nq;
-  if(fn===nq||fn===stem)                              return 100;
-  if(fn.startsWith(nq))                               return 90;
-  if(als.some(a=>a===nq||a===stem))                   return 88;
-  if(als.some(a=>a.startsWith(nq)))                   return 78;
-  if(fn.includes(nq)||fn.includes(stem))              return 65;
-  if(als.some(a=>a.includes(nq)||a.includes(stem)))   return 55;
-  const ws=[...new Set([...nq.split(/\s+/), ...stem.split(/\s+/)].filter(w=>w.length>2))];
-  const h=ws.filter(w=>fn.includes(w)||als.some(a=>a.includes(w)));
-  return h.length ? Math.round(h.length/Math.max(nq.split(/\s+/).length,1)*40) : 0;
+function showPop(id){
+  const key = _popKeys[id];
+  if(key && localStorage.getItem(key)==='1') return; // dismissed forever
+  const el=document.getElementById(id);
+  if(el) el.style.display='flex';
+  // Show help FAB
+  const fab=document.getElementById('helpFab');
+  if(fab) fab.style.display='flex';
 }
 
-function _rcRender(pool, inputId, dropId, pickFn, badgeType) {
-  const q    = (document.getElementById(inputId)||{}).value||'';
-  const drop = document.getElementById(dropId);
-  if(!drop) return;
-  if(q.trim().length < 1){ drop.style.display='none'; return; }
-  const nq = _rcn(q.trim());
-  const results = pool.map(f=>({f,s:_rcScore(f,nq)})).filter(x=>x.s>0)
-    .sort((a,b)=>b.s-a.s).slice(0,40).map(x=>x.f);
-  if(!results.length){ drop.style.display='none'; return; }
+window.closePop = function(id, forever){
+  const el=document.getElementById(id);
+  if(el){el.style.opacity='0';el.style.transform='scale(.94)';el.style.transition='opacity .2s,transform .2s';setTimeout(()=>el.style.display='none',200);}
+  if(forever){const key=_popKeys[id];if(key)localStorage.setItem(key,'1');}
+};
 
-  const badge = badgeType==='smae'
-    ? '<span class="rcdi-smae">SMAE</span>'
-    : '<span class="rcdi-grp">Receta</span>';
+// Show popout when tab is opened (debounced)
+const _origST = window.st;
+window.st = function(t, btn){
+  if(_origST) _origST(t, btn);
+  const map={Diet:'popDiet',Calc:'popCalc',Progress:'popAnalysis'};
+  const popId=map[t];
+  if(popId) setTimeout(()=>showPop(popId), 300);
+};
 
-  drop.innerHTML = results.map(f=>{
-    const idx = pool.indexOf(f);
-    const pg  = f.porcion_g||f.peso_neto_g||100;
-    return `<div class="rcdi" ontouchstart="" onclick="${pickFn}(${idx})">
-      <div class="rcdi-top">
-        ${badge}
-        <span class="rcdi-name">${f.nombre}</span>
-      </div>
-      <div class="rcdi-mac">🔥${f.kcal} kcal · 💪${f.proteina_g}g · 🌾${f.carbohidratos_g}g · 🥑${f.lipidos_g}g · ${pg}g/porción</div>
-    </div>`;
-  }).join('');
-  drop.style.display='block';
-}
-
-// Close dropdowns on outside click
-document.addEventListener('click', e=>{
-  ['rcswMeal','rcswIngr'].forEach(id=>{
-    const sw=document.getElementById(id);
-    if(sw&&!sw.contains(e.target)){
-      const dropId = id==='rcswMeal' ? 'mealDrop' : 'ingrDrop';
-      const d=document.getElementById(dropId);
-      if(d) d.style.display='none';
-    }
+// Close popouts on overlay click
+document.querySelectorAll('.popout-overlay').forEach(overlay=>{
+  overlay.addEventListener('click', e=>{
+    if(e.target===overlay) window.closePop(overlay.id);
   });
 });
 
-// ── PANEL MEAL (MEGA) ────────────────────────────────────────────
-window.rcSearchMeal = function() {
-  _rcRender(MEGA, 'mealSI', 'mealDrop', 'rcPickMeal', 'mega');
+window.showHelp = function(){
+  // Show the popout for current active tab
+  const activeTab = document.querySelector('.tab.on');
+  if(!activeTab) return;
+  const txt=activeTab.textContent.trim();
+  if(txt.includes('Plan')) showForce('popDiet');
+  else if(txt.includes('Registro')) showForce('popCalc');
+  else showForce('popAnalysis');
 };
 
-window.rcPickMeal = function(idx) {
-  const f = MEGA[idx]; if(!f) return;
-  const btn = document.getElementById('mealAddBtn');
-  btn.dataset.fidx = String(idx);
-  btn.dataset.pool = 'mega';
-  btn.disabled = false;
+function showForce(id){
+  const el=document.getElementById(id);
+  if(el){el.style.opacity='1';el.style.transform='none';el.style.display='flex';}
+}
 
-  document.getElementById('mealSI').value = f.nombre;
-  document.getElementById('mealDrop').style.display='none';
-  document.getElementById('mealSelName').textContent = f.nombre;
-  document.getElementById('mealSelMacros').textContent =
-    `Por porción: 🔥${f.kcal} kcal · 💪${f.proteina_g}g · 🌾${f.carbohidratos_g}g · 🥑${f.lipidos_g}g`;
-
-  // Unit hint
-  const pg = f.porcion_g||f.peso_neto_g||100;
-  document.getElementById('mealQtyUnit').textContent = `porción (${pg}g c/u)`;
-  document.getElementById('mealQty').value = '1';
-  document.getElementById('mealSel').style.display='block';
-  rcMealPreview();
+// Show first popout when panel opens
+const _origOD = window.od || function(){};
+// Override od to show diet popout on first day open
+const __od = window.od;
+window.od = function(d){
+  if(__od) __od(d);
+  setTimeout(()=>{
+    const fab=document.getElementById('helpFab');
+    if(fab) fab.style.display='flex';
+    showPop('popDiet');
+  },400);
 };
-
-window.rcClearMeal = function() {
-  const btn=document.getElementById('mealAddBtn');
-  btn.dataset.fidx='-1'; btn.disabled=true;
-  document.getElementById('mealSI').value='';
-  document.getElementById('mealSel').style.display='none';
-  document.getElementById('mealPreview').style.display='none';
-  document.getElementById('mealSI').focus();
-};
-
-window.rcMealQty = function(delta) {
-  const el=document.getElementById('mealQty');
-  let v=parseFloat(el.value)||1;
-  v=Math.max(0.5, Math.round((v+delta)*2)/2);
-  el.value=v; rcMealPreview();
-};
-
-window.rcMealPreview = function() {
-  const btn=document.getElementById('mealAddBtn');
-  const fidx=parseInt(btn.dataset.fidx||'-1');
-  const pv=document.getElementById('mealPreview');
-  const hint=document.getElementById('mealQtyHint');
-  if(fidx<0){if(pv)pv.style.display='none';return;}
-  const f=MEGA[fidx]; if(!f) return;
-  const qty=parseFloat(document.getElementById('mealQty').value)||1;
-  const k=Math.round(f.kcal*qty*10)/10;
-  const p=Math.round(f.proteina_g*qty*10)/10;
-  const c=Math.round(f.carbohidratos_g*qty*10)/10;
-  const l=Math.round(f.lipidos_g*qty*10)/10;
-  const g=Math.round((f.porcion_g||f.peso_neto_g||100)*qty);
-  // Store in dataset
-  btn.dataset.rk=k; btn.dataset.rp=p; btn.dataset.rc=c; btn.dataset.rl=l; btn.dataset.rg=g;
-  const qStr=qty===1?'1 porción':`${qty} porciones`;
-  if(hint) hint.textContent=`${qStr} = ${g}g en total`;
-  if(pv){
-    pv.textContent=`${qStr} → 🔥${k} kcal · 💪${p}g · 🌾${c}g · 🥑${l}g`;
-    pv.style.display='block';
-  }
-};
-
-window.rcAddMeal = async function() {
-  const btn=document.getElementById('mealAddBtn');
-  const fidx=parseInt(btn.dataset.fidx||'-1');
-  if(fidx<0||!day) return;
-  const f=MEGA[fidx]; if(!f) return;
-  const k=parseFloat(btn.dataset.rk||'0');
-  const p=parseFloat(btn.dataset.rp||'0');
-  const c=parseFloat(btn.dataset.rc||'0');
-  const l=parseFloat(btn.dataset.rl||'0');
-  const g=parseFloat(btn.dataset.rg||'0');
-  if(!k&&!p&&!c){rcMealPreview();return;}
-  btn.disabled=true;
-  const qty=parseFloat(document.getElementById('mealQty').value)||1;
-  const qd=qty===1?'1 porción':`${qty} porciones`;
-  const entry={id:Date.now(),meal:_rcMeal,nombre:f.nombre,grupo:f.grupo||'',g,k,p,c,l,qd};
-  const key=`day${day}`;if(!logs[key])logs[key]=[];logs[key].push(entry);
-  try{await setDoc(doc(db,'calcLogs',pid),logs,{merge:true});}catch(e){}
-  btn.dataset.fidx='-1';
-  document.getElementById('mealSI').value='';
-  document.getElementById('mealSel').style.display='none';
-  document.getElementById('mealPreview').style.display='none';
-  btn.disabled=true;
-  rLog();rProg();uO();rCal();
-};
-
-// ── PANEL INGR (SMAE) ────────────────────────────────────────────
-window.rcSearchIngr = function() {
-  _rcRender(SMAE, 'ingrSI', 'ingrDrop', 'rcPickIngr', 'smae');
-};
-
-window.rcPickIngr = function(idx) {
-  const f=SMAE[idx]; if(!f) return;
-  const btn=document.getElementById('ingrAddBtn');
-  btn.dataset.fidx=String(idx);
-  btn.disabled=false;
-
-  document.getElementById('ingrSI').value=f.nombre;
-  document.getElementById('ingrDrop').style.display='none';
-  document.getElementById('ingrSelName').textContent=f.nombre;
-  document.getElementById('ingrSelMacros').textContent=
-    `🔥${f.kcal} kcal · 💪${f.proteina_g}g · 🌾${f.carbohidratos_g}g · 🥑${f.lipidos_g}g por porción SMAE`;
-
-  // SMAE reference
-  const pg=f.peso_neto_g||100;
-  const cant=f.cantidad_porcion||1;
-  const unit=f.unidad||'porción';
-  const ref=document.getElementById('ingrRef');
-  if(ref) ref.innerHTML=`<strong>Referencia SMAE:</strong> ${cant} ${unit} = ${pg}g → ${f.kcal} kcal`;
-
-  // Reset qty
-  document.getElementById('ingrAmt').value='1';
-  document.getElementById('ingrUnit').value='porcion';
-  document.getElementById('ingrSel').style.display='block';
-  rcIngrPreview();
-};
-
-window.rcClearIngr = function() {
-  const btn=document.getElementById('ingrAddBtn');
-  btn.dataset.fidx='-1'; btn.disabled=true;
-  document.getElementById('ingrSI').value='';
-  document.getElementById('ingrSel').style.display='none';
-  document.getElementById('ingrPreview').style.display='none';
-  document.getElementById('ingrSI').focus();
-};
-
-window.rcIngrPreview = function() {
-  const btn=document.getElementById('ingrAddBtn');
-  const fidx=parseInt(btn.dataset.fidx||'-1');
-  const pv=document.getElementById('ingrPreview');
-  const hint=document.getElementById('ingrQtyHint');
-  if(fidx<0){if(pv)pv.style.display='none';return;}
-  const f=SMAE[fidx]; if(!f) return;
-  const amt=parseFloat(document.getElementById('ingrAmt').value)||0;
-  const unit=document.getElementById('ingrUnit').value;
-  if(!amt){if(pv)pv.style.display='none';return;}
-  const pg=f.peso_neto_g||100;
-  let grams,k,p,c,l;
-  if(unit==='porcion'){
-    grams=pg*amt; k=f.kcal*amt; p=f.proteina_g*amt;
-    c=f.carbohidratos_g*amt; l=f.lipidos_g*amt;
-  } else {
-    let g1=amt;
-    if(unit==='taza')  g1=amt*240;
-    else if(unit==='cdita') g1=amt*5;
-    else if(unit==='cda')   g1=amt*15;
-    else if(unit==='oz')    g1=amt*28.35;
-    grams=g1;
-    const fac=g1/100;
-    k=(f.kcal_100g||f.kcal/pg*100)*fac;
-    p=(f.prot_100g||f.proteina_g/pg*100)*fac;
-    c=(f.carb_100g||f.carbohidratos_g/pg*100)*fac;
-    l=(f.lip_100g||f.lipidos_g/pg*100)*fac;
-  }
-  k=Math.round(k*10)/10; p=Math.round(p*10)/10;
-  c=Math.round(c*10)/10; l=Math.round(l*10)/10; grams=Math.round(grams);
-  btn.dataset.rk=k; btn.dataset.rp=p; btn.dataset.rc=c; btn.dataset.rl=l; btn.dataset.rg=grams;
-  // Hint
-  const unitNames={porcion:'porción SMAE',g:'gramos',oz:'onzas',taza:'tazas',cdita:'cditas',cda:'cdas',pieza:'piezas'};
-  if(hint) hint.textContent=`${amt} ${unitNames[unit]||unit} = ${grams}g`;
-  if(pv){
-    pv.textContent=`${grams}g → 🔥${k} kcal · 💪${p}g · 🌾${c}g · 🥑${l}g`;
-    pv.style.display='block';
-  }
-};
-
-window.rcAddIngr = async function() {
-  const btn=document.getElementById('ingrAddBtn');
-  const fidx=parseInt(btn.dataset.fidx||'-1');
-  if(fidx<0||!day) return;
-  const f=SMAE[fidx]; if(!f) return;
-  const k=parseFloat(btn.dataset.rk||'0');
-  const p=parseFloat(btn.dataset.rp||'0');
-  const c=parseFloat(btn.dataset.rc||'0');
-  const l=parseFloat(btn.dataset.rl||'0');
-  const g=parseFloat(btn.dataset.rg||'0');
-  if(!k&&!p&&!c&&!g){rcIngrPreview();return;}
-  btn.disabled=true;
-  const amt=document.getElementById('ingrAmt').value;
-  const uEl=document.getElementById('ingrUnit');
-  const unitTxt=uEl.options[uEl.selectedIndex].text;
-  const qd=amt+' '+unitTxt;
-  const entry={id:Date.now(),meal:_rcMeal,nombre:f.nombre,grupo:f.grupo||'',g,k,p,c,l,qd};
-  const key=`day${day}`;if(!logs[key])logs[key]=[];logs[key].push(entry);
-  try{await setDoc(doc(db,'calcLogs',pid),logs,{merge:true});}catch(e){}
-  btn.dataset.fidx='-1';
-  document.getElementById('ingrSI').value='';
-  document.getElementById('ingrSel').style.display='none';
-  document.getElementById('ingrPreview').style.display='none';
-  btn.disabled=true;
-  rLog();rProg();uO();rCal();
-};
-
-// Enter keys
-;(function(){
-  const ms=document.getElementById('mealSI');
-  if(ms) ms.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();document.getElementById('mealDrop').style.display='none';}});
-  const is=document.getElementById('ingrSI');
-  if(is) is.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();document.getElementById('ingrDrop').style.display='none';}});
-})();
 
 </script>
 </body>

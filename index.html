@@ -11,51 +11,48 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 :root{
-  /* ── Dark glass palette ─────────────────────── */
-  --bg:#080c14;
-  --bg2:#0d1220;
-  --surf:rgba(255,255,255,.04);
-  --surf2:rgba(255,255,255,.07);
-  --surf3:rgba(255,255,255,.11);
-  --bdr:rgba(255,255,255,.08);
-  --bdr2:rgba(255,255,255,.14);
-  --bdr3:rgba(255,255,255,.22);
-  /* Accent blues */
-  --blue:#3b82f6;
-  --blue2:#2563eb;
+  /* ── Light theme — white background ──────────── */
+  --bg:#f0f4ff;
+  --bg2:#e8eeff;
+  --surf:#ffffff;
+  --surf2:rgba(255,255,255,0.75);
+  --bdr:rgba(15,23,42,0.12);      /* near-black border — subtle */
+  --bdr2:rgba(15,23,42,0.20);
+  --bdr3:rgba(15,23,42,0.32);
+  --bdr-card:rgba(15,23,42,0.18); /* card/cell border — clearly dark */
+  /* Blues */
+  --blue:#2563eb;
+  --blue2:#3b82f6;
   --blue3:#1d4ed8;
   --blueL:#60a5fa;
-  --blueXL:#93c5fd;
-  --cyan:#06b6d4;
-  --cyanL:#22d3ee;
+  --blueXL:#bfdbfe;
   /* Text */
-  --navy:#f8fafc;
-  --navyM:#e2e8f0;
-  --navyL:#cbd5e1;
-  --txt:#f8fafc;
-  --txt2:#e2e8f0;
-  --txt3:#94a3b8;
-  --txt4:#64748b;
-  /* Macro vivid */
-  --mk:#f97316;
-  --mp:#3b82f6;
-  --mc:#a855f7;
-  --ml:#10b981;
+  --navy:#0f172a;
+  --navyM:#1e293b;
+  --navyL:#334155;
+  --txt:#0f172a;
+  --txt2:#334155;
+  --txt3:#64748b;
+  --txt4:#94a3b8;
+  /* Macros — vivid, distinct */
+  --mk:#f97316;   /* calories  — orange  */
+  --mp:#2563eb;   /* protein   — blue    */
+  --mc:#9333ea;   /* carbs     — purple  */
+  --ml:#059669;   /* fats      — emerald */
   /* Status */
   --ok:#10b981;--warn:#f59e0b;--err:#ef4444;
-  /* Shadows — deep */
-  --sh1:0 1px 3px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.4);
-  --sh2:0 4px 12px rgba(0,0,0,.4),0 12px 40px rgba(0,0,0,.5);
-  --sh3:0 8px 24px rgba(0,0,0,.5),0 24px 64px rgba(0,0,0,.6);
-  --shB:0 4px 20px rgba(59,130,246,.25),0 0 0 1px rgba(59,130,246,.18);
-  --shM:0 0 0 1px rgba(255,255,255,.08),0 4px 24px rgba(0,0,0,.5);
+  /* Shadows */
+  --sh1:0 1px 3px rgba(15,23,42,.06),0 4px 16px rgba(15,23,42,.08);
+  --sh2:0 4px 12px rgba(15,23,42,.08),0 12px 40px rgba(15,23,42,.1);
+  --sh3:0 8px 24px rgba(15,23,42,.1),0 24px 64px rgba(15,23,42,.12);
+  --shB:0 4px 20px rgba(37,99,235,.2);
   /* Radii */
   --r:14px;--rL:20px;--rXL:28px;--r3xl:36px;
   /* Easing */
   --ease-spring:cubic-bezier(.34,1.56,.64,1);
   --ease-smooth:cubic-bezier(.4,0,.2,1);
-  --ease-out:cubic-bezier(0,0,.2,1);
 }
+
 
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -932,227 +929,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .tb.on{overflow:visible!important}
 .rcsw{overflow:visible}
 
-/* ══ DARK GLASS OVERRIDES ══════════════════════════════════════════ */
-body{
-  background:var(--bg)!important;
-  color:var(--txt)!important;
-  background-image:
-    radial-gradient(ellipse 80% 50% at 50% -10%,rgba(59,130,246,.1),transparent),
-    radial-gradient(ellipse 50% 40% at 90% 110%,rgba(6,182,212,.06),transparent)!important;
-}
-
-/* Glass card */
-.card{
-  background:var(--surf)!important;
-  border:1px solid var(--bdr)!important;
-  box-shadow:var(--shM)!important;
-}
-.card::before{
-  background:linear-gradient(145deg,rgba(255,255,255,.07) 0%,transparent 60%)!important;
-}
-
-/* Hero — keep dark */
-.hero{
-  background:linear-gradient(150deg,#030712,#0f172a 60%,#0c1525)!important;
-  border:1px solid rgba(255,255,255,.07)!important;
-  box-shadow:var(--sh3),0 0 60px rgba(59,130,246,.08)!important;
-}
-
-/* Header */
-.hdr{
-  background:rgba(8,12,20,.88)!important;
-  border-bottom:1px solid var(--bdr)!important;
-  backdrop-filter:blur(28px) saturate(1.6)!important;
-  -webkit-backdrop-filter:blur(28px) saturate(1.6)!important;
-}
-.brand-name{color:#f8fafc!important}
-.brand-by,.hlabel{color:var(--txt4)!important}
-.hchip{
-  background:rgba(59,130,246,.12)!important;
-  border-color:rgba(59,130,246,.25)!important;
-  color:var(--blueL)!important;
-}
-
-/* Calendar cells — dark glass with mirror animations */
-.dc{
-  background:var(--surf)!important;
-  border:1px solid var(--bdr)!important;
-  box-shadow:var(--shM)!important;
-  position:relative;overflow:hidden;
-}
-.dc::before{
-  content:'';position:absolute;inset:0;border-radius:inherit;
-  background:linear-gradient(135deg,rgba(255,255,255,.06) 0%,transparent 55%);
-  pointer-events:none;transition:opacity .25s;
-}
-.dc:hover{
-  border-color:rgba(59,130,246,.4)!important;
-  background:rgba(59,130,246,.08)!important;
-  transform:translateY(-4px) scale(1.04)!important;
-  box-shadow:0 16px 40px rgba(0,0,0,.5),0 0 0 1px rgba(59,130,246,.25)!important;
-}
-.dc:hover::before{opacity:1.5}
-.dc.sel{
-  border-color:var(--blue)!important;
-  background:rgba(37,99,235,.12)!important;
-  box-shadow:var(--shB)!important;
-}
-.dc.done{
-  border-color:rgba(16,185,129,.3)!important;
-  background:rgba(16,185,129,.06)!important;
-}
-/* Stagger animation on calendar render */
-.dc{animation:dcIn .35s var(--ease-spring) both}
-@keyframes dcIn{from{opacity:0;transform:scale(.84) translateY(8px)}to{opacity:1;transform:none}}
-.dn{color:var(--txt)!important}
-.dl{color:var(--txt4)!important}
-.dsub{color:var(--txt3)!important}
-.ddot{background:rgba(255,255,255,.1)!important}
-.ddot.on{background:var(--ok)!important;box-shadow:0 0 7px var(--ok)!important}
-
-/* Macro pills */
-.mp{overflow:hidden}
-/* Calories — orange (unchanged, vivid against dark) */
-.mp-k{background:linear-gradient(145deg,rgba(249,115,22,.25),rgba(234,88,12,.15))!important;border-color:rgba(249,115,22,.35)!important;box-shadow:0 0 28px rgba(249,115,22,.15) inset,0 6px 24px rgba(249,115,22,.2)!important}
-/* Protein — pure blue (not indigo/purple) */
-.mp-p{background:linear-gradient(145deg,rgba(59,130,246,.25),rgba(37,99,235,.15))!important;border-color:rgba(59,130,246,.35)!important;box-shadow:0 0 28px rgba(59,130,246,.15) inset,0 6px 24px rgba(59,130,246,.2)!important}
-.mp-p .mp-val{color:#93c5fd!important}
-/* Carbs — purple */
-.mp-c{background:linear-gradient(145deg,rgba(168,85,247,.25),rgba(147,51,234,.15))!important;border-color:rgba(168,85,247,.35)!important;box-shadow:0 0 28px rgba(168,85,247,.15) inset,0 6px 24px rgba(168,85,247,.2)!important}
-/* Fats — emerald */
-.mp-l{background:linear-gradient(145deg,rgba(16,185,129,.25),rgba(5,150,105,.15))!important;border-color:rgba(16,185,129,.35)!important;box-shadow:0 0 28px rgba(16,185,129,.15) inset,0 6px 24px rgba(16,185,129,.2)!important}
-
-/* Macro totals in analysis */
-.tc-k{background:linear-gradient(145deg,rgba(249,115,22,.18),rgba(249,115,22,.08))!important;border-color:rgba(249,115,22,.22)!important}
-.tc-p{background:linear-gradient(145deg,rgba(59,130,246,.18),rgba(59,130,246,.08))!important;border-color:rgba(59,130,246,.22)!important}
-.tc-p .tv{color:#93c5fd!important}
-.tc-c{background:linear-gradient(145deg,rgba(168,85,247,.18),rgba(168,85,247,.08))!important;border-color:rgba(168,85,247,.22)!important}
-.tc-l{background:linear-gradient(145deg,rgba(16,185,129,.18),rgba(16,185,129,.08))!important;border-color:rgba(16,185,129,.22)!important}
-
-/* Day panel */
-.dp{background:rgba(8,12,20,.98)!important;border-color:rgba(255,255,255,.1)!important}
-.dph{background:linear-gradient(145deg,rgba(15,20,35,.98),rgba(20,30,50,.96))!important;border-bottom:1px solid rgba(255,255,255,.08)!important}
-.tabs{background:rgba(0,0,0,.3)!important;border-bottom:1px solid var(--bdr)!important}
-.tab{color:var(--txt3)!important}
-.tab.on{color:var(--blueL)!important;border-bottom-color:var(--blue)!important}
-
-/* Meals in diet tab */
-.meal{
-  background:var(--surf)!important;
-  border-color:var(--bdr)!important;
-}
-.meal::before{background:var(--bdr2)!important}
-.meal:hover{border-color:var(--bdr3)!important;background:var(--surf2)!important}
-.meal.done{border-color:rgba(16,185,129,.25)!important;background:rgba(16,185,129,.05)!important}
-.meal.done::before{background:var(--ok)!important}
-.mname{color:var(--txt)!important}
-.mdesc{color:var(--txt3)!important}
-
-/* Search dropdowns */
-.rd,.rcdrop,.calc-drop,.udrop{
-  background:#0d1524!important;
-  border-color:rgba(59,130,246,.22)!important;
-  box-shadow:0 8px 32px rgba(0,0,0,.7),0 32px 80px rgba(0,0,0,.6)!important;
-}
-.ri,.rcdi,.udi{border-bottom-color:rgba(255,255,255,.06)!important}
-.ri:hover,.rcdi:hover,.udi:hover{background:rgba(59,130,246,.08)!important}
-.ri-n .ri-tag,.rcdi-grp,.udi-grp{background:rgba(59,130,246,.15)!important;color:var(--blueL)!important}
-
-/* Inputs */
-.rcsw-input,.sw input,.calc-sw input,.usw-wrap input{
-  background:rgba(255,255,255,.05)!important;
-  border-color:var(--bdr)!important;
-  color:var(--txt)!important;
-}
-.rcsw-input:focus,.sw input:focus,.calc-sw input:focus,.usw-wrap input:focus{
-  border-color:rgba(59,130,246,.5)!important;
-  box-shadow:0 0 0 4px rgba(59,130,246,.1)!important;
-  background:rgba(255,255,255,.07)!important;
-}
-.rcsw-input::placeholder,.sw input::placeholder{color:var(--txt4)!important}
-
-/* Calc sections */
-.calc-srch,.rc-section .rctab,.rcsel{
-  background:var(--surf)!important;
-  border-color:var(--bdr)!important;
-}
-.rctab.active{
-  background:rgba(59,130,246,.14)!important;
-  border-color:rgba(59,130,246,.35)!important;
-  box-shadow:none!important;
-}
-.rctab-lbl{color:var(--txt)!important}
-.rctab.active .rctab-lbl{color:var(--blueL)!important}
-.rctab-hint{color:var(--txt4)!important}
-.rctab.active .rctab-hint{color:var(--txt3)!important}
-.rc-hint{background:rgba(59,130,246,.06)!important;border-color:rgba(59,130,246,.15)!important;color:var(--txt3)!important}
-.rcsel{background:rgba(59,130,246,.06)!important;border-color:rgba(59,130,246,.2)!important}
-.rcsel-name{color:var(--blueL)!important}
-.rcsel-macros{color:var(--txt3)!important}
-.smae-ref{background:rgba(249,115,22,.06)!important;border-color:rgba(249,115,22,.2)!important;color:var(--txt3)!important}
-.rc-title{color:var(--txt)!important}
-.rc-clear{color:var(--txt3)!important}
-.rc-clear:hover{color:var(--err)!important;background:rgba(239,68,68,.08)!important}
-
-/* Qty inputs */
-.rcqty-num,.rcqty-sel,.cqsel,.qty,.cqmult,.cqamt{
-  background:rgba(255,255,255,.06)!important;
-  border-color:var(--bdr)!important;
-  color:var(--txt)!important;
-}
-.rcqty-minus,.rcqty-plus{background:rgba(255,255,255,.06)!important;border-color:var(--bdr)!important;color:var(--blueL)!important}
-.rcqty-minus:hover,.rcqty-plus:hover{background:var(--blue2)!important;color:#fff!important;border-color:var(--blue2)!important}
-.rcqty-label,.rcqty-unit,.uql{color:var(--txt3)!important}
-
-/* Log entries */
-.lf,.log-food{color:var(--txt)!important}
-.ls,.log-sub{color:var(--txt3)!important}
-.lg,.log-group{animation:lgIn .25s var(--ease-spring)}
-.lgh,.log-gh{color:var(--txt3)!important;border-bottom-color:var(--bdr)!important}
-.lr,.log-row{border-bottom-color:rgba(255,255,255,.05)!important}
-.lr:hover,.log-row:hover{background:rgba(255,255,255,.03)!important}
-
-/* SMAE badge */
-.smae-badge{background:rgba(249,115,22,.15)!important;color:#fb923c!important}
-.rcdi-smae{background:rgba(249,115,22,.15)!important;color:#fb923c!important}
-
-/* Progress bars */
-.btrack,.bar-track{background:rgba(255,255,255,.07)!important}
-.bf-ok,.bar-f.bf-ok{background:linear-gradient(90deg,var(--blue3),var(--blue),var(--blueL))!important}
-
-/* Status banners */
-.cst.cs-i{background:rgba(255,255,255,.04)!important;border-color:rgba(255,255,255,.1)!important;color:var(--txt3)!important}
-.cst.cs-ok{background:rgba(16,185,129,.07)!important;border-color:rgba(16,185,129,.22)!important;color:var(--ok)!important}
-.cst.cs-w{background:rgba(245,158,11,.07)!important;border-color:rgba(245,158,11,.22)!important;color:var(--warn)!important}
-.cst.cs-e{background:rgba(239,68,68,.07)!important;border-color:rgba(239,68,68,.22)!important;color:var(--err)!important}
-
-/* Req pills */
-.req-p,.req-in.req-p{background:rgba(59,130,246,.12)!important;border-color:rgba(59,130,246,.22)!important}
-.req-in.req-p label{color:#93c5fd!important}
-.req-in{border:1.5px solid transparent}
-.req-in.req-k{background:rgba(249,115,22,.1)!important;border-color:rgba(249,115,22,.2)!important}
-.req-in.req-c{background:rgba(168,85,247,.1)!important;border-color:rgba(168,85,247,.2)!important}
-.req-in.req-l{background:rgba(16,185,129,.1)!important;border-color:rgba(16,185,129,.2)!important}
-.req-in input{background:rgba(255,255,255,.08)!important;border-color:rgba(255,255,255,.12)!important;color:var(--txt)!important}
-
-/* Ring */
-.rbg{stroke:rgba(255,255,255,.08)!important}
-.rs span{color:rgba(255,255,255,.4)!important}
-.rs strong{color:rgba(255,255,255,.9)!important}
-.rpct{color:#fff!important}
-
-/* Charts */
-.ch canvas{filter:none}
-
-/* Footer */
-.footer{color:var(--txt4)!important}
-.footer strong{color:var(--txt3)!important}
-
-/* Scrollbar */
-*{scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.12) transparent}
-*::-webkit-scrollbar{width:4px;height:4px}
-*::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:2px}
-
 /* ══ POPOUT TUTORIAL PANELS ═══════════════════════════════════════ */
 .popout-overlay{
   position:fixed;inset:0;z-index:8000;
@@ -1287,6 +1063,185 @@ body{
 
 /* ══ CONFETTI PARTICLES ═════════════════════════════════════════ */
 .cp{border-radius:3px}
+
+/* ══ BORDER OVERRIDES — dark borders on cards/cells ════════════════ */
+/* Cards */
+.card{border:1.5px solid rgba(15,23,42,.18)!important}
+.card:hover{box-shadow:0 4px 12px rgba(15,23,42,.08),0 12px 40px rgba(15,23,42,.1)!important}
+
+/* Calendar cells — dark border, mirror shimmer on hover */
+.dc{
+  border:1.5px solid rgba(15,23,42,.2)!important;
+  background:#fff!important;
+  box-shadow:0 1px 3px rgba(15,23,42,.06)!important;
+  transition:all .25s var(--ease-spring)!important;
+}
+.dc::after{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(135deg,rgba(255,255,255,.6) 0%,transparent 55%);
+  pointer-events:none;opacity:0;transition:opacity .25s;
+}
+.dc:hover{
+  border-color:rgba(37,99,235,.5)!important;
+  background:linear-gradient(145deg,#fff,#f0f7ff)!important;
+  transform:translateY(-4px) scale(1.04)!important;
+  box-shadow:0 8px 24px rgba(15,23,42,.12),0 0 0 1px rgba(37,99,235,.2)!important;
+}
+.dc:hover::after{opacity:1}
+.dc.sel{
+  border-color:var(--blue)!important;
+  background:linear-gradient(145deg,#eff6ff,#dbeafe)!important;
+  box-shadow:var(--shB)!important;
+}
+.dc.done{
+  border-color:rgba(16,185,129,.4)!important;
+  background:linear-gradient(145deg,#ecfdf5,#d1fae5)!important;
+}
+.dc{animation:dcPop .35s var(--ease-spring) both}
+@keyframes dcPop{from{opacity:0;transform:scale(.85) translateY(8px)}to{opacity:1;transform:none}}
+
+/* Day panel */
+.dp{border:1.5px solid rgba(15,23,42,.15)!important;overflow:visible!important;background:#fff!important}
+.dp.open{animation:dpIn .32s var(--ease-spring)!important}
+@keyframes dpIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+
+/* Calc section cards */
+.calc-srch,.rc-section{background:#fff;border-radius:var(--rL);border:1.5px solid rgba(15,23,42,.15);box-shadow:var(--sh1);padding:1.25rem 1.35rem;margin-bottom:.85rem}
+.rcsel{border:1.5px solid rgba(37,99,235,.25)!important;background:linear-gradient(135deg,#eff6ff,#f8faff)!important}
+
+/* Tab bodies — white bg, proper spacing */
+.tb.on{background:#fff;overflow:visible!important;padding:1.5rem 1.6rem}
+@media(max-width:520px){.tb.on{padding:1.1rem .95rem}}
+
+/* Meal selector — white bg, dark borders, clearly visible */
+.cms{
+  border:1.5px solid rgba(15,23,42,.2)!important;
+  background:#fff!important;
+  box-shadow:0 1px 3px rgba(15,23,42,.05)!important;
+}
+.cms-lbl{color:var(--txt2)!important}
+.cms:hover{border-color:rgba(37,99,235,.4)!important;transform:translateY(-2px)!important;box-shadow:var(--sh1)!important}
+.cms.on{
+  background:linear-gradient(135deg,var(--blue3),var(--blue))!important;
+  border-color:var(--blue)!important;color:#fff!important;
+  box-shadow:0 4px 16px rgba(37,99,235,.28)!important;transform:translateY(-2px)!important;
+}
+.cms.on .cms-lbl{color:#fff!important}
+
+/* Macro pills — protein fixed to pure blue */
+.mp-p{background:linear-gradient(145deg,#dbeafe,#bfdbfe)!important;border-color:rgba(37,99,235,.35)!important;box-shadow:0 0 20px rgba(37,99,235,.12) inset,0 4px 16px rgba(37,99,235,.12)!important}
+.mp-p .mp-val{color:#1d4ed8!important}
+.mp-p .mp-emoji{filter:drop-shadow(0 2px 4px rgba(37,99,235,.3))!important}
+
+/* Macro totals in analysis — protein fixed */
+.tc-p{background:linear-gradient(145deg,#eff6ff,#dbeafe)!important;border-color:rgba(37,99,235,.25)!important}
+.tc-p .tv{color:var(--blue3)!important}
+
+/* rc-hint text visible on white */
+.rc-hint{background:rgba(37,99,235,.05)!important;border:1px solid rgba(37,99,235,.15)!important;color:var(--txt2)!important}
+.rc-title{color:var(--navy)!important}
+.rcqty-label,.uql{color:var(--txt3)!important}
+.rcqty-num,.rcqty-sel,.cqsel{background:#fff!important;border-color:rgba(15,23,42,.18)!important;color:var(--navy)!important}
+.rcqty-minus,.rcqty-plus{background:#fff!important;border:1.5px solid rgba(15,23,42,.18)!important;color:var(--blue)!important}
+.rcqty-minus:hover,.rcqty-plus:hover{background:var(--blue)!important;color:#fff!important;border-color:var(--blue)!important}
+
+/* Inputs white bg */
+.rcsw-input,.sw input,.usw-wrap input{
+  background:#fff!important;border:1.5px solid rgba(15,23,42,.18)!important;color:var(--navy)!important;
+}
+.rcsw-input:focus,.sw input:focus,.usw-wrap input:focus{
+  border-color:var(--blue)!important;box-shadow:0 0 0 4px rgba(37,99,235,.1)!important;
+}
+
+/* Dropdowns white bg */
+.rd,.rcdrop,.udrop{
+  background:#fff!important;
+  border:1.5px solid rgba(15,23,42,.14)!important;
+  box-shadow:0 8px 32px rgba(15,23,42,.12),0 32px 80px rgba(15,23,42,.1)!important;
+}
+.rcdi,.ri,.udi{border-bottom:1px solid rgba(15,23,42,.06)!important;color:var(--navy)!important}
+.rcdi:hover,.ri:hover,.udi:hover{background:rgba(37,99,235,.05)!important}
+.rcdi-name,.ri-n .di-name,.udi-name{color:var(--navy)!important}
+
+/* Log visible on white */
+.lr,.log-row{border-bottom:1px solid rgba(15,23,42,.06)!important}
+.lr:hover,.log-row:hover{background:rgba(37,99,235,.03)!important}
+.lf,.log-food{color:var(--navy)!important}
+.ls,.log-sub{color:var(--txt3)!important}
+
+/* rc-loghdr */
+.rc-loghdr,.calc-log-hdr,.lhdr{color:var(--navy)!important}
+.rc-clear,.calc-log-clear,.lhdr button{color:var(--txt3)!important}
+.rc-clear:hover,.calc-log-clear:hover,.lhdr button:hover{color:var(--err)!important;background:rgba(239,68,68,.07)!important}
+
+/* Status ok/warn/err visible on white */
+.cst.cs-i{background:rgba(15,23,42,.04)!important;border-color:rgba(15,23,42,.12)!important;color:var(--txt3)!important}
+
+/* Tab styling — make active tab clear */
+.tab{color:var(--txt3)!important}
+.tab.on{color:var(--blue)!important;border-bottom-color:var(--blue)!important}
+
+/* Body bg — keep white/light */
+body{background:var(--bg)!important;color:var(--navy)!important;background-image:radial-gradient(ellipse 80% 50% at 20% -10%,rgba(37,99,235,.07),transparent),radial-gradient(ellipse 60% 40% at 80% 110%,rgba(99,102,241,.05),transparent)!important}
+
+/* Log scroll */
+#lw{max-height:380px;overflow-y:auto;padding-right:2px;overflow-x:hidden}
+#lw::-webkit-scrollbar{width:3px}
+#lw::-webkit-scrollbar-thumb{background:rgba(15,23,42,.15);border-radius:2px}
+
+/* Overflow fix */
+.dp,.tb.on,.rcsw,.calc-sw,.sw{overflow:visible!important}
+.udrop,.rcdrop,.rd{position:absolute;z-index:9999!important}
+.rcsw,.usw-wrap,.calc-sw,.sw{position:relative;z-index:2}
+
+/* ══ POPOUT TUTORIAL PANELS ══════════════════════════════════════ */
+.popout-overlay{
+  position:fixed;inset:0;z-index:9500;
+  background:rgba(15,23,42,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:center;padding:1.25rem;
+  animation:popfade .22s ease;
+}
+@keyframes popfade{from{opacity:0}to{opacity:1}}
+.popout-box{
+  background:#fff;border:1.5px solid rgba(15,23,42,.15);
+  border-radius:var(--rXL);padding:2rem 1.75rem 1.5rem;max-width:420px;width:100%;
+  box-shadow:0 32px 96px rgba(15,23,42,.22);
+  animation:popboxIn .32s var(--ease-spring);
+}
+@keyframes popboxIn{from{opacity:0;transform:scale(.88) translateY(16px)}to{opacity:1;transform:none}}
+.popout-icon{font-size:2.5rem;display:block;text-align:center;margin-bottom:.65rem}
+.popout-title{font-size:1.1rem;font-weight:800;color:var(--navy);text-align:center;letter-spacing:-.4px;margin-bottom:.4rem}
+.popout-body{font-size:.81rem;color:var(--txt3);line-height:1.6;text-align:center;margin-bottom:1.1rem}
+.popout-steps{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1.2rem}
+.popout-step{display:flex;align-items:flex-start;gap:.55rem;background:rgba(37,99,235,.04);border:1px solid rgba(37,99,235,.1);border-radius:10px;padding:.5rem .7rem}
+.pstep-num{width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;font-size:.68rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.pstep-txt{font-size:.77rem;color:var(--txt2);line-height:1.45}
+.pstep-txt strong{color:var(--navy);font-weight:700}
+.popout-btns{display:flex;flex-direction:column;gap:.4rem}
+.popout-btn-main{padding:.65rem 1.5rem;background:linear-gradient(135deg,var(--blue3),var(--blue));color:#fff;border:none;border-radius:10px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(37,99,235,.25);transition:all .2s var(--ease-spring)}
+.popout-btn-main:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(37,99,235,.35)}
+.popout-btn-skip{padding:.45rem;background:none;border:none;font-size:.73rem;color:var(--txt4);cursor:pointer;font-family:inherit;transition:color .15s}
+.popout-btn-skip:hover{color:var(--txt2)}
+
+/* Help FAB */
+.help-fab{
+  position:fixed;right:1rem;bottom:1.5rem;z-index:5000;
+  width:40px;height:40px;border-radius:50%;
+  background:#fff;border:1.5px solid rgba(15,23,42,.2);
+  color:var(--blue);font-size:.9rem;font-weight:800;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 14px rgba(15,23,42,.15);transition:all .2s var(--ease-spring);
+}
+.help-fab:hover{background:var(--blue);color:#fff;border-color:var(--blue);transform:scale(1.1)}
+
+/* ══ COMPLETION MODAL ════════════════════════════════════════════ */
+.mbox{background:#fff!important;border:1.5px solid rgba(15,23,42,.15)!important;border-radius:var(--r3xl)!important;padding:2.25rem 2rem!important;box-shadow:0 32px 80px rgba(15,23,42,.2)!important;text-align:center}
+.mbox-ico{font-size:3rem!important;display:block!important;text-align:center!important;margin-bottom:.75rem!important;animation:icoSpin .45s var(--ease-spring)}
+@keyframes icoSpin{from{transform:scale(.3) rotate(-20deg)}to{transform:none}}
+.mbox h2{font-size:1.2rem!important;font-weight:800!important;color:var(--navy)!important;margin-bottom:.45rem!important}
+.mbox p{color:var(--txt3)!important;font-size:.85rem!important;line-height:1.55!important;margin-bottom:1.35rem!important}
+.mbtn{background:linear-gradient(135deg,var(--blue3),var(--blue))!important;color:#fff!important;border:none!important;border-radius:11px!important;padding:.68rem 2rem!important;font-size:.9rem!important;font-weight:700!important;cursor:pointer!important;font-family:inherit!important;box-shadow:0 4px 16px rgba(37,99,235,.28)!important;transition:all .2s var(--ease-spring)!important}
+.mbtn:hover{transform:translateY(-2px)!important;box-shadow:0 8px 22px rgba(37,99,235,.38)!important}
 </style>
 </head>
 <body>
@@ -1800,68 +1755,74 @@ function rProg(){
 function snow(n){const r=$('cpr');const C=['#f97316','#6366f1','#a855f7','#10b981','#f59e0b','#4f46e5'];for(let i=0;i<n;i++)setTimeout(()=>{const e=document.createElement('div');e.className='cp';e.style.left=Math.random()*100+'%';e.style.background=C[Math.floor(Math.random()*C.length)];e.style.animationDuration=(Math.random()*2+1.5)+'s';r.appendChild(e);setTimeout(()=>e.remove(),5000);},i*16);}
 init();
 
-// ══ POPOUT TUTORIALS ════════════════════════════════════════════════
-const _popKeys = {popDiet:'np_diet',popCalc:'np_calc',popAnalysis:'np_analysis'};
 
-function showPop(id){
-  const key = _popKeys[id];
-  if(key && localStorage.getItem(key)==='1') return; // dismissed forever
-  const el=document.getElementById(id);
-  if(el) el.style.display='flex';
-  // Show help FAB
-  const fab=document.getElementById('helpFab');
-  if(fab) fab.style.display='flex';
+
+// ══════════════════════════════════════════════════════════════════
+// POPOUT TUTORIALS — show once per tab, localStorage for "never again"
+// ══════════════════════════════════════════════════════════════════
+
+const _PK = {Diet:'np_diet_v2', Calc:'np_calc_v2', Progress:'np_prog_v2'};
+const _PI = {Diet:'popDiet', Calc:'popCalc', Progress:'popAnalysis'};
+
+function _showPop(tab) {
+  const key = _PK[tab], popId = _PI[tab];
+  if(!popId) return;
+  if(localStorage.getItem(key) === '1') return; // permanently dismissed
+  const el = document.getElementById(popId);
+  if(el) { el.style.display = 'flex'; }
+  const fab = document.getElementById('helpFab');
+  if(fab) fab.style.display = 'flex';
 }
 
-window.closePop = function(id, forever){
-  const el=document.getElementById(id);
-  if(el){el.style.opacity='0';el.style.transform='scale(.94)';el.style.transition='opacity .2s,transform .2s';setTimeout(()=>el.style.display='none',200);}
-  if(forever){const key=_popKeys[id];if(key)localStorage.setItem(key,'1');}
+window.closePop = function(id, forever) {
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.style.opacity = '0';
+  el.style.transition = 'opacity .18s';
+  setTimeout(() => { el.style.display = 'none'; el.style.opacity = ''; el.style.transition = ''; }, 180);
+  if(forever) {
+    // find which key this id maps to
+    for(const [tab, pid] of Object.entries(_PI)) {
+      if(pid === id) { localStorage.setItem(_PK[tab], '1'); break; }
+    }
+  }
 };
 
-// Show popout when tab is opened (debounced)
-const _origST = window.st;
-window.st = function(t, btn){
-  if(_origST) _origST(t, btn);
-  const map={Diet:'popDiet',Calc:'popCalc',Progress:'popAnalysis'};
-  const popId=map[t];
-  if(popId) setTimeout(()=>showPop(popId), 300);
-};
-
-// Close popouts on overlay click
-document.querySelectorAll('.popout-overlay').forEach(overlay=>{
-  overlay.addEventListener('click', e=>{
-    if(e.target===overlay) window.closePop(overlay.id);
+// Close on overlay background click
+document.querySelectorAll('.popout-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => {
+    if(e.target === overlay) window.closePop(overlay.id);
   });
 });
 
-window.showHelp = function(){
-  // Show the popout for current active tab
+// Override st() to show tutorial when tab is opened
+const _st0 = window.st;
+window.st = function(t, btn) {
+  if(_st0) _st0(t, btn);
+  setTimeout(() => _showPop(t), 350);
+};
+
+// Show diet popout when a day opens
+const _od0 = window.od;
+window.od = function(d) {
+  if(_od0) _od0(d);
+  const fab = document.getElementById('helpFab');
+  if(fab) fab.style.display = 'flex';
+  setTimeout(() => _showPop('Diet'), 450);
+};
+
+// Help button shows current tab's tutorial (ignoring localStorage)
+window.showHelp = function() {
   const activeTab = document.querySelector('.tab.on');
   if(!activeTab) return;
-  const txt=activeTab.textContent.trim();
-  if(txt.includes('Plan')) showForce('popDiet');
-  else if(txt.includes('Registro')) showForce('popCalc');
-  else showForce('popAnalysis');
+  const txt = activeTab.textContent;
+  let popId = 'popDiet';
+  if(txt.includes('Registro')) popId = 'popCalc';
+  else if(txt.includes('Análisis')) popId = 'popAnalysis';
+  const el = document.getElementById(popId);
+  if(el) { el.style.display = 'flex'; el.style.opacity = '1'; }
 };
 
-function showForce(id){
-  const el=document.getElementById(id);
-  if(el){el.style.opacity='1';el.style.transform='none';el.style.display='flex';}
-}
-
-// Show first popout when panel opens
-const _origOD = window.od || function(){};
-// Override od to show diet popout on first day open
-const __od = window.od;
-window.od = function(d){
-  if(__od) __od(d);
-  setTimeout(()=>{
-    const fab=document.getElementById('helpFab');
-    if(fab) fab.style.display='flex';
-    showPop('popDiet');
-  },400);
-};
 
 </script>
 </body>

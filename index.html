@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta http-equiv="Cache-Control" content="no-cache,no-store,must-revalidate">
 <title>NutriPlan</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -794,6 +794,135 @@ body{
 /* ── UTILITIES ──────────────────────────────────────────────────── */
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-3)}
 @media(max-width:380px){.g2{grid-template-columns:1fr}}
+
+/* ── MISSING / FIXED CLASSES ─────────────────────────────────── */
+
+/* Meal items in diet panel (JS generates .meal-item) */
+.meal-item{
+  display:flex;align-items:flex-start;gap:.85rem;
+  background:#fff;border:1.5px solid rgba(28,28,30,.1);
+  border-radius:var(--r-lg);padding:1rem 1.1rem;
+  margin-bottom:.7rem;cursor:pointer;
+  transition:all .22s var(--spring);
+  position:relative;overflow:hidden;
+  box-shadow:var(--sh-sm);
+}
+.meal-item::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:3.5px;background:rgba(28,28,30,.1);
+  transition:all .2s;border-radius:0 3px 3px 0;
+}
+.meal-item:hover{border-color:rgba(0,122,255,.3);transform:translateX(3px)}
+.meal-item.done{
+  border-color:rgba(48,209,88,.3);
+  background:linear-gradient(135deg,#F0FDF4,#ECFDF5);
+}
+.meal-item.done::before{background:var(--c-ok);box-shadow:0 0 8px rgba(48,209,88,.4)}
+.meal-check{
+  width:28px;height:28px;border-radius:50%;flex-shrink:0;
+  border:2px solid rgba(28,28,30,.2);
+  display:flex;align-items:center;justify-content:center;
+  transition:all .25s var(--spring);margin-top:2px;
+  font-size:.85rem;color:transparent;background:#fff;
+}
+.meal-item.done .meal-check{
+  background:var(--c-ok);border-color:var(--c-ok);
+  color:#fff;transform:scale(1.1);
+  box-shadow:0 0 12px rgba(48,209,88,.4);
+}
+.meal-check-ico{line-height:1;font-size:.8rem}
+.meal-content{flex:1;min-width:0}
+.meal-name{
+  display:flex;align-items:center;gap:.55rem;
+  font-size:.9rem;font-weight:700;color:var(--c-label);margin-bottom:.3rem;
+}
+.meal-ico-bg{font-size:1.15rem}
+.meal-desc{font-size:.78rem;color:var(--c-label3);line-height:1.55;white-space:pre-wrap}
+
+/* Dropdown — JS uses classList.add('open') */
+.search-drop{
+  position:absolute;top:calc(100% + 5px);left:0;right:0;z-index:9999;
+  background:#fff;border:1.5px solid rgba(28,28,30,.1);
+  border-radius:var(--r-lg);max-height:260px;overflow-y:auto;
+  box-shadow:var(--sh-lg);
+  display:none;   /* hidden by default */
+}
+.search-drop.open{display:block;animation:dropIn .2s var(--spring)}
+.search-drop::-webkit-scrollbar{width:3px}
+.search-drop::-webkit-scrollbar-thumb{background:rgba(28,28,30,.15);border-radius:2px}
+
+/* Drop items — JS generates drop-top, drop-name, drop-macros */
+.drop-item{
+  padding:.65rem 1rem;cursor:pointer;
+  border-bottom:1px solid rgba(28,28,30,.06);
+  transition:background .1s;
+}
+.drop-item:last-child{border-bottom:none}
+.drop-item:hover,.drop-item:active{background:rgba(0,122,255,.05)}
+.drop-top{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;margin-bottom:2px}
+.drop-name{font-weight:700;color:var(--c-label);font-size:.84rem}
+.drop-macros{font-size:.67rem;color:var(--c-label4);font-family:'JetBrains Mono',monospace}
+/* Badge aliases used by JS */
+.badge-recipe{background:rgba(0,122,255,.1);color:#0056D6;font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:99px;flex-shrink:0}
+.badge-smae{background:rgba(255,159,10,.12);color:#92400e;font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:99px;flex-shrink:0}
+
+/* Macro colors — new distinct palette */
+/* Calories: orange */
+.am-k{background:linear-gradient(145deg,#FFF7ED,#FFEDD5);border-color:rgba(234,88,12,.2);box-shadow:0 4px 14px rgba(234,88,12,.1)}
+.am-k .am-val{color:#c2410c}.am-k .am-lbl{color:#ea580c}
+/* Protein: teal/emerald */
+.am-p{background:linear-gradient(145deg,#F0FDFA,#CCFBF1);border-color:rgba(20,184,166,.25);box-shadow:0 4px 14px rgba(20,184,166,.1)}
+.am-p .am-val{color:#0f766e}.am-p .am-lbl{color:#14b8a6}
+/* Carbs: violet */
+.am-c{background:linear-gradient(145deg,#F5F3FF,#EDE9FE);border-color:rgba(124,58,237,.22);box-shadow:0 4px 14px rgba(124,58,237,.1)}
+.am-c .am-val{color:#5b21b6}.am-c .am-lbl{color:#7c3aed}
+/* Fats: rose */
+.am-f{background:linear-gradient(145deg,#FFF1F2,#FFE4E6);border-color:rgba(244,63,94,.22);box-shadow:0 4px 14px rgba(244,63,94,.1)}
+.am-f .am-val{color:#be123c}.am-f .am-lbl{color:#f43f5e}
+
+/* Same colors on hero strips */
+.ms-k{border-left:3px solid #ea580c}.ms-p{border-left:3px solid #14b8a6}
+.ms-c{border-left:3px solid #7c3aed}.ms-f{border-left:3px solid #f43f5e}
+
+/* Log section — JS generates food-log-section, log-section-lbl */
+.food-log-section{margin-bottom:1rem}
+.log-section-lbl{
+  font-size:.62rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:1.5px;color:var(--c-label4);
+  padding-bottom:.35rem;margin-bottom:.45rem;
+  border-bottom:1px solid var(--c-sep);display:block;
+}
+/* JS generates log-food-name inside log-food */
+.log-food-name{font-weight:600;font-size:.84rem;color:var(--c-label);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.log-food-sub{font-size:.62rem;color:var(--c-label4);font-family:'JetBrains Mono',monospace;display:block}
+
+/* Tab-dot visible */
+.tab-dot{display:none}
+.tab-dot.show{display:block}
+
+/* Base font size — prevents blurry text on mobile */
+html{font-size:16px}
+body{font-size:1rem;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+
+/* Prevent iOS text size adjust */
+body{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+
+/* High-DPI border clarity */
+@media (-webkit-min-device-pixel-ratio:2),(min-resolution:192dpi){
+  .cal-cell,.meal-item,.search-drop,.drop-item,.sel-card,.am{
+    border-width:.75px;
+  }
+}
+
+/* switchScreen screens */
+#screenLog,#screenAnalysis{padding-bottom:calc(var(--tab-h) + 2rem)}
+
+
+/* Macro icon float delays */
+.am:nth-child(1) .am-ico{animation-delay:0s}
+.am:nth-child(2) .am-ico{animation-delay:.3s}
+.am:nth-child(3) .am-ico{animation-delay:.6s}
+.am:nth-child(4) .am-ico{animation-delay:.9s}
 </style>
 </head>
 <body>
@@ -1043,97 +1172,7 @@ body{
             <div class="am am-c"><span class="am-ico">🌾</span><div class="am-val" id="amC">0g</div><div class="am-lbl">carb</div><div class="am-pct" id="amCp"></div></div>
             <div class="am am-f"><span class="am-ico">🥑</span><div class="am-val" id="amF">0g</div><div class="am-lbl">gras</div><div class="am-pct" id="amFp"></div></div>
           </div>
-          <div class="an-bar"><div class="an-bar-top"><span>🔥 Calorías</span><span id="bKl"></span></div><div class="an-track"><div class="an-fill af-ok" id="bK" style="width:0%"></div></div><div class="an-bar-status" id="bKs"></div></div>
-          <div class="an-bar"><div class="an-bar-top"><span>💪 Proteínas</span><span id="bPl"></span></div><div class="an-track"><div class="an-fill af-ok" id="bP" style="width:0%"></div></div><div class="an-bar-status" id="bPs"></div></div>
-          <div class="an-bar"><div class="an-bar-top"><span>🌾 Carbohidratos</span><span id="bCl"></span></div><div class="an-track"><div class="an-fill af-ok" id="bC" style="width:0%"></div></div><div class="an-bar-status" id="bCs"></div></div>
-          <div class="an-bar"><div class="an-bar-top"><span>🥑 Grasas</span><span id="bLl"></span></div><div class="an-track"><div class="an-fill af-ok" id="bL" style="width:0%"></div></div><div class="an-bar-status" id="bLs"></div></div>
-          <div class="charts-grid">
-            <div class="chart-card"><div class="chart-lbl">Macros</div><div class="chart-wrap"><canvas id="chartDonut"></canvas></div></div>
-            <div class="chart-card"><div class="chart-lbl">Por comida</div><div class="chart-wrap"><canvas id="chartBar"></canvas></div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- COMPLETION MODAL -->
-  <div class="modal-overlay" id="completionModal">
-    <div class="modal-box">
-      <span class="modal-icon">🎉</span>
-      <div class="modal-title">¡Día completado!</div>
-      <div class="modal-sub">Completaste las cinco comidas del día.</div>
-      <div class="modal-sub2">Excelente disciplina nutricional 💪</div>
-      <button class="modal-btn" onclick="document.getElementById('completionModal').classList.remove('open')">
-        ¡Seguir así! →
-      </button>
-    </div>
-  </div>
-
-  <!-- POPOUT TUTORIALS -->
-  <div class="popout-overlay" id="popDiet" onclick="if(event.target===this)closePop('popDiet')">
-    <div class="popout-sheet">
-      <div class="popout-handle"></div>
-      <div class="popout-inner">
-        <span class="popout-icon">🥗</span>
-        <div class="popout-title">Plan del día</div>
-        <div class="popout-sub">Aquí puedes ver y marcar tus comidas del plan personalizado.</div>
-        <div class="popout-steps">
-          <div class="pop-step"><div class="pop-num">1</div><div class="pop-txt">Revisa cada tiempo de comida — desayuno, colaciones, comida y cena.</div></div>
-          <div class="pop-step"><div class="pop-num">2</div><div class="pop-txt"><strong>Toca cualquier comida</strong> para marcarla como completada ✅</div></div>
-          <div class="pop-step"><div class="pop-num">3</div><div class="pop-txt">Al completar las 5 comidas recibirás una notificación especial 🎉</div></div>
-        </div>
-        <div class="popout-btns">
-          <button class="pop-btn-main" onclick="closePop('popDiet')">¡Entendido!</button>
-          <button class="pop-btn-skip" onclick="closePop('popDiet',true)">No volver a mostrar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="popout-overlay" id="popFood" onclick="if(event.target===this)closePop('popFood')">
-    <div class="popout-sheet">
-      <div class="popout-handle"></div>
-      <div class="popout-inner">
-        <span class="popout-icon">📋</span>
-        <div class="popout-title">Registro de alimentos</div>
-        <div class="popout-sub">Registra todo lo que comiste para ver tu análisis nutricional.</div>
-        <div class="popout-steps">
-          <div class="pop-step"><div class="pop-num">1</div><div class="pop-txt">Selecciona <strong>¿A qué hora fue?</strong> — el tiempo de comida.</div></div>
-          <div class="pop-step"><div class="pop-num">2</div><div class="pop-txt">Elige <strong>Comida preparada</strong> (tacos, pozole…) o <strong>Alimento individual</strong> (pollo, arroz…)</div></div>
-          <div class="pop-step"><div class="pop-num">3</div><div class="pop-txt">Busca, ajusta la <strong>cantidad</strong> y toca <em>Agregar</em>. ¡Así de fácil!</div></div>
-        </div>
-        <div class="popout-btns">
-          <button class="pop-btn-main" onclick="closePop('popFood')">¡Entendido!</button>
-          <button class="pop-btn-skip" onclick="closePop('popFood',true)">No volver a mostrar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="popout-overlay" id="popAnalysis" onclick="if(event.target===this)closePop('popAnalysis')">
-    <div class="popout-sheet">
-      <div class="popout-handle"></div>
-      <div class="popout-inner">
-        <span class="popout-icon">📊</span>
-        <div class="popout-title">Análisis nutricional</div>
-        <div class="popout-sub">Visualiza en tiempo real tu consumo vs tus metas.</div>
-        <div class="popout-steps">
-          <div class="pop-step"><div class="pop-num">1</div><div class="pop-txt">Las <strong>barras de progreso</strong> muestran el % de tu meta.</div></div>
-          <div class="pop-step"><div class="pop-num">2</div><div class="pop-txt">Verde ✅ = en rango · Amarillo ⚠️ = falta · Rojo 🔴 = excediste</div></div>
-          <div class="pop-step"><div class="pop-num">3</div><div class="pop-txt">Las gráficas muestran distribución de macronutrimentos.</div></div>
-        </div>
-        <div class="popout-btns">
-          <button class="pop-btn-main" onclick="closePop('popAnalysis')">¡Entendido!</button>
-          <button class="pop-btn-skip" onclick="closePop('popAnalysis',true)">No volver a mostrar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <button class="help-fab" id="helpFab" onclick="showHelp()">?</button>
-  <div id="cpr"></div>
-
-</div><!-- #app -->
-
-<script type="module">
+          <div class="an-bar"><div class="an-bar-top"><span>🔥<script type="module">
 import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
 import{getFirestore,doc,getDoc,setDoc,updateDoc}from'https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js';
 const FB={apiKey:"AIzaSyAB82hupqdQvlOfbM0xusNY5oPsEAHCcY4",authDomain:"portal-nutricional-693fb.firebaseapp.com",projectId:"portal-nutricional-693fb",storageBucket:"portal-nutricional-693fb.firebasestorage.app",messagingSenderId:"208066338229",appId:"1:208066338229:web:b4c16b54daa2aec9c24dfc"};
@@ -1174,7 +1213,8 @@ async function init(){
       await setDoc(doc(db,'progress',pid),prog);
     }
     logs=ls.exists()?ls.data():{};
-    renderHero(); renderCal();
+    renderHero();
+  $('app').classList.add('visible'); renderCal();
     // Smooth hide loading
     const L=$('loading');
     L.style.transition='opacity .4s'; L.style.opacity='0';
@@ -1270,8 +1310,35 @@ window.switchSheet=function(tab,btn){
 window.switchScreen=function(name,btn){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  // For now only home screen exists — future: split into full screens
-  // Log and Analysis are inside the day sheet
+  if(name==='home'){
+    // Already on home — close day sheet if open
+    return;
+  }
+  if(name==='log'||name==='analysis'){
+    // If a day is already open, switch to the right panel
+    const ov=$('dayOverlay');
+    if(ov&&ov.classList.contains('open')){
+      const tab=name==='log'?'food':'analysis';
+      const stab=document.querySelector(`.stab[onclick*="'${tab}'"]`);
+      if(stab) window.switchSheet(tab,stab);
+    } else if(curDay){
+      // Reopen last day
+      openDay(curDay);
+      setTimeout(()=>{
+        const tab=name==='log'?'food':'analysis';
+        const stab=document.querySelector(`.stab[onclick*="'${tab}'"]`);
+        if(stab) window.switchSheet(tab,stab);
+      },420);
+    } else {
+      // No day selected — open day 1
+      openDay(1);
+      setTimeout(()=>{
+        const tab=name==='log'?'food':'analysis';
+        const stab=document.querySelector(`.stab[onclick*="'${tab}'"]`);
+        if(stab) window.switchSheet(tab,stab);
+      },420);
+    }
+  }
 };
 
 // ── MEALS ──────────────────────────────────────────────────────────
@@ -1611,6 +1678,115 @@ function snow(n){
 // ── ENTER KEYS ─────────────────────────────────────────────────────
 ;(function(){
   const m=$('mealSI'); if(m) m.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('mealDrop').classList.remove('open');}});
+  const i=$('ingrSI'); if(i) i.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('ingrDrop').classList.remove('open');}});
+})();
+
+init();
+le="color:#FF6369">🥑${e.l}g</span>
+        <button class="log-del" onclick="delEntry(${e.id})">✕</button>
+      </div>`;
+    h+='</div>';
+  }
+  w.innerHTML=h;
+}
+window.delEntry=async function(eid){
+  const key=`day${curDay}`;
+  logs[key]=(logs[key]||[]).filter(e=>e.id!==eid);
+  await setDoc(doc(db,'calcLogs',pid),logs,{merge:true});
+  renderLog(); renderAnalysis(); updateOverall(); renderCal();
+};
+window.clearLog=async function(){
+  if(!curDay) return;
+  const key=`day${curDay}`;
+  if(!(logs[key]||[]).length) return;
+  if(!confirm(`¿Borrar el registro del Día ${curDay}?`)) return;
+  logs[key]=[]; await setDoc(doc(db,'calcLogs',pid),logs,{merge:true});
+  renderLog(); renderAnalysis(); updateOverall(); renderCal();
+};
+
+// ── ANALYSIS ───────────────────────────────────────────────────────
+function renderAnalysis(){
+  const key=`day${curDay}`, log=logs[key]||[];
+  const t=log.reduce((a,e)=>({k:a.k+e.k,p:a.p+e.p,c:a.c+e.c,l:a.l+e.l}),{k:0,p:0,c:0,l:0});
+  const pK=req.k?t.k/req.k*100:0, pP=req.p?t.p/req.p*100:0;
+  const pC=req.c?t.c/req.c*100:0, pL=req.l?t.l/req.l*100:0;
+  $('amK').textContent=Math.round(t.k);$('amP').textContent=t.p.toFixed(1)+'g';
+  $('amC').textContent=t.c.toFixed(1)+'g';$('amF').textContent=t.l.toFixed(1)+'g';
+  $('amKp').textContent=req.k?Math.round(pK)+'%':'';
+  $('amPp').textContent=req.p?Math.round(pP)+'%':'';
+  $('amCp').textContent=req.c?Math.round(pC)+'%':'';
+  $('amFp').textContent=req.l?Math.round(pL)+'%':'';
+  const bc=p=>p>110?'af-hi':p>85?'af-ok':'af-low';
+  const sc2=p=>p>110?'as-hi':p>85?'as-ok':'as-low';
+  const sm=(p,l)=>!p?'':p>115?`🔴 Excediste ${l} (${Math.round(p)}%)`:p>=85?`✅ ${l} en rango (${Math.round(p)}%)`:`🟡 Faltan ${l} (${Math.round(p)}%)`;
+  [['bK',pK,t.k,req.k,'kcal','Calorías'],['bP',pP,t.p,req.p,'g','Proteínas'],
+   ['bC',pC,t.c,req.c,'g','Carbohidratos'],['bL',pL,t.l,req.l,'g','Grasas']].forEach(([id,pct,val,r,u,lbl])=>{
+    $(id).style.width=Math.min(pct,100)+'%'; $(id).className='an-fill '+bc(pct);
+    $(id+'l').textContent=(u==='kcal'?Math.round(val):val.toFixed(1))+' / '+r+' '+u;
+    const s=$(id+'s'); if(s){s.textContent=sm(pct,lbl);s.className='an-bar-status '+sc2(pct);}
+  });
+  // Status banner
+  const sts=$('analysisStatus');
+  if(!log.length){sts.className='food-log-status fls-idle';sts.innerHTML='<span>ℹ️</span> Agrega alimentos en Registro para ver tu análisis.';}
+  else if(pK>115||pP>115||pC>115||pL>115){sts.className='food-log-status fls-over';sts.innerHTML='<span>⚠️</span> Superaste alguno de tus requerimientos de hoy.';}
+  else if(pK>=85&&pP>=85&&pC>=85&&pL>=85){sts.className='food-log-status fls-ok';sts.innerHTML='<span>✅</span> ¡Cumpliste todos tus requerimientos del día!';}
+  else{sts.className='food-log-status fls-warn';sts.innerHTML='<span>📊</span> Sigue registrando para alcanzar tus metas del día.';}
+  // Charts
+  const mK=MN.map(m=>log.filter(e=>e.meal===m).reduce((s,e)=>s+e.k,0));
+  if(_dch) _dch.destroy();
+  _dch=new Chart($('chartDonut').getContext('2d'),{type:'doughnut',
+    data:{labels:['💪','🌾','🥑'],datasets:[{data:[t.p*4||0,t.c*4||0,t.l*9||0],backgroundColor:['#30D158','#5E5CE6','#FF6369'],borderWidth:0,hoverOffset:4}]},
+    options:{cutout:'66%',plugins:{legend:{position:'bottom',labels:{boxWidth:9,font:{size:10},color:'#888'}}},animation:{duration:500}}});
+  if(_bch) _bch.destroy();
+  _bch=new Chart($('chartBar').getContext('2d'),{type:'bar',
+    data:{labels:['Des','ColAM','Com','ColPM','Cen'],
+      datasets:[{data:mK,backgroundColor:['#FF9F0A','#30D158','#007AFF','#5E5CE6','#FF6369'],borderRadius:5,borderSkipped:false}]},
+    options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'rgba(0,0,0,.04)'},ticks:{color:'#888',font:{size:9}}},x:{grid:{display:false},ticks:{color:'#888',font:{size:9}}}},animation:{duration:500}}});
+}
+
+// ── POPOUTS ────────────────────────────────────────────────────────
+const _PK={popDiet:'npd4',popFood:'npf4',popAnalysis:'npa4'};
+function showPop(id){
+  if(localStorage.getItem(_PK[id])==='1') return;
+  const el=$(id); if(!el) return;
+  el.classList.add('open');
+}
+window.closePop=function(id,forever){
+  const el=$(id); if(!el) return;
+  el.classList.remove('open');
+  if(forever) localStorage.setItem(_PK[id],'1');
+};
+window.showHelp=function(){
+  const on=document.querySelector('.stab.on');
+  if(!on) return;
+  const txt=on.textContent;
+  let id='popDiet';
+  if(txt.includes('Registro')) id='popFood';
+  else if(txt.includes('Análisis')) id='popAnalysis';
+  $(id)?.classList.add('open');
+};
+
+// ── SNOW ───────────────────────────────────────────────────────────
+function snow(n){
+  const r=$('cpr');
+  const C=['#FF9F0A','#30D158','#007AFF','#5E5CE6','#FF6369','#5AC8FA','#FF3B30'];
+  for(let i=0;i<n;i++) setTimeout(()=>{
+    const e=document.createElement('div');
+    e.className='cp'; e.style.left=Math.random()*100+'%';
+    e.style.background=C[Math.floor(Math.random()*C.length)];
+    e.style.animationDuration=(Math.random()*2+1.5)+'s';
+    r.appendChild(e); setTimeout(()=>e.remove(),5000);
+  },i*18);
+}
+
+// ── ENTER KEYS ─────────────────────────────────────────────────────
+;(function(){
+  const m=$('mealSI'); if(m) m.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('mealDrop').classList.remove('open');}});
+  const i=$('ingrSI'); if(i) i.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('ingrDrop').classList.remove('open');}});
+})();
+
+init();
+Default();$('mealDrop').classList.remove('open');}});
   const i=$('ingrSI'); if(i) i.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('ingrDrop').classList.remove('open');}});
 })();
 

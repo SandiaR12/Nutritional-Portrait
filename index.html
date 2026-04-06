@@ -1230,12 +1230,21 @@ window.switchScreen=function(name,btn){
 function renderMeals(){
   const pd=prog['day'+curDay]||{};
   const dm=pat.days?.['day'+curDay]||{};
-  $('mealList').innerHTML=MK.map((k,i)=>
-    '<div class="meal-item'+(pd[k]?' done':'')+'" onclick="toggleMeal(''+k+'')" style="animation:panelIn .25s '+(i*.06)+'s both">'+
-    '<div class="meal-check"><span class="meal-check-ico">\u2713</span></div>'+
-    '<div class="meal-content"><div class="meal-name"><div class="meal-ico-bg">'+MI[i]+'</div>'+MN[i]+'</div>'+
-    '<div class="meal-desc">'+(dm[k]||'Sin especificar')+'</div></div></div>'
-  ).join('');
+  const list=$('mealList');
+  list.innerHTML='';
+  MK.forEach((k,i)=>{
+    const el=document.createElement('div');
+    el.className='meal-item'+(pd[k]?' done':'');
+    el.style.animation='panelIn .25s '+(i*.06)+'s both';
+    el.innerHTML=
+      '<div class="meal-check"><span class="meal-check-ico">&#10003;</span></div>'+
+      '<div class="meal-content">'+
+        '<div class="meal-name"><div class="meal-ico-bg">'+MI[i]+'</div>'+MN[i]+'</div>'+
+        '<div class="meal-desc">'+(dm[k]||'Sin especificar')+'</div>'+
+      '</div>';
+    el.onclick=function(){window.toggleMeal(k);};
+    list.appendChild(el);
+  });
 }
 
 window.toggleMeal=async function(key){

@@ -115,9 +115,7 @@ body{
 #app{
   display:flex;flex-direction:column;min-height:100dvh;
   max-width:var(--max-w);margin:0 auto;
-  opacity:0;transition:opacity .35s var(--ease);
 }
-#app.visible{opacity:1}
 
 /* ── TOP NAV ────────────────────────────────────────────────────── */
 .nav-hdr{
@@ -1101,28 +1099,48 @@ function score(f,nq){
   return 0;
 }
 
+function hideLoading(){
+  const L=$('loading');
+  L.style.transition='opacity .35s';L.style.opacity='0';
+  setTimeout(()=>{L.style.display='none';},380);
+}
+
 async function init(){
-  if(!pid){$('loading').innerHTML='<p style="color:#666;font-size:.9rem;text-align:center;padding:2rem">Enlace inválido.</p>';return;}
+  if(!pid){
+    hideLoading();
+    $('heroName').textContent='Enlace inválido';
+    $('heroMeta').textContent='Verifica el enlace proporcionado por tu nutriólogo.';
+    renderCal();
+    return;
+  }
   try{
     const[ps,prs,ls]=await Promise.all([
       getDoc(doc(db,'patients',pid)),
       getDoc(doc(db,'progress',pid)),
       getDoc(doc(db,'calcLogs',pid))
     ]);
-    if(!ps.exists())throw 0;
+    if(!ps.exists()){
+      hideLoading();
+      $('heroName').textContent='Paciente no encontrado';
+      $('heroMeta').textContent='Verifica el enlace con tu nutriólogo.';
+      renderCal();
+      return;
+    }
     pat=ps.data();
-    req.k=+pat.calories||+pat.macros?.calories||2000;
-    req.p=+pat.protein||+pat.macros?.protein||150;
-    req.c=+pat.carbs||+pat.macros?.carbs||250;
-    req.l=+pat.fats||+pat.macros?.fats||65;
+    req.k=+pat.calories||+(pat.macros&&pat.macros.calories)||2000;
+    req.p=+pat.protein||+(pat.macros&&pat.macros.protein)||150;
+    req.c=+pat.carbs||+(pat.macros&&pat.macros.carbs)||250;
+    req.l=+pat.fats||+(pat.macros&&pat.macros.fats)||65;
     prog=prs.exists()?prs.data():{};
     logs=ls.exists()?ls.data():{};
     renderHero();renderCal();
-    const L=$('loading');
-    L.style.transition='opacity .4s';L.style.opacity='0';
-    setTimeout(()=>{L.style.display='none';$('app').classList.add('visible');},400);
+    hideLoading();
   }catch(e){
-    $('loading').innerHTML='<p style="color:#666;font-size:.9rem;text-align:center;padding:2rem">Error al cargar. Verifica el enlace.</p>';
+    console.error('NutriPlan init error:',e);
+    hideLoading();
+    $('heroName').textContent='Error de conexión';
+    $('heroMeta').textContent='Revisa tu conexión a internet e intenta de nuevo.';
+    renderCal();
   }
 }
 

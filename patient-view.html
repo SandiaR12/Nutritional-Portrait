@@ -115,22 +115,23 @@ body{
 }
 /* Macro strips */
 .h-macros{
-  display:flex;flex-direction:column;gap:7px;
-  position:relative;z-index:1;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:8px;
+  margin-bottom:18px;position:relative;z-index:1;
 }
 .hm{
-  display:flex;align-items:center;gap:10px;
-  border-radius:var(--r);padding:9px 12px;
-  border-left:3px solid currentColor;
-  background:rgba(255,255,255,.05);
-  transition:transform .18s var(--spring),background .18s;
+  border-radius:var(--r);padding:11px 8px 10px;text-align:center;
+  border-top:3px solid currentColor;
+  background:rgba(255,255,255,.06);
+  transition:transform .2s var(--spring),background .2s;
+  position:relative;overflow:hidden;
 }
-.hm:hover{background:rgba(255,255,255,.09);transform:translateX(2px)}
-.hm-ico{font-size:1.15rem;flex-shrink:0;line-height:1}
-.hm-val{font-size:.95rem;font-weight:700;color:#fff;font-family:'JetBrains Mono',monospace;line-height:1;flex:1}
-.hm-lbl{font-size:.58rem;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.8px;font-weight:600}
-.hm-bar{width:40px;height:3px;border-radius:99px;background:rgba(255,255,255,.1);flex-shrink:0;overflow:hidden}
-.hm-bar-fill{height:100%;border-radius:99px;background:currentColor;opacity:.7}
+.hm::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:currentColor;opacity:.6}
+.hm:hover{background:rgba(255,255,255,.1);transform:translateY(-2px)}
+.hm-ico{font-size:1.1rem;display:block;margin-bottom:5px;line-height:1}
+.hm-val{font-size:.9rem;font-weight:700;color:#fff;font-family:'JetBrains Mono',monospace;line-height:1;display:block}
+.hm-lbl{font-size:.52rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.8px;font-weight:600;display:block;margin-top:3px}
+.hm-bar{height:2px;border-radius:99px;background:rgba(255,255,255,.08);margin-top:6px;overflow:hidden}
+.hm-bar-fill{height:100%;border-radius:99px;background:currentColor;opacity:.65;transition:width .8s var(--ease)}
 .hm.mk{color:#FF9F0A}
 .hm.mp{color:#34D399}
 .hm.mc{color:#60A5FA}
@@ -153,7 +154,7 @@ body{
 .cal{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
 .cc{
   background:var(--surf);border:1.5px solid rgba(0,0,0,.1);
-  border-radius:var(--rL);padding:12px 4px 10px;text-align:center;cursor:pointer;
+  border-radius:var(--rL);padding:15px 4px 13px;text-align:center;cursor:pointer;
   transition:transform .2s var(--spring),box-shadow .2s,border-color .2s,background .2s;
   box-shadow:var(--sh);will-change:transform;
   animation:ccIn .3s var(--spring) both;
@@ -172,7 +173,7 @@ body{
 .cc-dots{display:flex;justify-content:center;gap:3px;margin:0 0 6px}
 .cc-dot{width:5px;height:5px;border-radius:50%;background:rgba(0,0,0,.08);transition:all .3s var(--spring)}
 .cc-dot.on{background:var(--green);box-shadow:0 0 5px rgba(0,200,81,.6);transform:scale(1.2)}
-.cc-num{font-size:1.15rem;font-weight:700;color:var(--txt);font-family:'JetBrains Mono',monospace;line-height:1}
+.cc-num{font-size:1.3rem;font-weight:700;color:var(--txt);font-family:'JetBrains Mono',monospace;line-height:1}
 .cc.done .cc-num{color:var(--green)}
 .cc-sub{font-size:.52rem;color:var(--txt4);text-transform:uppercase;letter-spacing:.6px;margin-top:2px;font-weight:600}
 
@@ -465,17 +466,17 @@ body{
 .am:nth-child(1){animation-delay:.04s}.am:nth-child(2){animation-delay:.08s}
 .am:nth-child(3){animation-delay:.12s}.am:nth-child(4){animation-delay:.16s}
 .am:hover{transform:translateY(-3px)}
-.am-k{background:linear-gradient(145deg,#1a1200,#2a1e00);border-color:rgba(255,159,10,.3);box-shadow:0 0 0 1px rgba(255,159,10,.1) inset}
-.am-p{background:linear-gradient(145deg,#001a0d,#002a15);border-color:rgba(52,211,153,.3);box-shadow:0 0 0 1px rgba(52,211,153,.1) inset}
-.am-c{background:linear-gradient(145deg,#00101a,#001a2a);border-color:rgba(96,165,250,.3);box-shadow:0 0 0 1px rgba(96,165,250,.1) inset}
-.am-f{background:linear-gradient(145deg,#1a0005,#2a000a);border-color:rgba(248,113,113,.3);box-shadow:0 0 0 1px rgba(248,113,113,.1) inset}
-.am-ico{font-size:1.35rem;display:block;margin-bottom:6px}
-.am-val{font-family:'JetBrains Mono',monospace;font-size:1.15rem;font-weight:700;line-height:1}
-.am-k .am-val{color:#FF9F0A}.am-p .am-val{color:#34D399}.am-c .am-val{color:#60A5FA}.am-f .am-val{color:#F87171}
-.am-lbl{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-top:4px}
-.am-k .am-lbl{color:rgba(255,159,10,.7)}.am-p .am-lbl{color:rgba(52,211,153,.7)}.am-c .am-lbl{color:rgba(96,165,250,.7)}.am-f .am-lbl{color:rgba(248,113,113,.7)}
+.am-k{background:#fff;border-color:rgba(255,159,10,.2);border-left:4px solid #FF9F0A}
+.am-p{background:#fff;border-color:rgba(52,211,153,.2);border-left:4px solid #10B981}
+.am-c{background:#fff;border-color:rgba(96,165,250,.2);border-left:4px solid #3B82F6}
+.am-f{background:#fff;border-color:rgba(248,113,113,.2);border-left:4px solid #EF4444}
+.am-ico{font-size:1.25rem;display:block;margin-bottom:5px}
+.am-val{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;line-height:1}
+.am-k .am-val{color:#d97706}.am-p .am-val{color:#059669}.am-c .am-val{color:#2563eb}.am-f .am-val{color:#dc2626}
+.am-lbl{font-size:.54rem;font-weight:700;text-transform:uppercase;letter-spacing:.9px;margin-top:4px}
+.am-k .am-lbl{color:#d97706}.am-p .am-lbl{color:#059669}.am-c .am-lbl{color:#2563eb}.am-f .am-lbl{color:#dc2626}
 .am-pct{font-size:.62rem;margin-top:3px;font-family:'JetBrains Mono',monospace;font-weight:600}
-.am-k .am-pct{color:rgba(255,159,10,.6)}.am-p .am-pct{color:rgba(52,211,153,.6)}.am-c .am-pct{color:rgba(96,165,250,.6)}.am-f .am-pct{color:rgba(248,113,113,.6)}
+.am-k .am-pct{color:rgba(217,119,6,.7)}.am-p .am-pct{color:rgba(5,150,105,.7)}.am-c .am-pct{color:rgba(37,99,235,.7)}.am-f .am-pct{color:rgba(220,38,38,.7)}
 /* Bars */
 .anbar{margin-bottom:12px}
 .anbar-top{display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:4px}
@@ -633,23 +634,19 @@ body{
 
   <div class="screen on" id="screenHome">
     <div class="hero">
-      <div style="display:flex;gap:12px;margin-bottom:16px;position:relative;z-index:1">
-        <div style="flex:1;min-width:0">
-          <div class="h-top" style="margin-bottom:0">
-            <div class="h-av" id="hAv">?</div>
-            <div>
-              <div class="h-name" id="hName">—</div>
-              <div class="h-meta" id="hMeta"></div>
-              <div class="h-goal" id="hGoal" style="display:none">🎯 <span id="hGoalTxt"></span></div>
-            </div>
-          </div>
+      <div class="h-top">
+        <div class="h-av" id="hAv">?</div>
+        <div>
+          <div class="h-name" id="hName">—</div>
+          <div class="h-meta" id="hMeta"></div>
+          <div class="h-goal" id="hGoal" style="display:none">🎯 <span id="hGoalTxt"></span></div>
         </div>
-        <div class="h-macros" style="flex-shrink:0;width:130px">
-          <div class="hm mk"><span class="hm-ico">🔥</span><div><div class="hm-val" id="rK">—</div><div class="hm-lbl">Kcal</div></div><div class="hm-bar"><div class="hm-bar-fill" id="rKbar" style="width:0%"></div></div></div>
-          <div class="hm mp"><span class="hm-ico">💪</span><div><div class="hm-val" id="rP">—</div><div class="hm-lbl">Prot</div></div><div class="hm-bar"><div class="hm-bar-fill" id="rPbar" style="width:0%"></div></div></div>
-          <div class="hm mc"><span class="hm-ico">🌾</span><div><div class="hm-val" id="rC">—</div><div class="hm-lbl">Carb</div></div><div class="hm-bar"><div class="hm-bar-fill" id="rCbar" style="width:0%"></div></div></div>
-          <div class="hm ml"><span class="hm-ico">🥑</span><div><div class="hm-val" id="rL">—</div><div class="hm-lbl">Gras</div></div><div class="hm-bar"><div class="hm-bar-fill" id="rLbar" style="width:0%"></div></div></div>
-        </div>
+      </div>
+      <div class="h-macros">
+        <div class="hm mk"><span class="hm-ico">🔥</span><span class="hm-val" id="rK">—</span><span class="hm-lbl">Kcal</span><div class="hm-bar"><div class="hm-bar-fill" id="rKbar" style="width:0%"></div></div></div>
+        <div class="hm mp"><span class="hm-ico">💪</span><span class="hm-val" id="rP">—</span><span class="hm-lbl">Prot</span><div class="hm-bar"><div class="hm-bar-fill" id="rPbar" style="width:0%"></div></div></div>
+        <div class="hm mc"><span class="hm-ico">🌾</span><span class="hm-val" id="rC">—</span><span class="hm-lbl">Carb</span><div class="hm-bar"><div class="hm-bar-fill" id="rCbar" style="width:0%"></div></div></div>
+        <div class="hm ml"><span class="hm-ico">🥑</span><span class="hm-val" id="rL">—</span><span class="hm-lbl">Gras</span><div class="hm-bar"><div class="hm-bar-fill" id="rLbar" style="width:0%"></div></div></div>
       </div>
       <div class="h-ring">
         <div class="ring-w">
@@ -864,6 +861,7 @@ body{
   <div id="cpr"></div>
 </div>
 <script type="module">
+
 
 import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
 import{getFirestore,doc,getDoc,setDoc}from'https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js';
@@ -1375,7 +1373,132 @@ var FOODS_EX=[
   {n:"Nueces mixtas 30g",k:180,p:5,c:8,l:16,g:30,src:"SN"},
   {n:"Almendras 30g",k:170,p:6,c:6,l:15,g:30,src:"SN"},
   {n:"Cacahuates salados 30g",k:165,p:7,c:5,l:14,g:30,src:"SN"},
-  {n:"Pistaches 30g",k:160,p:6,c:8,l:13,g:30,src:"SN"}
+  {n:"Pistaches 30g",k:160,p:6,c:8,l:13,g:30,src:"SN"},
+
+  // ── Fuentes mexicanas adicionales (INSP / INCMNSZ / SMAE ref) ──
+  // Guisos caseros
+  {n:"Picadillo de res",k:280,p:22,c:18,l:14,g:200,src:"MX"},
+  {n:"Picadillo de papa",k:240,p:14,c:28,l:9,g:200,src:"MX"},
+  {n:"Tinga de pollo",k:260,p:22,c:16,l:12,g:200,src:"MX"},
+  {n:"Ropa vieja",k:290,p:24,c:14,l:15,g:200,src:"MX"},
+  {n:"Estofado de pollo",k:310,p:26,c:18,l:16,g:250,src:"MX"},
+  {n:"Pollo en salsa verde",k:280,p:28,c:12,l:14,g:220,src:"MX"},
+  {n:"Pollo en salsa roja",k:290,p:28,c:14,l:14,g:220,src:"MX"},
+  {n:"Pollo en mole",k:380,p:30,c:22,l:20,g:250,src:"MX"},
+  {n:"Milanesa de pollo",k:340,p:28,c:20,l:16,g:180,src:"MX"},
+  {n:"Milanesa de res",k:360,p:30,c:20,l:18,g:190,src:"MX"},
+  {n:"Bistec a la mexicana",k:310,p:28,c:10,l:18,g:200,src:"MX"},
+  {n:"Bistec encebollado",k:300,p:26,c:8,l:18,g:190,src:"MX"},
+  {n:"Chuleta de cerdo en salsa",k:320,p:26,c:12,l:20,g:180,src:"MX"},
+  {n:"Costilla de cerdo guisada",k:380,p:28,c:10,l:26,g:200,src:"MX"},
+  {n:"Hígado encebollado",k:240,p:26,c:12,l:10,g:180,src:"MX"},
+  {n:"Morcilla",k:340,p:16,c:18,l:22,g:100,src:"MX"},
+  {n:"Chorizo con papas",k:420,p:18,c:32,l:24,g:220,src:"MX"},
+  {n:"Rajas con crema",k:280,p:6,c:14,l:22,g:150,src:"MX"},
+  {n:"Rajas con queso",k:320,p:10,c:14,l:24,g:160,src:"MX"},
+  {n:"Nopales con huevo",k:200,p:14,c:10,l:12,g:200,src:"MX"},
+  {n:"Nopales en salsa verde",k:120,p:4,c:14,l:4,g:200,src:"MX"},
+  {n:"Calabacitas con elote",k:160,p:5,c:22,l:5,g:200,src:"MX"},
+  {n:"Calabacitas con crema",k:240,p:5,c:20,l:14,g:200,src:"MX"},
+  {n:"Coliflor gratinada",k:220,p:10,c:14,l:14,g:200,src:"MX"},
+  {n:"Espinacas con papa",k:180,p:7,c:26,l:4,g:200,src:"MX"},
+  {n:"Chayotes rellenos",k:200,p:8,c:24,l:8,g:200,src:"MX"},
+  // Sopas y caldos
+  {n:"Sopa de fideo seco",k:280,p:8,c:46,l:7,g:200,src:"MX"},
+  {n:"Sopa de fideo aguada",k:180,p:6,c:32,l:4,g:250,src:"MX"},
+  {n:"Sopa de arroz con pollo",k:320,p:18,c:42,l:8,g:300,src:"MX"},
+  {n:"Sopa de verduras",k:140,p:5,c:24,l:3,g:300,src:"MX"},
+  {n:"Sopa de milpa",k:160,p:6,c:26,l:3,g:300,src:"MX"},
+  {n:"Sopa de elote",k:190,p:5,c:34,l:5,g:300,src:"MX"},
+  {n:"Sopa azteca",k:260,p:10,c:28,l:12,g:300,src:"MX"},
+  {n:"Crema de zanahoria",k:150,p:3,c:22,l:6,g:250,src:"MX"},
+  {n:"Crema de chícharo",k:180,p:6,c:28,l:5,g:250,src:"MX"},
+  {n:"Crema de poblano",k:200,p:5,c:20,l:12,g:250,src:"MX"},
+  {n:"Caldo de camarón",k:160,p:18,c:14,l:3,g:350,src:"MX"},
+  {n:"Caldo de habas",k:180,p:12,c:28,l:2,g:350,src:"MX"},
+  {n:"Sopa de lentejas con plátano",k:260,p:14,c:42,l:3,g:350,src:"MX"},
+  {n:"Sopa tarasca",k:220,p:9,c:32,l:7,g:350,src:"MX"},
+  // Antojitos regionales
+  {n:"Tlacoyos de frijol",k:280,p:10,c:48,l:5,g:160,src:"MX"},
+  {n:"Tlacoyos de haba",k:270,p:11,c:46,l:4,g:160,src:"MX"},
+  {n:"Huarache con salsa",k:380,p:10,c:62,l:8,g:200,src:"MX"},
+  {n:"Huarache con carne",k:460,p:24,c:62,l:14,g:250,src:"MX"},
+  {n:"Volcán de queso",k:420,p:18,c:46,l:18,g:200,src:"MX"},
+  {n:"Quesadilla de flor de calabaza con queso",k:290,p:12,c:36,l:11,g:140,src:"MX"},
+  {n:"Pambazo",k:490,p:18,c:58,l:20,g:220,src:"MX"},
+  {n:"Cemita poblana",k:580,p:28,c:62,l:22,g:280,src:"MX"},
+  {n:"Lonche de carnitas",k:500,p:26,c:54,l:20,g:260,src:"MX"},
+  {n:"Tacos dorados de papa",k:320,p:7,c:48,l:12,g:160,src:"MX"},
+  {n:"Tacos dorados de pollo",k:360,p:18,c:44,l:14,g:170,src:"MX"},
+  {n:"Tacos de canasta de papa con chorizo",k:230,p:8,c:30,l:9,g:100,src:"MX"},
+  {n:"Garnachas veracruzanas",k:260,p:10,c:36,l:9,g:130,src:"MX"},
+  {n:"Memelitas oaxaqueñas",k:240,p:7,c:40,l:6,g:130,src:"MX"},
+  {n:"Chalupa poblana",k:220,p:8,c:30,l:8,g:100,src:"MX"},
+  {n:"Pellizcadas veracruzanas",k:230,p:7,c:34,l:7,g:110,src:"MX"},
+  // Desayunos mexicanos
+  {n:"Molletes de frijol con queso",k:380,p:16,c:52,l:12,g:220,src:"MX"},
+  {n:"Molletes con pico de gallo",k:360,p:14,c:52,l:10,g:220,src:"MX"},
+  {n:"Torta de huevo con jamón",k:440,p:22,c:48,l:18,g:230,src:"MX"},
+  {n:"Huevos a la mexicana",k:280,p:18,c:10,l:20,g:200,src:"MX"},
+  {n:"Huevos con chorizo",k:380,p:22,c:8,l:28,g:200,src:"MX"},
+  {n:"Huevos con nopales",k:220,p:16,c:8,l:14,g:200,src:"MX"},
+  {n:"Enchiladas de desayuno",k:420,p:20,c:48,l:16,g:250,src:"MX"},
+  {n:"Enfrijoladas de desayuno",k:380,p:16,c:44,l:14,g:230,src:"MX"},
+  {n:"Quesadillas de desayuno",k:340,p:14,c:40,l:14,g:180,src:"MX"},
+  {n:"Sincronizada",k:380,p:18,c:40,l:16,g:180,src:"MX"},
+  {n:"Caldo de pollo con verduras",k:200,p:18,c:18,l:4,g:400,src:"MX"},
+  // Postres mexicanos
+  {n:"Flan napolitano",k:280,p:7,c:42,l:10,g:120,src:"MX"},
+  {n:"Gelatina de leche",k:160,p:5,c:28,l:4,g:120,src:"MX"},
+  {n:"Arroz con leche casero",k:260,p:6,c:48,l:5,g:200,src:"MX"},
+  {n:"Buñuelo",k:220,p:3,c:34,l:9,g:70,src:"MX"},
+  {n:"Capirotada",k:380,p:8,c:62,l:12,g:180,src:"MX"},
+  {n:"Cocada",k:340,p:3,c:44,l:17,g:80,src:"MX"},
+  {n:"Calabaza en tacha",k:220,p:2,c:52,l:1,g:150,src:"MX"},
+  {n:"Camotes enmielados",k:240,p:2,c:56,l:1,g:150,src:"MX"},
+  {n:"Polvorón de nuez",k:160,p:2,c:18,l:9,g:40,src:"MX"},
+  {n:"Empanada de cajeta",k:290,p:5,c:44,l:11,g:90,src:"MX"},
+  {n:"Tarta de queso mexicana",k:380,p:8,c:44,l:20,g:120,src:"MX"},
+  // Bebidas mexicanas
+  {n:"Pulque natural",k:80,p:2,c:14,l:0,g:300,src:"MX"},
+  {n:"Mezcal con sangrita",k:180,p:1,c:12,l:0,g:120,src:"MX"},
+  {n:"Clamato preparado",k:140,p:2,c:18,l:0,g:350,src:"MX"},
+  {n:"Tepache de piña",k:120,p:1,c:28,l:0,g:330,src:"MX"},
+  {n:"Agua de chía",k:80,p:2,c:12,l:3,g:300,src:"MX"},
+  {n:"Agua de pepino limón",k:40,p:0,c:10,l:0,g:300,src:"MX"},
+  {n:"Atole blanco",k:160,p:4,c:34,l:2,g:240,src:"MX"},
+  {n:"Atole de fresa",k:180,p:4,c:38,l:2,g:240,src:"MX"},
+  {n:"Café de olla",k:30,p:0,c:7,l:0,g:240,src:"MX"},
+  {n:"Horchata de pepita",k:160,p:5,c:24,l:5,g:240,src:"MX"},
+  {n:"Coco frío con limón",k:50,p:0,c:11,l:1,g:300,src:"MX"},
+  {n:"Tamarindo en vaso",k:100,p:1,c:24,l:0,g:300,src:"MX"},
+  // Comida de mar (costas mexicanas)
+  {n:"Aguachile rojo",k:180,p:20,c:10,l:6,g:200,src:"MX"},
+  {n:"Aguachile verde",k:170,p:20,c:8,l:6,g:200,src:"MX"},
+  {n:"Camarones a la diabla",k:290,p:26,c:10,l:16,g:200,src:"MX"},
+  {n:"Camarones al coco",k:320,p:22,c:20,l:18,g:180,src:"MX"},
+  {n:"Pulpo en su tinta",k:220,p:24,c:8,l:10,g:200,src:"MX"},
+  {n:"Pulpo a las brasas",k:200,p:24,c:4,l:10,g:200,src:"MX"},
+  {n:"Ostiones al natural",k:80,p:9,c:6,l:2,g:100,src:"MX"},
+  {n:"Ostiones preparados",k:140,p:9,c:14,l:4,g:120,src:"MX"},
+  {n:"Machaca de camarón",k:280,p:24,c:14,l:14,g:200,src:"MX"},
+  {n:"Vuelve a la vida",k:200,p:18,c:16,l:6,g:250,src:"MX"},
+  {n:"Caldo de mariscos",k:200,p:20,c:14,l:6,g:400,src:"MX"},
+  {n:"Tacos de marlin",k:200,p:16,c:22,l:6,g:100,src:"MX"},
+  {n:"Tacos de camarón empanizado",k:280,p:16,c:30,l:10,g:120,src:"MX"},
+  // Panadería y cereales
+  {n:"Bolillo",k:220,p:7,c:44,l:2,g:80,src:"MX"},
+  {n:"Telera",k:210,p:7,c:42,l:2,g:75,src:"MX"},
+  {n:"Birote",k:225,p:7,c:45,l:2,g:80,src:"MX"},
+  {n:"Marqueta de pan",k:260,p:8,c:50,l:3,g:90,src:"MX"},
+  {n:"Pan de yema oaxaqueño",k:300,p:7,c:48,l:10,g:90,src:"MX"},
+  {n:"Rosca de reyes",k:320,p:7,c:56,l:9,g:100,src:"MX"},
+  {n:"Pan de muerto",k:290,p:6,c:50,l:8,g:90,src:"MX"},
+  {n:"Tortilla de maíz",k:110,p:3,c:22,l:2,g:45,src:"MX"},
+  {n:"Tortilla de harina",k:140,p:4,c:24,l:4,g:45,src:"MX"},
+  {n:"Tostada horneada",k:90,p:2,c:18,l:1,g:30,src:"MX"},
+  {n:"Totopo oaxaqueño",k:100,p:3,c:20,l:2,g:35,src:"MX"},
+  {n:"Tlayuda tortilla",k:280,p:8,c:54,l:3,g:120,src:"MX"},
 ];
 
 // Normalize function for extended search
@@ -1701,6 +1824,7 @@ function snow(n){
 })();
 
 init();
+
 
 </script>
 </body>

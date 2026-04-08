@@ -97,7 +97,7 @@ body{
     linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
   background-size:24px 24px;pointer-events:none;
 }
-.h-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px;position:relative;z-index:1}
+.h-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;position:relative;z-index:1}
 .h-av{
   width:52px;height:52px;border-radius:50%;flex-shrink:0;
   background:linear-gradient(135deg,var(--blue2),var(--blue));
@@ -115,18 +115,26 @@ body{
 }
 /* Macro strips */
 .h-macros{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:8px;
-  margin-bottom:20px;position:relative;z-index:1;
+  display:flex;flex-direction:column;gap:7px;
+  position:relative;z-index:1;
 }
 .hm{
-  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
-  border-radius:var(--r);padding:10px 6px;text-align:center;
-  transition:transform .2s var(--spring);
+  display:flex;align-items:center;gap:10px;
+  border-radius:var(--r);padding:9px 12px;
+  border-left:3px solid currentColor;
+  background:rgba(255,255,255,.05);
+  transition:transform .18s var(--spring),background .18s;
 }
-.hm:hover{transform:translateY(-2px)}
-.hm-ico{font-size:1rem;display:block;margin-bottom:4px}
-.hm-val{font-size:.82rem;font-weight:700;color:#fff;font-family:'JetBrains Mono',monospace;line-height:1}
-.hm-lbl{font-size:.55rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.8px;margin-top:3px;font-weight:600}
+.hm:hover{background:rgba(255,255,255,.09);transform:translateX(2px)}
+.hm-ico{font-size:1.15rem;flex-shrink:0;line-height:1}
+.hm-val{font-size:.95rem;font-weight:700;color:#fff;font-family:'JetBrains Mono',monospace;line-height:1;flex:1}
+.hm-lbl{font-size:.58rem;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.8px;font-weight:600}
+.hm-bar{width:40px;height:3px;border-radius:99px;background:rgba(255,255,255,.1);flex-shrink:0;overflow:hidden}
+.hm-bar-fill{height:100%;border-radius:99px;background:currentColor;opacity:.7}
+.hm.mk{color:#FF9F0A}
+.hm.mp{color:#34D399}
+.hm.mc{color:#60A5FA}
+.hm.ml{color:#F87171}
 /* Ring row */
 .h-ring{display:flex;align-items:center;gap:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.07);position:relative;z-index:1}
 .ring-w{position:relative;flex-shrink:0}
@@ -210,7 +218,7 @@ body{
   background:var(--surf);border-radius:var(--r2XL) var(--r2XL) 0 0;
   box-shadow:0 -4px 32px rgba(0,0,0,.15);
   transform:translateY(102%);transition:transform .38s var(--spring);
-  max-height:92dvh;display:flex;flex-direction:column;
+  max-height:97dvh;display:flex;flex-direction:column;
 }
 .sheet-ov.on .sheet{transform:translateY(0)}
 .sh-handle{width:36px;height:4px;background:rgba(0,0,0,.12);border-radius:99px;margin:10px auto 0;flex-shrink:0}
@@ -457,16 +465,17 @@ body{
 .am:nth-child(1){animation-delay:.04s}.am:nth-child(2){animation-delay:.08s}
 .am:nth-child(3){animation-delay:.12s}.am:nth-child(4){animation-delay:.16s}
 .am:hover{transform:translateY(-3px)}
-.am-k{background:linear-gradient(145deg,#FFF7ED,#FFEDD5);border-color:rgba(255,136,0,.2)}
-.am-p{background:linear-gradient(145deg,#F0FDF4,#DCFCE7);border-color:rgba(0,200,81,.2)}
-.am-c{background:linear-gradient(145deg,#EFF6FF,#DBEAFE);border-color:rgba(0,102,255,.2)}
-.am-f{background:linear-gradient(145deg,#FFF1F2,#FFE4E6);border-color:rgba(255,59,48,.2)}
-.am-ico{font-size:1.2rem;display:block;margin-bottom:4px}
-.am-val{font-family:'JetBrains Mono',monospace;font-size:1.05rem;font-weight:700;line-height:1}
-.am-k .am-val{color:#c2410c}.am-p .am-val{color:#166534}.am-c .am-val{color:var(--blue2)}.am-f .am-val{color:#be123c}
-.am-lbl{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-top:3px}
-.am-k .am-lbl{color:var(--orange)}.am-p .am-lbl{color:var(--green)}.am-c .am-lbl{color:var(--blue)}.am-f .am-lbl{color:var(--red)}
-.am-pct{font-size:.6rem;opacity:.65;margin-top:2px;font-family:'JetBrains Mono',monospace}
+.am-k{background:linear-gradient(145deg,#1a1200,#2a1e00);border-color:rgba(255,159,10,.3);box-shadow:0 0 0 1px rgba(255,159,10,.1) inset}
+.am-p{background:linear-gradient(145deg,#001a0d,#002a15);border-color:rgba(52,211,153,.3);box-shadow:0 0 0 1px rgba(52,211,153,.1) inset}
+.am-c{background:linear-gradient(145deg,#00101a,#001a2a);border-color:rgba(96,165,250,.3);box-shadow:0 0 0 1px rgba(96,165,250,.1) inset}
+.am-f{background:linear-gradient(145deg,#1a0005,#2a000a);border-color:rgba(248,113,113,.3);box-shadow:0 0 0 1px rgba(248,113,113,.1) inset}
+.am-ico{font-size:1.35rem;display:block;margin-bottom:6px}
+.am-val{font-family:'JetBrains Mono',monospace;font-size:1.15rem;font-weight:700;line-height:1}
+.am-k .am-val{color:#FF9F0A}.am-p .am-val{color:#34D399}.am-c .am-val{color:#60A5FA}.am-f .am-val{color:#F87171}
+.am-lbl{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+.am-k .am-lbl{color:rgba(255,159,10,.7)}.am-p .am-lbl{color:rgba(52,211,153,.7)}.am-c .am-lbl{color:rgba(96,165,250,.7)}.am-f .am-lbl{color:rgba(248,113,113,.7)}
+.am-pct{font-size:.62rem;margin-top:3px;font-family:'JetBrains Mono',monospace;font-weight:600}
+.am-k .am-pct{color:rgba(255,159,10,.6)}.am-p .am-pct{color:rgba(52,211,153,.6)}.am-c .am-pct{color:rgba(96,165,250,.6)}.am-f .am-pct{color:rgba(248,113,113,.6)}
 /* Bars */
 .anbar{margin-bottom:12px}
 .anbar-top{display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:4px}
@@ -489,29 +498,58 @@ body{
 .modal-ov{
   position:fixed;inset:0;z-index:900;background:rgba(0,0,0,0);
   pointer-events:none;display:flex;align-items:center;justify-content:center;padding:24px;
-  transition:background .3s var(--ease);
+  transition:background .35s var(--ease);
 }
-.modal-ov.on{background:rgba(0,0,0,.6);pointer-events:all;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.modal-ov.on{background:rgba(0,0,0,.75);pointer-events:all;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .modal{
-  background:linear-gradient(155deg,var(--dark),var(--dark3));
-  border:1px solid rgba(255,255,255,.1);border-radius:var(--rXL);
-  padding:36px 28px 28px;max-width:320px;width:100%;text-align:center;
-  box-shadow:0 40px 120px rgba(0,0,0,.7);
-  transform:scale(.8) translateY(40px);opacity:0;
-  transition:transform .4s var(--spring),opacity .3s var(--ease);
+  background:radial-gradient(ellipse at 50% 0%,#1e1e2e,#0a0a14 70%);
+  border:1px solid rgba(255,255,255,.12);
+  border-top:1px solid rgba(255,255,255,.25);
+  border-radius:var(--rXL);
+  padding:40px 28px 32px;max-width:330px;width:100%;text-align:center;
+  box-shadow:0 40px 120px rgba(0,0,0,.8),0 0 60px rgba(180,160,255,.06);
+  transform:scale(.75) translateY(50px);opacity:0;
+  transition:transform .45s var(--spring),opacity .3s var(--ease);
+  position:relative;overflow:hidden;
+}
+.modal::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),rgba(200,180,255,.4),rgba(255,255,255,.3),transparent);
 }
 .modal-ov.on .modal{transform:scale(1) translateY(0);opacity:1}
-.modal-ico{font-size:3.5rem;display:block;margin-bottom:16px;animation:mIco .5s var(--spring)}
-@keyframes mIco{from{transform:scale(.2) rotate(-20deg)}to{transform:none}}
-.modal-ttl{font-size:1.2rem;font-weight:800;color:#fff;letter-spacing:-.4px;margin-bottom:8px}
-.modal-sub{font-size:.84rem;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:28px}
+/* Trophy icon — custom SVG-based, no emoji */
+.modal-trophy{
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 20px;
+  width:72px;height:72px;
+  animation:trophyIn .6s var(--spring);
+}
+@keyframes trophyIn{from{transform:scale(.2) rotate(-15deg);opacity:0}to{transform:none;opacity:1}}
+.modal-ttl{
+  font-size:1.35rem;font-weight:800;letter-spacing:-.5px;margin-bottom:8px;
+  background:linear-gradient(135deg,#fff 30%,rgba(200,180,255,.8));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.modal-sub{font-size:.84rem;color:rgba(255,255,255,.45);line-height:1.65;margin-bottom:28px}
 .modal-btn{
-  padding:.75rem 2.5rem;background:linear-gradient(135deg,var(--blue2),var(--blue));
-  color:#fff;border:none;border-radius:var(--rL);font-size:.95rem;font-weight:700;
-  cursor:pointer;font-family:inherit;box-shadow:0 4px 20px rgba(0,102,255,.4);
+  padding:.78rem 2.5rem;
+  background:linear-gradient(135deg,#2a2a4a,#1a1a3a);
+  border:1px solid rgba(255,255,255,.15);
+  color:rgba(255,255,255,.9);border-radius:var(--rL);font-size:.95rem;font-weight:700;
+  cursor:pointer;font-family:inherit;
+  box-shadow:0 4px 20px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.08);
   transition:all .2s var(--spring);
 }
-.modal-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,102,255,.5)}
+.modal-btn:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.25);box-shadow:0 8px 28px rgba(0,0,0,.5)}
+/* Spark particles */
+.spark{
+  position:absolute;border-radius:50%;pointer-events:none;
+  animation:sparkFly var(--dur,.8s) var(--ease) forwards;
+}
+@keyframes sparkFly{
+  0%{transform:translate(0,0) scale(1);opacity:1}
+  100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}
+}
 
 /* ── POPOUT ── */
 .pop-ov{
@@ -558,6 +596,22 @@ body{
 .cp{position:fixed;top:-10px;width:8px;height:8px;border-radius:2px;animation:fall linear forwards;pointer-events:none;z-index:9998}
 @keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
 
+
+/* AI search badge */
+.ai-row{display:flex;align-items:center;gap:8px;padding:10px 12px;margin-bottom:10px;
+  background:linear-gradient(135deg,rgba(96,165,250,.06),rgba(139,92,246,.06));
+  border:1px solid rgba(96,165,250,.15);border-radius:var(--r);font-size:.78rem;color:var(--txt3);
+  animation:selIn .2s var(--spring);
+}
+.ai-badge{font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:99px;
+  background:linear-gradient(135deg,rgba(96,165,250,.2),rgba(139,92,246,.2));
+  color:#93c5fd;border:1px solid rgba(96,165,250,.2);letter-spacing:.3px;flex-shrink:0}
+.ai-loading{display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--txt4);padding:10px 0}
+.ai-dot{width:5px;height:5px;border-radius:50%;background:var(--blue);animation:aiPulse .8s ease infinite}
+.ai-dot:nth-child(2){animation-delay:.15s}
+.ai-dot:nth-child(3){animation-delay:.3s}
+@keyframes aiPulse{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}
+.sdi.ai-result{border-left:2px solid rgba(139,92,246,.4)}
 </style>
 </head>
 <body>
@@ -579,19 +633,23 @@ body{
 
   <div class="screen on" id="screenHome">
     <div class="hero">
-      <div class="h-top">
-        <div class="h-av" id="hAv">?</div>
-        <div>
-          <div class="h-name" id="hName">—</div>
-          <div class="h-meta" id="hMeta"></div>
-          <div class="h-goal" id="hGoal" style="display:none">🎯 <span id="hGoalTxt"></span></div>
+      <div style="display:flex;gap:12px;margin-bottom:16px;position:relative;z-index:1">
+        <div style="flex:1;min-width:0">
+          <div class="h-top" style="margin-bottom:0">
+            <div class="h-av" id="hAv">?</div>
+            <div>
+              <div class="h-name" id="hName">—</div>
+              <div class="h-meta" id="hMeta"></div>
+              <div class="h-goal" id="hGoal" style="display:none">🎯 <span id="hGoalTxt"></span></div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="h-macros">
-        <div class="hm"><span class="hm-ico">🔥</span><div class="hm-val" id="rK">—</div><div class="hm-lbl">Kcal</div></div>
-        <div class="hm"><span class="hm-ico">💪</span><div class="hm-val" id="rP">—</div><div class="hm-lbl">Prot</div></div>
-        <div class="hm"><span class="hm-ico">🌾</span><div class="hm-val" id="rC">—</div><div class="hm-lbl">Carb</div></div>
-        <div class="hm"><span class="hm-ico">🥑</span><div class="hm-val" id="rL">—</div><div class="hm-lbl">Gras</div></div>
+        <div class="h-macros" style="flex-shrink:0;width:130px">
+          <div class="hm mk"><span class="hm-ico">🔥</span><div><div class="hm-val" id="rK">—</div><div class="hm-lbl">Kcal</div></div><div class="hm-bar"><div class="hm-bar-fill" id="rKbar" style="width:0%"></div></div></div>
+          <div class="hm mp"><span class="hm-ico">💪</span><div><div class="hm-val" id="rP">—</div><div class="hm-lbl">Prot</div></div><div class="hm-bar"><div class="hm-bar-fill" id="rPbar" style="width:0%"></div></div></div>
+          <div class="hm mc"><span class="hm-ico">🌾</span><div><div class="hm-val" id="rC">—</div><div class="hm-lbl">Carb</div></div><div class="hm-bar"><div class="hm-bar-fill" id="rCbar" style="width:0%"></div></div></div>
+          <div class="hm ml"><span class="hm-ico">🥑</span><div><div class="hm-val" id="rL">—</div><div class="hm-lbl">Gras</div></div><div class="hm-bar"><div class="hm-bar-fill" id="rLbar" style="width:0%"></div></div></div>
+        </div>
       </div>
       <div class="h-ring">
         <div class="ring-w">
@@ -693,6 +751,7 @@ body{
           </div>
           <div class="log-hdr"><span class="log-hdr-l">Registro del día</span><button class="log-clr" onclick="clearLog()">Limpiar</button></div>
           <div id="logList"><div class="log-empty">Sin alimentos registrados.</div></div>
+          <div id="aiResults" style="display:none"></div>
         </div>
         <!-- ANALYSIS -->
         <div class="spanel" id="spAnalysis">
@@ -718,11 +777,45 @@ body{
 
   <!-- Completion Modal -->
   <div class="modal-ov" id="completionModal">
-    <div class="modal">
-      <span class="modal-ico">🎉</span>
-      <div class="modal-ttl">¡Día completado!</div>
-      <div class="modal-sub">Completaste las cinco comidas. Excelente disciplina nutricional 💪</div>
-      <button class="modal-btn" onclick="document.getElementById('completionModal').classList.remove('on')">¡Seguir así! →</button>
+    <div class="modal" id="modalBox">
+      <!-- SVG Trophy -->
+      <div class="modal-trophy">
+        <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
+          <defs>
+            <linearGradient id="tg1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#E8E0FF"/>
+              <stop offset="50%" stop-color="#C8B8F8"/>
+              <stop offset="100%" stop-color="#9880E8"/>
+            </linearGradient>
+            <linearGradient id="tg2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#D4C8FF"/>
+              <stop offset="100%" stop-color="#7860D8"/>
+            </linearGradient>
+            <filter id="tglow">
+              <feGaussianBlur stdDeviation="2" result="blur"/>
+              <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+            </filter>
+          </defs>
+          <!-- Cup body -->
+          <path d="M20 8 L52 8 L48 36 Q44 46 36 48 Q28 46 24 36 Z" fill="url(#tg1)" filter="url(#tglow)"/>
+          <!-- Shine -->
+          <path d="M24 12 L28 12 L26 32 L22 32 Z" fill="rgba(255,255,255,.3)" rx="2"/>
+          <!-- Handles -->
+          <path d="M20 12 Q10 12 10 22 Q10 32 20 34" stroke="url(#tg2)" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M52 12 Q62 12 62 22 Q62 32 52 34" stroke="url(#tg2)" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <!-- Stem -->
+          <rect x="31" y="48" width="10" height="10" rx="2" fill="url(#tg2)"/>
+          <!-- Base -->
+          <rect x="24" y="58" width="24" height="6" rx="3" fill="url(#tg1)"/>
+          <!-- Stars -->
+          <circle cx="36" cy="24" r="2.5" fill="rgba(255,255,255,.8)"/>
+          <circle cx="42" cy="18" r="1.5" fill="rgba(255,255,255,.6)"/>
+          <circle cx="30" cy="20" r="1.5" fill="rgba(255,255,255,.6)"/>
+        </svg>
+      </div>
+      <div class="modal-ttl">¡Día Completado!</div>
+      <div class="modal-sub">Completaste las cinco comidas del día.<br>Excelente disciplina nutricional.</div>
+      <button class="modal-btn" onclick="closeCompletion()">Continuar →</button>
     </div>
   </div>
 
@@ -771,6 +864,7 @@ body{
   <div id="cpr"></div>
 </div>
 <script type="module">
+
 import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
 import{getFirestore,doc,getDoc,setDoc}from'https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js';
 const _FB={apiKey:'AIzaSyAB82hupqdQvlOfbM0xusNY5oPsEAHCcY4',authDomain:'portal-nutricional-693fb.firebaseapp.com',projectId:'portal-nutricional-693fb',storageBucket:'portal-nutricional-693fb.firebasestorage.app',messagingSenderId:'208066338229',appId:'1:208066338229:web:b4c16b54daa2aec9c24dfc'};
@@ -865,6 +959,22 @@ function renderHero(){
   $('rK').textContent=req.k;$('rP').textContent=req.p+'g';
   $('rC').textContent=req.c+'g';$('rL').textContent=req.l+'g';
   $('navChip').textContent='15 días';
+  var maxes={k:3500,p:250,c:400,l:120};
+  ['k','p','c','l'].forEach(function(m){
+    var el=$('r'+m.toUpperCase()+'bar');
+    if(el)el.style.width=Math.min(req[m]/maxes[m]*100,100)+'%';
+  });
+  // Color macro bars (max reasonable values)
+  var maxes={k:4000,p:300,c:500,l:150};
+  ['k','p','c','l'].forEach(function(m){
+    var bar=$('r'+m.toUpperCase()+'bar');
+    if(bar)bar.style.width=Math.min(req[m]/maxes[m]*100,100)+'%';
+  });
+  var _maxes={k:3500,p:250,c:400,l:120};
+  ['k','p','c','l'].forEach(function(m){
+    var el=$('r'+m.toUpperCase()+'bar');
+    if(el)el.style.width=Math.min(req[m]/_maxes[m]*100,100)+'%';
+  });
   updateStats();
 }
 function updateStats(){
@@ -1034,7 +1144,320 @@ document.addEventListener('click',function(e){
   });
 });
 
-window.doSearchMeal=function(){clearTimeout(_mT);_mT=setTimeout(function(){buildDrop(MEGA,'mSI','mDrop','pickMeal','meal');},120);};
+
+// ── AI FOOD SEARCH ────────────────────────────────────────────────
+// Extended Mexican+American food database (inline — no API call for speed)
+var FOODS_EX=[
+  // Mexican street food
+  {n:"Taco de carnitas",k:185,p:12,c:18,l:7,g:90,src:"MX"},
+  {n:"Taco de pastor",k:195,p:11,c:19,l:8,g:90,src:"MX"},
+  {n:"Taco de suadero",k:200,p:12,c:18,l:9,g:90,src:"MX"},
+  {n:"Taco de barbacoa",k:180,p:14,c:16,l:7,g:85,src:"MX"},
+  {n:"Taco de lengua",k:210,p:13,c:17,l:10,g:90,src:"MX"},
+  {n:"Taco de tripa",k:220,p:11,c:16,l:12,g:90,src:"MX"},
+  {n:"Taco de canasta frijol",k:160,p:6,c:24,l:5,g:85,src:"MX"},
+  {n:"Taco de canasta chicharrón",k:190,p:8,c:22,l:8,g:85,src:"MX"},
+  {n:"Torta de milanesa",k:520,p:28,c:55,l:20,g:250,src:"MX"},
+  {n:"Torta de jamón",k:420,p:22,c:50,l:14,g:220,src:"MX"},
+  {n:"Torta de chorizo",k:550,p:24,c:52,l:24,g:250,src:"MX"},
+  {n:"Torta ahogada",k:490,p:26,c:54,l:18,g:280,src:"MX"},
+  {n:"Torta de pierna",k:480,p:28,c:52,l:17,g:250,src:"MX"},
+  {n:"Gordita de chicharrón",k:280,p:10,c:32,l:12,g:120,src:"MX"},
+  {n:"Gordita de picadillo",k:260,p:12,c:30,l:10,g:115,src:"MX"},
+  {n:"Sope de frijoles",k:230,p:8,c:38,l:5,g:110,src:"MX"},
+  {n:"Sope de tinga",k:260,p:14,c:36,l:7,g:120,src:"MX"},
+  {n:"Tostada de tinga",k:220,p:14,c:24,l:7,g:100,src:"MX"},
+  {n:"Tostada de ceviche",k:180,p:12,c:22,l:4,g:110,src:"MX"},
+  {n:"Tlayuda oaxaqueña",k:580,p:22,c:72,l:18,g:300,src:"MX"},
+  {n:"Memela",k:240,p:7,c:40,l:6,g:130,src:"MX"},
+  {n:"Tetela",k:260,p:9,c:42,l:7,g:140,src:"MX"},
+  {n:"Quesadilla de huitlacoche",k:280,p:10,c:36,l:9,g:130,src:"MX"},
+  {n:"Quesadilla de flor de calabaza",k:250,p:9,c:34,l:8,g:125,src:"MX"},
+  {n:"Tamale de rajas",k:220,p:6,c:30,l:8,g:100,src:"MX"},
+  {n:"Tamale de mole",k:240,p:8,c:32,l:9,g:110,src:"MX"},
+  {n:"Tamal oaxaqueño",k:290,p:10,c:38,l:10,g:130,src:"MX"},
+  {n:"Tamal de elote",k:200,p:5,c:35,l:6,g:100,src:"MX"},
+  {n:"Pozole rojo",k:320,p:22,c:38,l:8,g:300,src:"MX"},
+  {n:"Pozole verde",k:300,p:20,c:36,l:7,g:300,src:"MX"},
+  {n:"Pozole blanco",k:290,p:21,c:35,l:6,g:300,src:"MX"},
+  {n:"Menudo",k:280,p:24,c:28,l:7,g:350,src:"MX"},
+  {n:"Birria de res",k:320,p:26,c:18,l:16,g:250,src:"MX"},
+  {n:"Birria de chivo",k:290,p:24,c:16,l:14,g:230,src:"MX"},
+  {n:"Caldo de res",k:220,p:18,c:20,l:6,g:400,src:"MX"},
+  {n:"Caldo de pollo",k:180,p:16,c:18,l:4,g:350,src:"MX"},
+  {n:"Caldo tlalpeño",k:250,p:20,c:24,l:6,g:350,src:"MX"},
+  {n:"Sopa de lima yucateca",k:260,p:18,c:26,l:7,g:300,src:"MX"},
+  {n:"Chiles en nogada",k:480,p:20,c:52,l:22,g:250,src:"MX"},
+  {n:"Chiles rellenos de queso",k:380,p:18,c:28,l:22,g:200,src:"MX"},
+  {n:"Chiles rellenos de picadillo",k:420,p:22,c:32,l:20,g:220,src:"MX"},
+  {n:"Enfrijoladas",k:360,p:16,c:44,l:12,g:200,src:"MX"},
+  {n:"Entomatadas",k:340,p:14,c:42,l:10,g:195,src:"MX"},
+  {n:"Enmoladas",k:390,p:18,c:46,l:14,g:210,src:"MX"},
+  {n:"Mole negro oaxaqueño",k:450,p:28,c:38,l:20,g:280,src:"MX"},
+  {n:"Mole amarillo",k:380,p:24,c:32,l:16,g:260,src:"MX"},
+  {n:"Pipián verde",k:360,p:26,c:28,l:18,g:250,src:"MX"},
+  {n:"Cochinita pibil",k:340,p:28,c:18,l:18,g:200,src:"MX"},
+  {n:"Puchero yucateco",k:410,p:30,c:36,l:12,g:400,src:"MX"},
+  {n:"Frijoles charros",k:290,p:16,c:38,l:8,g:300,src:"MX"},
+  {n:"Frijoles a la charra",k:280,p:15,c:36,l:7,g:290,src:"MX"},
+  {n:"Arroz a la mexicana",k:200,p:4,c:42,l:3,g:180,src:"MX"},
+  {n:"Arroz con leche",k:280,p:6,c:52,l:6,g:200,src:"MX"},
+  {n:"Agua de jamaica",k:60,p:0,c:15,l:0,g:240,src:"MX"},
+  {n:"Agua de horchata",k:140,p:2,c:30,l:2,g:240,src:"MX"},
+  {n:"Agua de tamarindo",k:90,p:0,c:22,l:0,g:240,src:"MX"},
+  {n:"Michelada",k:180,p:1,c:24,l:0,g:350,src:"MX"},
+  {n:"Tepache",k:110,p:0,c:26,l:0,g:330,src:"MX"},
+  {n:"Atole de guayaba",k:180,p:4,c:38,l:2,g:240,src:"MX"},
+  {n:"Champurrado",k:220,p:5,c:42,l:5,g:240,src:"MX"},
+  {n:"Pan dulce concha",k:290,p:6,c:50,l:7,g:80,src:"MX"},
+  {n:"Pan dulce cuerno",k:260,p:5,c:44,l:7,g:70,src:"MX"},
+  {n:"Pan dulce polvorón",k:180,p:2,c:24,l:9,g:50,src:"MX"},
+  {n:"Marquesita yucateca",k:320,p:8,c:46,l:12,g:130,src:"MX"},
+  {n:"Churros con chocolate",k:380,p:6,c:52,l:16,g:150,src:"MX"},
+  {n:"Churro sencillo",k:180,p:2,c:26,l:8,g:60,src:"MX"},
+  {n:"Elote en vaso",k:290,p:6,c:48,l:8,g:200,src:"MX"},
+  {n:"Elote asado con mayonesa",k:260,p:5,c:46,l:7,g:200,src:"MX"},
+  {n:"Jícama con chile y limón",k:80,p:1,c:18,l:0,g:150,src:"MX"},
+  {n:"Mangonada",k:260,p:1,c:62,l:1,g:350,src:"MX"},
+  {n:"Nieve de limón",k:150,p:0,c:38,l:0,g:120,src:"MX"},
+  {n:"Nieve de guanábana",k:160,p:1,c:40,l:0,g:120,src:"MX"},
+  {n:"Paleta de tamarindo",k:80,p:0,c:20,l:0,g:80,src:"MX"},
+  {n:"Raspado de fresa",k:120,p:0,c:30,l:0,g:200,src:"MX"},
+  {n:"Esquite",k:240,p:5,c:42,l:6,g:180,src:"MX"},
+  {n:"Chilaquiles rojos con pollo",k:420,p:22,c:48,l:14,g:300,src:"MX"},
+  {n:"Chilaquiles verdes con huevo",k:390,p:18,c:46,l:13,g:290,src:"MX"},
+  {n:"Huevos rancheros",k:380,p:20,c:30,l:20,g:280,src:"MX"},
+  {n:"Huevos divorciados",k:400,p:22,c:32,l:21,g:290,src:"MX"},
+  {n:"Machaca con huevo",k:350,p:26,c:22,l:18,g:250,src:"MX"},
+  {n:"Migas norteñas",k:420,p:24,c:36,l:20,g:280,src:"MX"},
+  {n:"Discada norteña",k:480,p:32,c:28,l:24,g:300,src:"MX"},
+  {n:"Arrachera asada",k:380,p:34,c:4,l:24,g:200,src:"MX"},
+  {n:"Carne asada norteña",k:360,p:36,c:0,l:22,g:200,src:"MX"},
+  {n:"Cabrito asado",k:320,p:30,c:0,l:20,g:200,src:"MX"},
+  {n:"Enchiladas potosinas",k:380,p:18,c:44,l:14,g:230,src:"MX"},
+  {n:"Enchiladas suizas",k:420,p:22,c:46,l:16,g:250,src:"MX"},
+  {n:"Flautas de pollo",k:380,p:20,c:40,l:16,g:200,src:"MX"},
+  {n:"Flautas de papa",k:340,p:8,c:52,l:12,g:190,src:"MX"},
+  {n:"Taquitos dorados",k:360,p:16,c:44,l:14,g:190,src:"MX"},
+  {n:"Molotes oaxaqueños",k:300,p:8,c:46,l:10,g:160,src:"MX"},
+  {n:"Empanada de atún",k:280,p:16,c:32,l:9,g:130,src:"MX"},
+  {n:"Empanada de queso y chile",k:290,p:10,c:34,l:11,g:130,src:"MX"},
+  {n:"Ceviche de camarón",k:200,p:18,c:22,l:4,g:200,src:"MX"},
+  {n:"Ceviche de pescado",k:180,p:20,c:18,l:3,g:200,src:"MX"},
+  {n:"Tostada de mariscos",k:260,p:16,c:28,l:8,g:160,src:"MX"},
+  {n:"Camarones al ajillo",k:280,p:26,c:8,l:16,g:200,src:"MX"},
+  {n:"Pescado zarandeado",k:350,p:32,c:12,l:18,g:250,src:"MX"},
+  {n:"Tilapia a la veracruzana",k:280,p:28,c:14,l:12,g:250,src:"MX"},
+  // Fast food US / Internacional
+  {n:"Big Mac",k:550,p:25,c:46,l:30,g:200,src:"US"},
+  {n:"McDouble",k:390,p:22,c:34,l:18,g:155,src:"US"},
+  {n:"Quarter Pounder",k:520,p:30,c:43,l:26,g:199,src:"US"},
+  {n:"Whopper",k:680,p:28,c:51,l:40,g:270,src:"US"},
+  {n:"Double Whopper",k:900,p:48,c:53,l:58,g:374,src:"US"},
+  {n:"Crispy Chicken Sandwich McDonald's",k:470,p:25,c:45,l:21,g:200,src:"US"},
+  {n:"McChicken",k:400,p:22,c:39,l:17,g:160,src:"US"},
+  {n:"Filet-O-Fish",k:380,p:15,c:38,l:18,g:142,src:"US"},
+  {n:"McNuggets 6 piezas",k:280,p:15,c:17,l:17,g:105,src:"US"},
+  {n:"McNuggets 10 piezas",k:470,p:25,c:28,l:28,g:175,src:"US"},
+  {n:"McFlurry Oreo",k:510,p:11,c:81,l:16,g:332,src:"US"},
+  {n:"Hot Cakes McDonald's (3 pzas)",k:580,p:12,c:102,l:15,g:240,src:"US"},
+  {n:"Egg McMuffin",k:310,p:17,c:30,l:12,g:135,src:"US"},
+  {n:"Burrito de desayuno McDonald's",k:300,p:13,c:26,l:16,g:115,src:"US"},
+  {n:"Papas fritas medianas McDonald's",k:320,p:4,c:44,l:15,g:117,src:"US"},
+  {n:"Papas fritas grandes McDonald's",k:490,p:6,c:66,l:23,g:177,src:"US"},
+  {n:"Chicken Wings Buffalo",k:480,p:38,c:14,l:30,g:250,src:"US"},
+  {n:"Pizza Pepperoni rebanada",k:290,p:14,c:32,l:12,g:107,src:"US"},
+  {n:"Pizza Margarita rebanada",k:250,p:11,c:34,l:8,g:107,src:"US"},
+  {n:"Pizza 4 quesos rebanada",k:310,p:15,c:32,l:14,g:107,src:"US"},
+  {n:"Hot dog clásico",k:290,p:11,c:28,l:15,g:120,src:"US"},
+  {n:"Corn dog",k:320,p:10,c:36,l:15,g:140,src:"US"},
+  {n:"Sándwich de atún",k:350,p:22,c:36,l:12,g:180,src:"US"},
+  {n:"Sándwich BLT",k:420,p:20,c:38,l:20,g:200,src:"US"},
+  {n:"Club sandwich",k:480,p:28,c:44,l:20,g:230,src:"US"},
+  {n:"Wrap de pollo",k:380,p:26,c:38,l:12,g:200,src:"US"},
+  {n:"Burrito grande de pollo",k:580,p:34,c:62,l:18,g:290,src:"US"},
+  {n:"Burrito de res",k:620,p:32,c:66,l:20,g:310,src:"US"},
+  {n:"Nachos con queso",k:580,p:12,c:68,l:28,g:250,src:"US"},
+  {n:"Nachos supremos",k:720,p:20,c:74,l:36,g:320,src:"US"},
+  {n:"Cheetos flamin hot",k:160,p:2,c:16,l:10,g:28,src:"US"},
+  {n:"Doritos nacho cheese",k:140,p:2,c:18,l:7,g:28,src:"US"},
+  {n:"Fritos",k:160,p:2,c:16,l:10,g:28,src:"US"},
+  {n:"Pretzels salados",k:110,p:3,c:23,l:1,g:30,src:"US"},
+  {n:"Brownie chocolate",k:340,p:4,c:48,l:16,g:80,src:"US"},
+  {n:"Cheesecake New York",k:420,p:7,c:38,l:28,g:120,src:"US"},
+  {n:"Donut glaseada",k:280,p:4,c:34,l:14,g:65,src:"US"},
+  {n:"Muffin de arándano",k:380,p:6,c:58,l:14,g:120,src:"US"},
+  {n:"Croissant de mantequilla",k:310,p:6,c:34,l:17,g:90,src:"US"},
+  {n:"Bagel con crema cheese",k:380,p:11,c:56,l:12,g:150,src:"US"},
+  {n:"Waffle belga",k:420,p:10,c:62,l:15,g:180,src:"US"},
+  {n:"French toast",k:380,p:11,c:52,l:14,g:180,src:"US"},
+  {n:"Cereal corn flakes con leche",k:280,p:9,c:54,l:4,g:300,src:"US"},
+  {n:"Avena cocida con leche",k:230,p:9,c:38,l:5,g:250,src:"US"},
+  {n:"Granola con yogurt",k:320,p:10,c:50,l:8,g:180,src:"US"},
+  {n:"Smoothie de fresa y plátano",k:240,p:4,c:52,l:2,g:350,src:"US"},
+  {n:"Frappuccino caramel Starbucks",k:420,p:5,c:68,l:14,g:400,src:"US"},
+  {n:"Latte grande Starbucks",k:220,p:11,c:28,l:8,g:470,src:"US"},
+  {n:"Cold brew con leche",k:120,p:5,c:16,l:3,g:350,src:"US"},
+  {n:"Matcha latte",k:200,p:8,c:28,l:6,g:350,src:"US"},
+  {n:"Smoothie bowl de acai",k:380,p:7,c:70,l:8,g:300,src:"US"},
+  {n:"Toast de aguacate",k:290,p:8,c:28,l:17,g:160,src:"US"},
+  {n:"Ensalada César con pollo",k:380,p:28,c:22,l:20,g:300,src:"US"},
+  {n:"Ensalada de espinaca",k:180,p:12,c:16,l:8,g:250,src:"US"},
+  {n:"Sopa de tomate",k:150,p:4,c:26,l:4,g:250,src:"US"},
+  {n:"Sopa de lentejas",k:230,p:14,c:38,l:3,g:300,src:"US"},
+  {n:"Macarrones con queso",k:380,p:14,c:56,l:12,g:250,src:"US"},
+  {n:"Pasta alfredo",k:480,p:16,c:58,l:20,g:300,src:"US"},
+  {n:"Lasaña de carne",k:420,p:22,c:46,l:16,g:250,src:"US"},
+  {n:"Salmón al horno",k:310,p:36,c:0,l:18,g:180,src:"US"},
+  {n:"Pechuga de pollo asada",k:220,p:42,c:0,l:5,g:180,src:"US"},
+  {n:"Filete de res a la plancha",k:280,p:38,c:0,l:14,g:180,src:"US"},
+  {n:"Chuleta de cerdo",k:260,p:30,c:0,l:15,g:170,src:"US"},
+  {n:"Costillas BBQ",k:540,p:38,c:28,l:30,g:280,src:"US"},
+  {n:"Pulled pork sandwich",k:560,p:34,c:54,l:20,g:280,src:"US"},
+  {n:"Steak & eggs",k:480,p:44,c:4,l:30,g:280,src:"US"},
+  {n:"Pancakes con maple",k:460,p:10,c:78,l:12,g:220,src:"US"},
+  // Saludables / Fitness
+  {n:"Bowl de quinoa con verduras",k:380,p:14,c:58,l:10,g:300,src:"FIT"},
+  {n:"Wrap integral de pavo",k:340,p:26,c:38,l:8,g:200,src:"FIT"},
+  {n:"Ensalada de atún",k:260,p:28,c:12,l:10,g:250,src:"FIT"},
+  {n:"Bowl de açaí con granola",k:380,p:8,c:68,l:10,g:300,src:"FIT"},
+  {n:"Smoothie proteico",k:280,p:28,c:32,l:4,g:400,src:"FIT"},
+  {n:"Tazón de proteína con frutas",k:320,p:30,c:38,l:4,g:350,src:"FIT"},
+  {n:"Salmón con brócoli y arroz",k:420,p:38,c:42,l:12,g:350,src:"FIT"},
+  {n:"Pollo con camote y ejotes",k:380,p:36,c:40,l:8,g:350,src:"FIT"},
+  {n:"Tilapia con espárragos",k:280,p:34,c:14,l:8,g:300,src:"FIT"},
+  {n:"Omelette de claras",k:180,p:22,c:4,l:8,g:200,src:"FIT"},
+  {n:"Omelette con verduras",k:240,p:20,c:8,l:14,g:220,src:"FIT"},
+  {n:"Yogurt griego con nueces",k:280,p:18,c:22,l:12,g:200,src:"FIT"},
+  {n:"Batido de proteína de suero",k:150,p:25,c:8,l:2,g:300,src:"FIT"},
+  {n:"Batido de caseína",k:140,p:24,c:6,l:1,g:300,src:"FIT"},
+  {n:"Barrita proteica Kind",k:200,p:12,c:22,l:7,g:50,src:"FIT"},
+  {n:"Arroz integral con frijoles",k:320,p:14,c:58,l:3,g:300,src:"FIT"},
+  {n:"Lentejas guisadas",k:230,p:16,c:36,l:3,g:300,src:"FIT"},
+  {n:"Garbanzos salteados",k:280,p:14,c:40,l:6,g:250,src:"FIT"},
+  {n:"Edamame",k:120,p:10,c:10,l:4,g:100,src:"FIT"},
+  {n:"Hummus con zanahoria",k:200,p:8,c:26,l:8,g:150,src:"FIT"},
+  // Bebidas
+  {n:"Refresco Coca-Cola 600ml",k:256,p:0,c:64,l:0,g:600,src:"BV"},
+  {n:"Refresco Pepsi 600ml",k:250,p:0,c:64,l:0,g:600,src:"BV"},
+  {n:"Refresco de Uva 600ml",k:280,p:0,c:72,l:0,g:600,src:"BV"},
+  {n:"Jugo de naranja 355ml",k:165,p:2,c:38,l:0,g:355,src:"BV"},
+  {n:"Jugo de manzana 355ml",k:170,p:0,c:42,l:0,g:355,src:"BV"},
+  {n:"Leche entera 250ml",k:150,p:8,c:12,l:8,g:250,src:"BV"},
+  {n:"Leche descremada 250ml",k:85,p:8,c:12,l:0,g:250,src:"BV"},
+  {n:"Leche de almendra 250ml",k:40,p:1,c:2,l:3,g:250,src:"BV"},
+  {n:"Leche de avena 250ml",k:120,p:3,c:22,l:3,g:250,src:"BV"},
+  {n:"Café americano",k:5,p:0,c:1,l:0,g:240,src:"BV"},
+  {n:"Café con leche 240ml",k:80,p:4,c:10,l:3,g:240,src:"BV"},
+  {n:"Café capuchino",k:110,p:5,c:12,l:4,g:240,src:"BV"},
+  {n:"Té verde sin azúcar",k:2,p:0,c:0,l:0,g:240,src:"BV"},
+  {n:"Té de manzanilla",k:2,p:0,c:0,l:0,g:240,src:"BV"},
+  {n:"Agua de sabor",k:80,p:0,c:20,l:0,g:500,src:"BV"},
+  {n:"Cerveza regular 355ml",k:150,p:1,c:13,l:0,g:355,src:"BV"},
+  {n:"Cerveza light 355ml",k:100,p:1,c:7,l:0,g:355,src:"BV"},
+  {n:"Vino tinto 150ml",k:125,p:0,c:4,l:0,g:150,src:"BV"},
+  {n:"Vino blanco 150ml",k:120,p:0,c:4,l:0,g:150,src:"BV"},
+  {n:"Tequila 45ml",k:98,p:0,c:0,l:0,g:45,src:"BV"},
+  {n:"Mezcal 45ml",k:100,p:0,c:0,l:0,g:45,src:"BV"},
+  // Snacks
+  {n:"Sabritas original 30g",k:160,p:2,c:16,l:10,g:30,src:"SN"},
+  {n:"Cheetos pelotazos 30g",k:150,p:2,c:17,l:8,g:30,src:"SN"},
+  {n:"Ruffles 30g",k:160,p:2,c:16,l:10,g:30,src:"SN"},
+  {n:"Palomitas de microondas 30g",k:130,p:2,c:18,l:6,g:30,src:"SN"},
+  {n:"Galletas María 3 pzas",k:130,p:2,c:24,l:3,g:35,src:"SN"},
+  {n:"Galletas Oreo 3 pzas",k:160,p:2,c:25,l:7,g:34,src:"SN"},
+  {n:"Chocolate Snickers",k:280,p:4,c:35,l:14,g:57,src:"SN"},
+  {n:"Chocolate Kit Kat 2 barras",k:210,p:3,c:27,l:11,g:42,src:"SN"},
+  {n:"Gansito Marinela",k:330,p:4,c:54,l:11,g:90,src:"SN"},
+  {n:"Twinkie",k:270,p:2,c:45,l:9,g:77,src:"SN"},
+  {n:"Bimbo rebanada pan blanco",k:70,p:2,c:14,l:1,g:25,src:"SN"},
+  {n:"Bimbo rebanada pan integral",k:65,p:3,c:13,l:1,g:25,src:"SN"},
+  {n:"Nueces mixtas 30g",k:180,p:5,c:8,l:16,g:30,src:"SN"},
+  {n:"Almendras 30g",k:170,p:6,c:6,l:15,g:30,src:"SN"},
+  {n:"Cacahuates salados 30g",k:165,p:7,c:5,l:14,g:30,src:"SN"},
+  {n:"Pistaches 30g",k:160,p:6,c:8,l:13,g:30,src:"SN"}
+];
+
+// Normalize function for extended search
+function normEx(s){return(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();}
+
+function scoreEx(food, nq){
+  var fn=normEx(food.n);
+  var st=nq.endsWith('s')&&nq.length>4?nq.slice(0,-1):nq;
+  if(fn===nq||fn===st)return 100;
+  if(fn.startsWith(nq))return 90;
+  if(fn.includes(nq)||fn.includes(st))return 68;
+  var ws=nq.split(/\s+/).filter(function(w){return w.length>2;});
+  if(ws.length>0){
+    var hits=ws.filter(function(w){return fn.includes(w)||fn.includes(w.endsWith('s')&&w.length>4?w.slice(0,-1):w);});
+    if(hits.length>0)return Math.round(hits.length/ws.length*50);
+  }
+  return 0;
+}
+
+function searchExtended(q){
+  if(!q||q.trim().length<2)return[];
+  var nq=normEx(q.trim());
+  return FOODS_EX
+    .map(function(f){return{f:f,s:scoreEx(f,nq)};})
+    .filter(function(x){return x.s>0;})
+    .sort(function(a,b){return b.s-a.s;})
+    .slice(0,20)
+    .map(function(x){return x.f;});
+}
+
+function buildDropEx(results, inId, drId, pool_name){
+  var drop=$(drId);if(!drop)return;
+  if(!results.length)return;
+  var srcLabel={MX:'MX',US:'US',FIT:'Fit',BV:'Beb',SN:'Snack'};
+  var extra=results.map(function(f){
+    var safe=f.n.replace(/'/g,'&#39;');
+    var idx=FOODS_EX.indexOf(f);
+    return '<div class="sdi ai-result" ontouchstart="" data-exidx="'+idx+'" data-pool="'+pool_name+'" onclick="window.pickExIdx(this)">'+
+      '<div class="sdi-top">'+
+        '<span class="sdi-badge b-meal" style="background:rgba(139,92,246,.15);color:#a78bfa">'+(srcLabel[f.src]||f.src)+'</span>'+
+        '<span class="sdi-nm">'+safe+'</span>'+
+      '</div>'+
+      '<div class="sdi-mac">'+f.k+'kcal &middot; 💪'+f.p+'g &middot; 🌾'+f.c+'g &middot; 🥑'+f.l+'g &middot; '+f.g+'g</div>'+
+    '</div>';
+  }).join('');
+  if(!drop.classList.contains('on')){
+    drop.innerHTML=extra;drop.classList.add('on');
+  } else if(extra&&!drop.innerHTML.includes('ai-result')){
+    drop.innerHTML+='<div style="padding:4px 12px;font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--txt4);border-top:1px solid var(--bdr)">Búsqueda extendida</div>'+extra;
+  }
+}
+
+window.pickExIdx=function(el){
+  var idx=parseInt(el.dataset.exidx);
+  var f=FOODS_EX[idx];
+  if(!f)return;
+  window.pickEx(f, el.dataset.pool);
+};
+window.pickEx=function(f, poolName){
+  // Convert extended food to MEGA-like format then pick it
+  var tempF={nombre:f.n,grupo:f.src,kcal:f.k,proteina_g:f.p,carbohidratos_g:f.c,lipidos_g:f.l,porcion_g:f.g,alias:[]};
+  // Temporarily push to MEGA and pick
+  var idx=MEGA.length;
+  MEGA.push(tempF);
+  window.pickMeal(idx);
+  // Clean up after selection (don't let MEGA grow forever)
+  setTimeout(function(){if(MEGA[idx]&&MEGA[idx].nombre===f.n)MEGA.splice(idx,1);},5000);
+};
+
+// Patch doSearchMeal to also search extended
+window.doSearchMeal=function(){
+  clearTimeout(_mT);
+  _mT=setTimeout(function(){
+    buildDrop(MEGA,'mSI','mDrop','pickMeal','meal');
+    // Also search extended database
+    var q=($( 'mSI')||{}).value||'';
+    if(q.trim().length>=2){
+      var exRes=searchExtended(q);
+      if(exRes.length)buildDropEx(exRes,'mSI','mDrop','meal');
+    }
+  },180);
+};
 window.doSearchIngr=function(){clearTimeout(_iT);_iT=setTimeout(function(){buildDrop(SMAE,'iSI','iDrop','pickIngr','smae');},120);};
 
 // Meal pick
@@ -1235,6 +1658,25 @@ window.showHelp=function(){
   var el=$(id);if(el)el.classList.add('on');
 };
 
+// Close completion modal with sparks
+window.closeCompletion=function(){
+  var box=$('modalBox');
+  if(!box)return;
+  // Generate sparks
+  var colors=['#C8B8F8','#E8E0FF','#9880E8','#ffffff','#D4C8FF','#7860D8','#a0a0c0'];
+  for(var i=0;i<28;i++){
+    var sp=document.createElement('div');
+    sp.className='spark';
+    var size=Math.random()*5+3;
+    var angle=Math.random()*Math.PI*2;
+    var dist=Math.random()*120+60;
+    sp.style.cssText='width:'+size+'px;height:'+size+'px;background:'+colors[Math.floor(Math.random()*colors.length)]+';left:50%;top:50%;margin:'+(-size/2)+'px 0 0 '+(-size/2)+'px;--tx:'+Math.round(Math.cos(angle)*dist)+'px;--ty:'+Math.round(Math.sin(angle)*dist)+'px;--dur:'+(Math.random()*.5+.4)+'s';
+    box.appendChild(sp);
+    (function(s){setTimeout(function(){s.remove();},900);})(sp);
+  }
+  setTimeout(function(){$('completionModal').classList.remove('on');},200);
+};
+
 // Snow
 function snow(n){
   var r=$('cpr'),C=['#f97316','#16a34a','#2563eb','#8B5CF6','#dc2626','#5AC8FA'];
@@ -1259,6 +1701,7 @@ function snow(n){
 })();
 
 init();
+
 </script>
 </body>
 </html>

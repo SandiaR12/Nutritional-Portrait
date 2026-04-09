@@ -659,6 +659,90 @@ body{
 }
 .rec-tab.on{border-color:var(--blue);background:rgba(0,102,255,.06);color:var(--blue)}
 .rec-loading{display:flex;align-items:center;justify-content:center;gap:8px;padding:20px;color:var(--txt4);font-size:.82rem}
+
+/* ── Compact rec bar (sticky top of analysis) ── */
+.rec-bar{
+  display:none;align-items:center;gap:10px;
+  background:linear-gradient(135deg,rgba(0,102,255,.06),rgba(16,185,129,.04));
+  border:1px solid rgba(0,102,255,.14);border-radius:var(--r);
+  padding:10px 14px;margin-bottom:14px;cursor:pointer;
+  transition:all .2s var(--spring);
+}
+.rec-bar:hover{background:linear-gradient(135deg,rgba(0,102,255,.1),rgba(16,185,129,.07));transform:translateX(2px)}
+.rec-bar-ico{font-size:1.1rem;flex-shrink:0;animation:brainPulse 2.5s ease-in-out infinite}
+@keyframes brainPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08) rotate(-3deg)}}
+.rec-bar-txt{flex:1;min-width:0}
+.rec-bar-title{font-size:.82rem;font-weight:700;color:var(--blue2);display:block;line-height:1.2}
+.rec-bar-sub{font-size:.7rem;color:var(--txt3);display:block;margin-top:2px}
+.rec-bar-pills{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+.rec-pill{font-size:.62rem;font-weight:700;padding:2px 8px;border-radius:99px;border:1px solid transparent}
+.rp-k{background:rgba(255,159,10,.1);color:#d97706;border-color:rgba(255,159,10,.2)}
+.rp-p{background:rgba(16,185,129,.1);color:#059669;border-color:rgba(16,185,129,.2)}
+.rp-c{background:rgba(59,130,246,.1);color:#2563eb;border-color:rgba(59,130,246,.2)}
+.rp-l{background:rgba(239,68,68,.1);color:#dc2626;border-color:rgba(239,68,68,.2)}
+.rec-bar-arr{color:var(--blue);font-size:.9rem;flex-shrink:0}
+
+/* ── Rec panel (inline below charts) ── */
+.rec-section{margin-top:16px;border-top:1px solid var(--bdr);padding-top:16px}
+.rec-title{font-size:.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--txt3);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.rec-title::after{content:'';flex:1;height:1px;background:var(--bdr)}
+
+/* Filter tabs — now macro-specific */
+.rec-tabs{display:flex;gap:5px;margin-bottom:14px;overflow-x:auto;padding-bottom:2px}
+.rec-tabs::-webkit-scrollbar{display:none}
+.rec-tab{flex-shrink:0;padding:6px 12px;border:1.5px solid var(--bdr2);border-radius:99px;
+  font-size:.7rem;font-weight:700;background:var(--surf);color:var(--txt3);
+  cursor:pointer;transition:all .18s var(--spring);white-space:nowrap}
+.rec-tab:active{transform:scale(.94)}
+.rec-tab.on.rt-all{border-color:var(--blue);background:rgba(0,102,255,.08);color:var(--blue2)}
+.rec-tab.on.rt-k{border-color:#FF9F0A;background:rgba(255,159,10,.08);color:#d97706}
+.rec-tab.on.rt-p{border-color:#10B981;background:rgba(16,185,129,.08);color:#059669}
+.rec-tab.on.rt-c{border-color:#3B82F6;background:rgba(59,130,246,.08);color:#2563eb}
+.rec-tab.on.rt-l{border-color:#EF4444;background:rgba(239,68,68,.08);color:#dc2626}
+.rec-tab.on.rt-smae{border-color:#8B5CF6;background:rgba(139,92,246,.08);color:#7c3aed}
+
+/* ── Recommendation cards ── */
+.rec-card{
+  border-radius:var(--rL);padding:0;margin-bottom:8px;
+  border:1.5px solid var(--bdr);overflow:hidden;
+  box-shadow:var(--sh);transition:all .2s var(--spring);cursor:pointer;
+  background:var(--surf);
+}
+.rec-card:hover{transform:translateY(-2px) translateX(2px);box-shadow:var(--shM)}
+.rec-card:active{transform:scale(.98)}
+.rec-inner{padding:12px 14px 10px 16px}
+/* Quality color strip on left */
+.rec-card.rq-green{border-left:4px solid #10B981}
+.rec-card.rq-yellow{border-left:4px solid #F59E0B}
+.rec-card.rq-red{border-left:4px solid #EF4444}
+/* Quality badge */
+.rec-quality-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.rec-badge{font-size:.62rem;font-weight:700;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.rbq-green{background:rgba(16,185,129,.12);color:#059669;border:1px solid rgba(16,185,129,.2)}
+.rbq-yellow{background:rgba(245,158,11,.12);color:#d97706;border:1px solid rgba(245,158,11,.2)}
+.rbq-red{background:rgba(239,68,68,.12);color:#dc2626;border:1px solid rgba(239,68,68,.2)}
+.rec-src{font-size:.58rem;color:var(--txt4);font-weight:600;letter-spacing:.3px}
+.rec-name{font-weight:700;font-size:.88rem;color:var(--txt);line-height:1.3;margin-bottom:5px}
+.rec-why{font-size:.74rem;color:var(--txt3);line-height:1.5;margin-bottom:8px}
+.rec-macros{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+.rec-mac{font-size:.67rem;font-family:'JetBrains Mono',monospace;padding:2px 7px;border-radius:6px;font-weight:600}
+.rm-k{background:rgba(255,159,10,.1);color:#d97706}
+.rm-p{background:rgba(16,185,129,.1);color:#059669}
+.rm-c{background:rgba(59,130,246,.1);color:#2563eb}
+.rm-l{background:rgba(239,68,68,.1);color:#dc2626}
+.rm-cov{background:rgba(0,0,0,.04);color:var(--txt4)}
+/* Coverage bars inside card */
+.rec-cov-bars{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:8px}
+.rec-cov-row{display:flex;align-items:center;gap:5px}
+.rec-cov-lbl{font-size:.6rem;font-weight:600;color:var(--txt4);width:36px;flex-shrink:0}
+.rec-cov-track{flex:1;height:4px;background:rgba(0,0,0,.06);border-radius:99px;overflow:hidden}
+.rec-cov-fill{height:100%;border-radius:99px;transition:width .6s var(--ease)}
+.rcf-k{background:#FF9F0A}.rcf-p{background:#10B981}.rcf-c{background:#3B82F6}.rcf-l{background:#EF4444}
+.rec-add-row{display:flex;align-items:center;gap:4px;font-size:.72rem;color:var(--blue);font-weight:600;padding:6px 0 0;border-top:1px solid var(--bdr)}
+.rec-empty,.rec-perfect{text-align:center;padding:20px 16px;font-size:.84rem}
+.rec-empty{color:var(--txt4)}
+.rec-perfect{background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.18);border-radius:var(--rL);color:#059669;font-weight:600}
 </style>
 </head>
 <body>
@@ -799,6 +883,16 @@ body{
         <!-- ANALYSIS -->
         <div class="spanel" id="spAnalysis">
           <div class="food-st fst-idle" id="anSt"><span>ℹ️</span> Agrega alimentos en Registro para ver tu análisis.</div>
+          <!-- Compact rec bar — shows what's missing + taps to scroll to recs -->
+          <div class="rec-bar" id="recBar" onclick="window.scrollToRecs()">
+            <span class="rec-bar-ico">🧠</span>
+            <div class="rec-bar-txt">
+              <span class="rec-bar-title" id="recBarTitle">Calculando recomendaciones…</span>
+              <span class="rec-bar-sub" id="recBarSub">Toca para ver qué puedes comer</span>
+              <div class="rec-bar-pills" id="recBarPills"></div>
+            </div>
+            <span class="rec-bar-arr">›</span>
+          </div>
           <div class="an-macros">
             <div class="am am-k"><span class="am-ico">🔥</span><div class="am-val" id="amK">0</div><div class="am-lbl">kcal</div><div class="am-pct" id="amKp"></div></div>
             <div class="am am-p"><span class="am-ico">💪</span><div class="am-val" id="amP">0g</div><div class="am-lbl">prot</div><div class="am-pct" id="amPp"></div></div>
@@ -818,11 +912,12 @@ body{
           <div class="rec-section" id="recSection" style="display:none">
             <div class="rec-title">🧠 Recomendaciones inteligentes</div>
             <div class="rec-tabs">
-              <button class="rec-tab on" onclick="recFilter('all',this)">Todos</button>
-              <button class="rec-tab" onclick="recFilter('kcal',this)">Calorías</button>
-              <button class="rec-tab" onclick="recFilter('prot',this)">Proteína</button>
-              <button class="rec-tab" onclick="recFilter('carb',this)">Carbs</button>
-              <button class="rec-tab" onclick="recFilter('fat',this)">Grasas</button>
+              <button class="rec-tab on rt-all" onclick="recFilter('all',this,'rt-all')">🔍 Todos</button>
+              <button class="rec-tab rt-k" onclick="recFilter('kcal',this,'rt-k')">🔥 Calorías</button>
+              <button class="rec-tab rt-p" onclick="recFilter('prot',this,'rt-p')">💪 Proteína</button>
+              <button class="rec-tab rt-c" onclick="recFilter('carb',this,'rt-c')">🌾 Carbos</button>
+              <button class="rec-tab rt-l" onclick="recFilter('fat',this,'rt-l')">🥑 Grasas</button>
+              <button class="rec-tab rt-smae" onclick="recFilter('smae',this,'rt-smae')">⚗️ SMAE</button>
             </div>
             <div id="recList"></div>
           </div>
@@ -920,6 +1015,7 @@ body{
   <div id="cpr"></div>
 </div>
 <script type="module">
+
 
 
 
@@ -1823,315 +1919,503 @@ function renderAnalysis(){
 
 
 // ══════════════════════════════════════════════════════════════
-// SMART NUTRITION RECOMMENDATION ENGINE
-// Base científica: INSP, SMAE 5a Ed., Harvard Nutrition Source
-// ══════════════════════════════════════════════════════════════
+// SMART NUTRITION RECOMMENDATION ENGINE v2
+// Base: INSP 2023, SMAE 5a Ed., INCMNSZ, Harvard Nutrition Source
+// Usa TODA la base: MEGA (721) + SMAE (1772) + FOODS_EX (338)
 
 var _recFilter = 'all';
-window.recFilter = function(f, btn) {
+var _recTabClass = 'rt-all';
+
+window.recFilter = function(f, btn, cls) {
   _recFilter = f;
+  _recTabClass = cls || 'rt-all';
   document.querySelectorAll('.rec-tab').forEach(function(b){b.classList.remove('on');});
   btn.classList.add('on');
   renderRecs();
 };
 
-// Nutritional science constants
-var REC_CFG = {
-  // Acceptable macro deficit to trigger recommendation (%)
-  minDeficit: 15,
-  // Max results per category
-  maxPerCat: 3,
-  // Meal time weight adjustments (science-based)
-  // Desayuno: moderate carbs + protein
-  // Comida: largest meal, all macros
-  // Cena: lighter, high protein, low carbs
-  mealWeights: {
-    'Desayuno':    {k:.8, p:.9, c:1.0, l:.8},
-    'Col. AM':     {k:.5, p:.7, c:.8,  l:.5},
-    'Comida':      {k:1.0,p:1.0,c:1.0, l:1.0},
-    'Col. PM':     {k:.5, p:.8, c:.6,  l:.5},
-    'Cena':        {k:.7, p:1.0,c:.6,  l:.7}
-  },
-  // Ideal macro distribution per meal (% of daily)
-  mealDist: {
-    'Desayuno':   {k:.25,p:.25,c:.30,l:.25},
-    'Col. AM':    {k:.10,p:.10,c:.10,l:.10},
-    'Comida':     {k:.35,p:.35,c:.35,l:.35},
-    'Col. PM':    {k:.10,p:.10,c:.10,l:.10},
-    'Cena':       {k:.20,p:.20,c:.15,l:.20}
+window.scrollToRecs = function() {
+  var sec = $('recSection');
+  if (sec) {
+    sec.scrollIntoView({behavior:'smooth', block:'start'});
+    // highlight briefly
+    sec.style.transition = 'background .3s';
+    sec.style.background = 'rgba(0,102,255,.04)';
+    setTimeout(function(){sec.style.background='';}, 600);
   }
 };
 
+// ── Normalize any food format to unified object ──────────────
+function norm_food(f, src) {
+  if (src === 'mega') {
+    return {
+      nombre: f.nombre, grupo: f.grupo||'',
+      k: +(f.kcal||0), p: +(f.proteina_g||0),
+      c: +(f.carbohidratos_g||0), l: +(f.lipidos_g||0),
+      fib: +(f.fibra_g||0), g: +(f.porcion_g||f.peso_neto_g||100),
+      k100: +(f.kcal_100g||0), p100: +(f.prot_100g||0),
+      c100: +(f.carb_100g||0), l100: +(f.lip_100g||0),
+      _src: 'mega', _smae: false
+    };
+  } else if (src === 'smae') {
+    return {
+      nombre: f.nombre, grupo: f.grupo||'',
+      k: +(f.kcal||0), p: +(f.proteina_g||0),
+      c: +(f.carbohidratos_g||0), l: +(f.lipidos_g||0),
+      fib: +(f.fibra_g||0), g: +(f.peso_neto_g||100),
+      k100: +(f.kcal_100g||0), p100: +(f.prot_100g||0),
+      c100: +(f.carb_100g||0), l100: +(f.lip_100g||0),
+      unidad: f.unidad||'porción', cant: +(f.cantidad_porcion||1),
+      _src: 'smae', _smae: true
+    };
+  } else { // FOODS_EX
+    return {
+      nombre: f.n, grupo: f.src||'',
+      k: +(f.k||0), p: +(f.p||0), c: +(f.c||0), l: +(f.l||0),
+      fib: 0, g: +(f.g||100),
+      k100: 0, p100: 0, c100: 0, l100: 0,
+      _src: 'ex', _smae: false
+    };
+  }
+}
+
+// ── Remaining macros ─────────────────────────────────────────
 function getRemainingMacros() {
   if (!curDay) return null;
   var log = logs['day'+curDay] || [];
-  var consumed = log.reduce(function(a,e){
+  var con = log.reduce(function(a,e){
     return {k:a.k+e.k, p:a.p+e.p, c:a.c+e.c, l:a.l+e.l};
   }, {k:0,p:0,c:0,l:0});
   return {
-    k: Math.max(0, req.k - consumed.k),
-    p: Math.max(0, req.p - consumed.p),
-    c: Math.max(0, req.c - consumed.c),
-    l: Math.max(0, req.l - consumed.l),
-    pctK: req.k ? consumed.k/req.k*100 : 100,
-    pctP: req.p ? consumed.p/req.p*100 : 100,
-    pctC: req.c ? consumed.c/req.c*100 : 100,
-    pctL: req.l ? consumed.l/req.l*100 : 100,
-    consumed: consumed
+    k:  Math.max(0, req.k - con.k),
+    p:  Math.max(0, req.p - con.p),
+    c:  Math.max(0, req.c - con.c),
+    l:  Math.max(0, req.l - con.l),
+    pctK: req.k ? con.k/req.k*100 : 100,
+    pctP: req.p ? con.p/req.p*100 : 100,
+    pctC: req.c ? con.c/req.c*100 : 100,
+    pctL: req.l ? con.l/req.l*100 : 100,
+    con: con
   };
 }
 
-function scoreFood(food, rem, mealCtx) {
-  // food can be from MEGA, SMAE, or FOODS_EX — normalize fields
-  var fk = food.kcal || food.k || 0;
-  var fp = food.proteina_g || food.p || 0;
-  var fc = food.carbohidratos_g || food.c || 0;
-  var fl = food.lipidos_g || food.l || 0;
-  var fg = food.porcion_g || food.peso_neto_g || food.g || 100;
+// ── Food quality rating ───────────────────────────────────────
+// green = highly recommended, yellow = ok, red = avoid
+function qualityRating(nf, rem, mealCtx) {
+  var issues = 0;
+  var strengths = 0;
 
-  // Skip if food would majorly exceed any macro (>25% over what's left)
-  if (rem.k > 0 && fk > rem.k * 1.25) return -1;
-  if (rem.p > 0 && fp > rem.p * 1.5)  return -2; // protein tolerance higher
-  if (rem.c > 0 && fc > rem.c * 1.3)  return -1;
-  if (rem.l > 0 && fl > rem.l * 1.4)  return -1;
+  // SMAE foods are clinically validated — quality bonus
+  var smaeBonus = nf._smae ? 1 : 0;
 
-  // Meal context weights
-  var w = REC_CFG.mealWeights[mealCtx] || {k:1,p:1,c:1,l:1};
+  // Macro balance check: does food fit without exceeding?
+  if (rem.k > 0 && nf.k > rem.k * 1.15) issues++;   // would exceed calories
+  if (rem.p > 0 && nf.p > rem.p * 1.6)  issues++;   // too much protein
+  if (rem.c > 0 && nf.c > rem.c * 1.2)  issues++;   // too many carbs
+  if (rem.l > 0 && nf.l > rem.l * 1.3)  issues++;   // too much fat
+
+  // Already met macros — penalize foods heavy in those
+  if (rem.pctK >= 90 && nf.k > 300) issues++;
+  if (rem.pctP >= 90 && nf.p > 20)  issues++;
+  if (rem.pctC >= 90 && nf.c > 40)  issues++;
+  if (rem.pctL >= 90 && nf.l > 15)  issues++;
+
+  // Meal-time appropriateness (science-based)
+  if (mealCtx === 'Cena') {
+    if (nf.c > 80) issues++;      // avoid heavy carbs at dinner
+    if (nf.p > 10) strengths++;   // high protein good for night recovery
+    if (nf.fib > 3) strengths++;  // fiber good at dinner
+  }
+  if (mealCtx === 'Desayuno') {
+    if (nf.k < 50) issues++;      // too light for breakfast
+    if (nf.fib > 2) strengths++;  // fiber at breakfast = satiety
+  }
+  if (mealCtx === 'Col. AM' || mealCtx === 'Col. PM') {
+    if (nf.k > 400) issues++;     // snack shouldn't be too heavy
+    if (nf.k > 0 && nf.k <= 250) strengths++; // appropriate snack size
+  }
+
+  // Fiber bonus (nutritionally valuable)
+  if (nf.fib > 4) strengths++;
+  if (nf.fib > 8) strengths++;
+
+  // Protein density bonus (g protein per 100kcal — good if > 5g/100kcal)
+  var pDensity = nf.k > 0 ? nf.p / nf.k * 100 : 0;
+  if (pDensity > 8) strengths++;
+  if (pDensity > 15) strengths++;
+
+  // Final rating
+  var net = strengths + smaeBonus - issues;
+  if (issues >= 3) return 'rq-red';
+  if (issues >= 2) return 'rq-yellow';
+  if (net >= 2)    return 'rq-green';
+  if (net >= 0)    return 'rq-yellow';
+  return 'rq-red';
+}
+
+// ── Score food per active filter ──────────────────────────────
+function scoreFood(nf, rem, mealCtx, filter) {
+  // Hard exclusion: would majorly blow any met macro
+  if (rem.pctK >= 95 && nf.k > 50)   return -10;
+  if (rem.pctP >= 95 && nf.p > 5)    return -10;
+  if (rem.pctC >= 95 && nf.c > 10)   return -10;
+  if (rem.pctL >= 95 && nf.l > 5)    return -10;
 
   var score = 0;
 
-  // Score each macro contribution relative to deficit
-  function macroScore(food_val, deficit, weight) {
-    if (deficit <= 0) {
-      // Already met — penalize foods high in this macro
-      return food_val > 5 ? -food_val/deficit*10 : 0;
-    }
-    var fill = Math.min(food_val / deficit, 1.0); // 0-1 how much it fills
+  // Meal time weights (based on evidence-based nutrition timing)
+  var w = {
+    'Desayuno':  {k:.8, p:.9, c:1.1, l:.8},
+    'Col. AM':   {k:.5, p:.8, c:.7,  l:.5},
+    'Comida':    {k:1,  p:1,  c:1,   l:1},
+    'Col. PM':   {k:.5, p:.9, c:.6,  l:.5},
+    'Cena':      {k:.7, p:1.1,c:.6,  l:.7}
+  }[mealCtx] || {k:1,p:1,c:1,l:1};
+
+  function macScore(val, deficit, weight) {
+    if (deficit <= 0) return val > 2 ? -val*2 : 0;
+    var fill = Math.min(val/deficit, 1.0);
     return fill * weight * 100;
   }
 
-  score += macroScore(fk, rem.k, w.k * 0.8);  // calories
-  score += macroScore(fp, rem.p, w.p * 1.2);  // protein (higher weight — SMAE priority)
-  score += macroScore(fc, rem.c, w.c * 1.0);  // carbs
-  score += macroScore(fl, rem.l, w.l * 0.9);  // fats
+  if (filter === 'all') {
+    // Balanced score weighted by deficits
+    score += macScore(nf.k, rem.k, w.k * 0.7);
+    score += macScore(nf.p, rem.p, w.p * 1.3);  // protein slightly prioritized
+    score += macScore(nf.c, rem.c, w.c * 1.0);
+    score += macScore(nf.l, rem.l, w.l * 0.9);
+    // Balance bonus: covers multiple macros
+    var covers = 0;
+    if (nf.k > 0 && rem.k > 0 && nf.k/rem.k > 0.1) covers++;
+    if (nf.p > 0 && rem.p > 0 && nf.p/rem.p > 0.1) covers++;
+    if (nf.c > 0 && rem.c > 0 && nf.c/rem.c > 0.1) covers++;
+    if (nf.l > 0 && rem.l > 0 && nf.l/rem.l > 0.1) covers++;
+    score += covers * 12;
 
-  // Bonus: balanced food (fills multiple macros proportionally)
-  var fills = [fk/Math.max(rem.k,1), fp/Math.max(rem.p,1), fc/Math.max(rem.c,1), fl/Math.max(rem.l,1)];
-  var nonZero = fills.filter(function(v){return v>0.05;}).length;
-  if (nonZero >= 3) score += 15; // bonus for balanced food
-  if (nonZero === 4) score += 10;
+  } else if (filter === 'kcal') {
+    // Calorie-focused: highest kcal/portion without blowing protein/carb
+    score += macScore(nf.k, rem.k, w.k * 2.5);
+    score -= nf.p > rem.p * .5 ? 20 : 0;
+    score -= nf.c > rem.c * .5 ? 10 : 0;
+    // Prefer calorie-dense but not pure fat
+    if (nf.k > 0 && nf.p > 0) score += 10;
 
-  // Slight bonus for reasonable portion size
-  if (fg >= 80 && fg <= 350) score += 5;
+  } else if (filter === 'prot') {
+    // Protein-focused: highest protein coverage, best protein density
+    var pDensity = nf.k > 0 ? nf.p/nf.k*100 : 0; // g/100kcal
+    score += macScore(nf.p, rem.p, w.p * 3.0);    // heavy protein weight
+    score += pDensity * 4;                           // reward efficient protein
+    score += nf.p > 15 ? 20 : 0;                   // bonus high-protein foods
+    // SMAE has accurate protein data
+    if (nf._smae && nf.p > 5) score += 15;
+
+  } else if (filter === 'carb') {
+    // Carb-focused: best carb coverage + quality (fiber proxy)
+    score += macScore(nf.c, rem.c, w.c * 2.8);
+    score += nf.fib * 8;                            // fiber = complex carb quality
+    // Prefer complex carbs: high fiber/carb ratio
+    var fibRatio = nf.c > 0 ? nf.fib/nf.c : 0;
+    score += fibRatio * 60;
+    // Penalize if fat too high relative to carbs
+    if (nf.l > nf.c * 0.8) score -= 15;
+
+  } else if (filter === 'fat') {
+    // Fat-focused: cover fat deficit, prefer healthy fat sources
+    score += macScore(nf.l, rem.l, w.l * 2.8);
+    // Bonus for foods that are fat-primary (avocado, nuts, oils)
+    var fatRatio = nf.k > 0 ? nf.l*9/nf.k : 0;
+    if (fatRatio > 0.4) score += 15;
+    // SMAE lipid data is precise
+    if (nf._smae && nf.l > 3) score += 10;
+
+  } else if (filter === 'smae') {
+    // SMAE-only mode: show all SMAE options ranked by overall deficit coverage
+    if (!nf._smae) return -999;
+    score += macScore(nf.k, rem.k, w.k);
+    score += macScore(nf.p, rem.p, w.p * 1.2);
+    score += macScore(nf.c, rem.c, w.c);
+    score += macScore(nf.l, rem.l, w.l);
+    score += 30; // base SMAE bonus
+  }
+
+  // SMAE foods always get quality bonus (clinical validation)
+  if (nf._smae) score += 8;
+
+  // Reasonable portion size bonus
+  if (nf.g >= 60 && nf.g <= 400) score += 5;
 
   return Math.round(score);
 }
 
-function whyRecommend(food, rem, mealCtx) {
-  var fk = food.kcal || food.k || 0;
-  var fp = food.proteina_g || food.p || 0;
-  var fc = food.carbohidratos_g || food.c || 0;
-  var fl = food.lipidos_g || food.l || 0;
+// ── Reason text generator ─────────────────────────────────────
+function whyText(nf, rem, mealCtx, filter, quality) {
+  var parts = [];
 
-  var reasons = [];
+  // Coverage of each macro
+  var covs = [];
+  if (rem.k > 0 && nf.k > 0) covs.push({mac:'calorías', val:nf.k, def:rem.k, unit:'kcal', color:'k'});
+  if (rem.p > 0 && nf.p > 0) covs.push({mac:'proteína', val:nf.p, def:rem.p, unit:'g', color:'p'});
+  if (rem.c > 0 && nf.c > 0) covs.push({mac:'carbohidratos', val:nf.c, def:rem.c, unit:'g', color:'c'});
+  if (rem.l > 0 && nf.l > 0) covs.push({mac:'grasas', val:nf.l, def:rem.l, unit:'g', color:'l'});
 
-  // Find primary contribution
-  var contribs = [
-    {mac:'proteína', val:fp, def:rem.p, pct: rem.p>0 ? fp/rem.p*100 : 0, color:'rm-p'},
-    {mac:'carbohidratos', val:fc, def:rem.c, pct: rem.c>0 ? fc/rem.c*100 : 0, color:'rm-c'},
-    {mac:'calorías', val:fk, def:rem.k, pct: rem.k>0 ? fk/rem.k*100 : 0, color:'rm-k'},
-    {mac:'grasas saludables', val:fl, def:rem.l, pct: rem.l>0 ? fl/rem.l*100 : 0, color:'rm-l'}
-  ].filter(function(c){return c.def>0 && c.pct>10;})
-   .sort(function(a,b){return b.pct-a.pct;});
+  covs.sort(function(a,b){ return b.val/b.def - a.val/a.def; });
 
-  if (contribs.length === 0) return 'Complementa tu alimentación del día.';
-
-  var top = contribs[0];
-  var pct = Math.round(top.pct);
-
-  if (pct >= 80) reasons.push('Cubre casi todo el déficit de ' + top.mac + ' restante');
-  else if (pct >= 40) reasons.push('Aporta el ' + pct + '% del ' + top.mac + ' que te falta');
-  else reasons.push('Complementa tu ' + top.mac);
-
-  if (contribs.length >= 2) {
-    var sec = contribs[1];
-    reasons.push('y el ' + Math.round(sec.pct) + '% de ' + sec.mac);
+  if (covs.length > 0) {
+    var top = covs[0];
+    var pct = Math.round(top.val/top.def*100);
+    if (pct >= 90)      parts.push('Cubre casi todo tu déficit de ' + top.mac);
+    else if (pct >= 50) parts.push('Aporta el ' + pct + '% de la ' + top.mac + ' que te falta');
+    else if (pct >= 20) parts.push('Complementa ' + pct + '% de ' + top.mac);
+    if (covs.length >= 2) {
+      var sec = covs[1];
+      var p2 = Math.round(sec.val/sec.def*100);
+      if (p2 >= 15) parts.push('y el ' + p2 + '% de ' + sec.mac);
+    }
   }
 
-  // Meal-specific context advice
-  if (mealCtx === 'Cena' && fp > 15) reasons.push('— ideal para cena: alta proteína, estimula recuperación muscular nocturna');
-  if (mealCtx === 'Desayuno' && fc > 20) reasons.push('— energía de inicio: carbos de calidad para el día');
-  if (mealCtx === 'Col. PM' && fk < 250) reasons.push('— colación ligera, no excede calorías vespertinas');
+  // Protein density remark
+  var pden = nf.k > 0 ? Math.round(nf.p/nf.k*100) : 0;
+  if (filter === 'prot' && pden > 10) parts.push('Alta densidad proteica (' + pden + 'g/100kcal)');
 
-  return reasons.join(', ') + '.';
+  // Fiber remark
+  if (nf.fib >= 4) parts.push('Rico en fibra (' + nf.fib + 'g)');
+
+  // Meal context advice
+  var ctx = {
+    'Cena':     [{cond: nf.p > 12, txt:'Proteína ideal para recuperación nocturna'}, {cond: nf.c < 30, txt:'Bajo en carbos, apropiado para cena'}],
+    'Desayuno': [{cond: nf.c > 15 && nf.fib > 2, txt:'Carbohidratos de calidad para energía matutina'}, {cond: nf.p > 8, txt:'Proteína para saciar hasta el almuerzo'}],
+    'Col. AM':  [{cond: nf.k < 250, txt:'Colación ligera, tamaño adecuado'}],
+    'Col. PM':  [{cond: nf.k < 250 && nf.p > 5, txt:'Colación con proteína, evita caída de energía'}],
+    'Comida':   [{cond: nf.k > 200, txt:'Aporta energía para el resto del día'}]
+  }[mealCtx] || [];
+  ctx.forEach(function(hint){ if (hint.cond && parts.length < 3) parts.push(hint.txt); });
+
+  // SMAE note
+  if (nf._smae) parts.push('Datos SMAE 5a Ed. (clínicamente validados)');
+
+  // Red quality explanation
+  if (quality === 'rq-red') {
+    if (rem.pctK >= 90 && nf.k > 200) return 'Excedería tus calorías del día. No recomendado en este momento.';
+    return 'Podría desbalancear algún macro ya cubierto. Considera opciones verdes primero.';
+  }
+
+  return parts.length ? parts.join(' · ') + '.' : 'Complementa tu alimentación del día.';
 }
 
-function getPrimaryColor(food, rem) {
-  var fk = food.kcal || food.k || 0;
-  var fp = food.proteina_g || food.p || 0;
-  var fc = food.carbohidratos_g || food.c || 0;
-  var fl = food.lipidos_g || food.l || 0;
-
-  var scores = [
-    {color:'rec-p', score: rem.p>0 ? fp/rem.p : 0},
-    {color:'rec-c', score: rem.c>0 ? fc/rem.c : 0},
-    {color:'rec-k', score: rem.k>0 ? fk/rem.k : 0},
-    {color:'rec-l', score: rem.l>0 ? fl/rem.l : 0}
-  ].sort(function(a,b){return b.score-a.score;});
-
-  // If balanced (multiple macros contribute similarly), use bal
-  if (scores[0].score - scores[1].score < 0.1 && scores[1].score > 0.15) return 'rec-bal';
-  return scores[0].color;
+// ── Build unified pool per filter ────────────────────────────
+function buildPool(filter) {
+  var pool = [];
+  if (filter === 'smae') {
+    // SMAE only
+    for (var i = 0; i < SMAE.length; i++) pool.push({nf: norm_food(SMAE[i],'smae'), src:'smae', idx:i});
+  } else {
+    // MEGA + SMAE + FOODS_EX
+    for (var i = 0; i < MEGA.length;    i++) pool.push({nf: norm_food(MEGA[i],    'mega'), src:'mega', idx:i});
+    for (var j = 0; j < SMAE.length;    j++) pool.push({nf: norm_food(SMAE[j],    'smae'), src:'smae', idx:j});
+    for (var k = 0; k < FOODS_EX.length;k++) pool.push({nf: norm_food(FOODS_EX[k],'ex'),   src:'ex',   idx:k});
+  }
+  return pool;
 }
 
-function getRecommendations(mealCtx) {
+function getRecommendations(mealCtx, filter) {
   var rem = getRemainingMacros();
   if (!rem) return [];
+  if (rem.pctK >= 100 && rem.pctP >= 100 && rem.pctC >= 100 && rem.pctL >= 100) return [];
 
-  // Don't recommend if everything is met
-  if (rem.pctK >= 85 && rem.pctP >= 85 && rem.pctC >= 85 && rem.pctL >= 85) return [];
-
-  // Build candidate pool: MEGA + top FOODS_EX (skip SMAE — individual ingredients, not meals)
-  var pool = [];
-  // Add MEGA foods
-  for (var i = 0; i < MEGA.length; i++) { pool.push({food:MEGA[i], src:'mega', idx:i}); }
-  // Add extended foods
-  for (var j = 0; j < FOODS_EX.length; j++) { pool.push({food:FOODS_EX[j], src:'ex', idx:j}); }
-
-  // Score all candidates
+  var pool = buildPool(filter);
   var scored = [];
-  for (var k = 0; k < pool.length; k++) {
-    var s = scoreFood(pool[k].food, rem, mealCtx);
-    if (s > 20) { // minimum threshold
-      scored.push({entry:pool[k], score:s});
+
+  for (var i = 0; i < pool.length; i++) {
+    var s = scoreFood(pool[i].nf, rem, mealCtx, filter);
+    if (s > 0) {
+      var q = qualityRating(pool[i].nf, rem, mealCtx);
+      scored.push({entry: pool[i], score: s, quality: q});
     }
   }
 
-  // Sort by score
-  scored.sort(function(a,b){return b.score-a.score;});
+  // Sort: green first, then by score
+  scored.sort(function(a,b){
+    var qOrd = {'rq-green':0,'rq-yellow':1,'rq-red':2};
+    var qDiff = (qOrd[a.quality]||2) - (qOrd[b.quality]||2);
+    if (qDiff !== 0) return qDiff;
+    return b.score - a.score;
+  });
 
-  // Deduplicate by category and limit
-  var seen = {};
+  // Deduplicate by grupo — max 2 per group, max 1 red
+  var seenGrupo = {};
+  var redCount = 0;
   var results = [];
-  for (var m = 0; m < scored.length && results.length < 12; m++) {
-    var f = scored[m].entry.food;
-    var grupo = (f.grupo || f.src || 'general').toLowerCase().split(' ')[0];
-    var key = grupo + '_' + Math.round(scored[m].score/20);
-    // Allow max 2 per similar group
-    seen[key] = (seen[key]||0) + 1;
-    if (seen[key] <= 2) {
-      results.push({
-        food: f,
-        src: scored[m].entry.src,
-        idx: scored[m].entry.idx,
-        score: scored[m].score,
-        color: getPrimaryColor(f, rem),
-        why: whyRecommend(f, rem, mealCtx)
-      });
+  for (var m = 0; m < scored.length && results.length < 10; m++) {
+    var entry = scored[m];
+    var grp = (entry.entry.nf.grupo||'').toLowerCase().split(' ')[0] || 'gen';
+    seenGrupo[grp] = (seenGrupo[grp]||0) + 1;
+    if (seenGrupo[grp] > 2) continue;
+    // Max 2 red items total
+    if (entry.quality === 'rq-red') {
+      redCount++;
+      if (redCount > 2) continue;
     }
+    results.push({
+      food: entry.entry.nf,
+      src:  entry.entry.src,
+      idx:  entry.entry.idx,
+      score: entry.score,
+      quality: entry.quality,
+      why: whyText(entry.entry.nf, rem, mealCtx, filter, entry.quality)
+    });
   }
   return results.slice(0, 8);
 }
 
+// ── Coverage bar HTML ─────────────────────────────────────────
+function covBars(nf, rem) {
+  function bar(val, def, cls, lbl) {
+    if (def <= 0 || val <= 0) return '';
+    var pct = Math.min(Math.round(val/def*100), 100);
+    return '<div class="rec-cov-row">'+
+      '<span class="rec-cov-lbl">'+lbl+'</span>'+
+      '<div class="rec-cov-track"><div class="rec-cov-fill '+cls+'" style="width:'+pct+'%"></div></div>'+
+      '<span style="font-size:.58rem;color:var(--txt4);margin-left:4px;min-width:26px">'+pct+'%</span>'+
+    '</div>';
+  }
+  var html = '<div class="rec-cov-bars">';
+  html += bar(nf.k, rem.k, 'rcf-k', 'Kcal');
+  html += bar(nf.p, rem.p, 'rcf-p', 'Prot');
+  html += bar(nf.c, rem.c, 'rcf-c', 'Carb');
+  html += bar(nf.l, rem.l, 'rcf-l', 'Gras');
+  html += '</div>';
+  return html;
+}
+
+// ── Update compact bar ────────────────────────────────────────
+function updateRecBar(rem, recs) {
+  var bar = $('recBar');
+  if (!bar) return;
+  if (!rem || (logs['day'+curDay]||[]).length === 0) { bar.style.display='none'; return; }
+
+  var allMet = rem.pctK >= 90 && rem.pctP >= 90 && rem.pctC >= 90 && rem.pctL >= 90;
+  bar.style.display = 'flex';
+
+  if (allMet) {
+    $('recBarTitle').textContent = '🎯 ¡Metas del día cumplidas!';
+    $('recBarSub').textContent = 'Excelente disciplina nutricional';
+    $('recBarPills').innerHTML = '';
+    return;
+  }
+
+  var greenCount = recs.filter(function(r){return r.quality==='rq-green';}).length;
+  $('recBarTitle').textContent = '🧠 ' + greenCount + ' opción' + (greenCount!==1?'es':'') + ' recomendadas para ti';
+  $('recBarSub').textContent = 'Basado en tus déficits · Toca para ver';
+
+  var pills = '';
+  if (rem.pctK < 90) pills += '<span class="rec-pill rp-k">🔥 -' + Math.round(rem.k) + 'kcal</span>';
+  if (rem.pctP < 90) pills += '<span class="rec-pill rp-p">💪 -' + rem.p.toFixed(0) + 'g</span>';
+  if (rem.pctC < 90) pills += '<span class="rec-pill rp-c">🌾 -' + rem.c.toFixed(0) + 'g</span>';
+  if (rem.pctL < 90) pills += '<span class="rec-pill rp-l">🥑 -' + rem.l.toFixed(0) + 'g</span>';
+  $('recBarPills').innerHTML = pills;
+}
+
+// ── Render recommendations ────────────────────────────────────
 function renderRecs() {
-  var sec = $('recSection');
+  var sec  = $('recSection');
   var list = $('recList');
   if (!sec || !list || !curDay) return;
 
-  var rem = getRemainingMacros();
-  if (!rem) { sec.style.display='none'; return; }
-
-  // Show section only if there are deficits
-  var hasDeficit = rem.pctK < 85 || rem.pctP < 85 || rem.pctC < 85 || rem.pctL < 85;
-  // Also show if log has entries
+  var rem    = getRemainingMacros();
   var hasLog = (logs['day'+curDay]||[]).length > 0;
-  if (!hasLog) { sec.style.display='none'; return; }
+
+  if (!hasLog || !rem) { sec.style.display='none'; $('recBar')&&($('recBar').style.display='none'); return; }
   sec.style.display = 'block';
 
-  if (!hasDeficit) {
-    list.innerHTML = '<div class="rec-perfect">🎯 ¡Excelente! Cumpliste todos tus requerimientos nutricionales del día.</div>';
+  var mealCtx = curMeal || 'Comida';
+  var allMet  = rem.pctK >= 90 && rem.pctP >= 90 && rem.pctC >= 90 && rem.pctL >= 90;
+
+  if (allMet) {
+    updateRecBar(rem, []);
+    list.innerHTML = '<div class="rec-perfect">🎯 ¡Cumpliste todos tus requerimientos nutricionales del día!</div>';
     return;
   }
 
-  // Get current meal time context
-  var mealCtx = curMeal || 'Comida';
-  var recs = getRecommendations(mealCtx);
-
-  // Filter by _recFilter
-  if (_recFilter !== 'all') {
-    var filterMap = {kcal:'rec-k', prot:'rec-p', carb:'rec-c', fat:'rec-l'};
-    var targetColor = filterMap[_recFilter];
-    recs = recs.filter(function(r){ return r.color === targetColor || r.color === 'rec-bal'; });
-  }
+  var recs = getRecommendations(mealCtx, _recFilter);
+  updateRecBar(rem, recs);
 
   if (!recs.length) {
-    list.innerHTML = '<div class="rec-empty">No hay recomendaciones para este filtro con los déficits actuales.</div>';
+    list.innerHTML = '<div class="rec-empty">No hay opciones que encajen con los déficits actuales para este filtro.</div>';
     return;
   }
 
-  // Build deficit summary
-  var deficits = [];
-  if (rem.pctK < 85) deficits.push('🔥 '+ Math.round(rem.k) +'kcal');
-  if (rem.pctP < 85) deficits.push('💪 '+ rem.p.toFixed(1) +'g prot');
-  if (rem.pctC < 85) deficits.push('🌾 '+ rem.c.toFixed(1) +'g carb');
-  if (rem.pctL < 85) deficits.push('🥑 '+ rem.l.toFixed(1) +'g gras');
+  // Deficit header
+  var defs = [];
+  if (rem.pctK < 90) defs.push('<span class="rec-pill rp-k">🔥 '+ Math.round(rem.k) +'kcal</span>');
+  if (rem.pctP < 90) defs.push('<span class="rec-pill rp-p">💪 '+ rem.p.toFixed(0) +'g prot</span>');
+  if (rem.pctC < 90) defs.push('<span class="rec-pill rp-c">🌾 '+ rem.c.toFixed(0) +'g carb</span>');
+  if (rem.pctL < 90) defs.push('<span class="rec-pill rp-l">🥑 '+ rem.l.toFixed(0) +'g gras</span>');
 
-  var header = deficits.length ?
-    '<div style="font-size:.76rem;color:var(--txt3);margin-bottom:12px;padding:8px 12px;background:rgba(0,102,255,.04);border-radius:var(--r);border:1px solid rgba(0,102,255,.1)">'+
-    '<strong style="color:var(--txt2)">Te faltan:</strong> '+ deficits.join(' · ') +
-    '<br><span style="font-size:.68rem;color:var(--txt4)">Sugerencias para '+mealCtx+' basadas en tus metas</span></div>'
-    : '';
+  var html_out =
+    '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:12px;font-size:.72rem;color:var(--txt3)">'+
+    '<strong style="color:var(--txt2)">Déficit actual:</strong> '+ defs.join(' ') +
+    '<span style="color:var(--txt4);font-size:.66rem">· Para '+mealCtx+'</span>'+
+    '</div>';
 
-  var html_out = header;
+  // Legend
+  html_out +=
+    '<div style="display:flex;gap:10px;margin-bottom:12px;font-size:.64rem;color:var(--txt3)">'+
+    '<span>🟢 Recomendado</span><span>🟡 Aceptable</span><span>🔴 Evitar</span>'+
+    '</div>';
+
+  var qualBadge = {'rq-green':['✅ Recomendado','rbq-green'], 'rq-yellow':['⚠️ Aceptable','rbq-yellow'], 'rq-red':['🚫 Evitar','rbq-red']};
+  var srcLabel  = {mega:'Receta',smae:'SMAE 5a Ed.',ex:'Extendida'};
+
   for (var i = 0; i < recs.length; i++) {
-    var r = recs[i];
-    var f = r.food;
-    var fk = f.kcal || f.k || 0;
-    var fp = f.proteina_g || f.p || 0;
-    var fc = f.carbohidratos_g || f.c || 0;
-    var fl = f.lipidos_g || f.l || 0;
-    var fg = f.porcion_g || f.peso_neto_g || f.g || 100;
-    var fname = f.nombre || f.n || '';
-    var scoreLabel = r.score >= 80 ? '⭐ Ideal' : r.score >= 50 ? '✓ Buena opción' : 'Complemento';
-    var onclick_data = 'data-src="'+r.src+'" data-idx="'+r.idx+'"';
+    var r  = recs[i];
+    var nf = r.food;
+    var qb = qualBadge[r.quality] || ['?',''];
+    var fname = nf.nombre || '';
+    var unidad = nf._smae ? (nf.cant + ' ' + (nf.unidad||'porción') + ' · ' + nf.g + 'g') : nf.g + 'g/porción';
 
     html_out +=
-      '<div class="rec-card '+r.color+'" '+onclick_data+' onclick="window.recPick(this)">'+
-        '<div class="rec-top">'+
+      '<div class="rec-card '+r.quality+'" data-src="'+r.src+'" data-idx="'+r.idx+'" onclick="window.recPick(this)">'+
+        '<div class="rec-inner">'+
+          '<div class="rec-quality-row">'+
+            '<span class="rec-badge '+qb[1]+'">'+qb[0]+'</span>'+
+            '<span class="rec-src">'+srcLabel[r.src]+'</span>'+
+          '</div>'+
           '<div class="rec-name">'+fname+'</div>'+
-          '<span class="rec-score">'+scoreLabel+'</span>'+
+          '<div class="rec-why">'+r.why+'</div>'+
+          '<div class="rec-macros">'+
+            '<span class="rec-mac rm-k">🔥'+nf.k+'kcal</span>'+
+            '<span class="rec-mac rm-p">💪'+nf.p+'g</span>'+
+            '<span class="rec-mac rm-c">🌾'+nf.c+'g</span>'+
+            '<span class="rec-mac rm-l">🥑'+nf.l+'g</span>'+
+            (nf.fib > 0 ? '<span class="rec-mac rm-cov">🌿'+nf.fib+'g fib</span>' : '')+
+          '</div>'+
+          covBars(nf, rem)+
+          '<div style="font-size:.64rem;color:var(--txt4);margin-top:5px">'+unidad+'</div>'+
         '</div>'+
-        '<div class="rec-why">'+r.why+'</div>'+
-        '<div class="rec-macros">'+
-          '<span class="rec-mac rm-k">🔥 '+fk+'kcal</span>'+
-          '<span class="rec-mac rm-p">💪 '+fp+'g</span>'+
-          '<span class="rec-mac rm-c">🌾 '+fc+'g</span>'+
-          '<span class="rec-mac rm-l">🥑 '+fl+'g</span>'+
-          '<span class="rec-mac" style="background:rgba(0,0,0,.04);color:var(--txt4)">'+fg+'g</span>'+
-        '</div>'+
-        '<div class="rec-add">+ Toca para agregar al registro →</div>'+
+        '<div class="rec-add-row"><span>+ Toca para agregar al registro</span><span style="margin-left:auto">→</span></div>'+
       '</div>';
   }
+
   list.innerHTML = html_out;
 }
 
 window.recPick = function(el) {
   var src = el.dataset.src;
   var idx = parseInt(el.dataset.idx);
-  var f = src === 'mega' ? MEGA[idx] : FOODS_EX[idx];
-  if (!f) return;
-  // Switch to food tab and pre-select this food
   var stab = document.querySelector('.stab[onclick*="food"]');
   if (stab) window.goPanel('food', stab);
-  setTimeout(function() {
+  setTimeout(function(){
     if (src === 'mega') {
       window.setMode('meal', document.getElementById('sMealTab'));
       window.pickMeal(idx);
+    } else if (src === 'smae') {
+      window.setMode('ingr', document.getElementById('sIngrTab'));
+      window.pickIngr(idx);
     } else {
       window.setMode('meal', document.getElementById('sMealTab'));
-      window.pickEx(f, 'meal');
+      window.pickEx(FOODS_EX[idx], 'meal');
     }
-  }, 200);
+  }, 220);
 };
 
 
@@ -2200,6 +2484,7 @@ function snow(n){
 })();
 
 init();
+
 
 
 

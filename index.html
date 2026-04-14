@@ -156,7 +156,7 @@ body{
   background:var(--surf);border:1.5px solid rgba(0,0,0,.1);
   border-radius:var(--rL);padding:15px 4px 13px;text-align:center;cursor:pointer;
   transition:transform .2s var(--spring),box-shadow .2s,border-color .2s,background .2s;
-  box-shadow:var(--sh);will-change:transform;
+  box-shadow:var(--sh);contain:layout style;
   animation:ccIn .3s var(--spring) both;
 }
 @keyframes ccIn{from{opacity:0;transform:scale(.8) translateY(10px)}to{opacity:1;transform:none}}
@@ -274,7 +274,7 @@ body{
   background:var(--surf);border:1.5px solid rgba(0,0,0,.09);
   border-radius:var(--rL);padding:16px;margin-bottom:10px;cursor:pointer;
   transition:all .22s var(--spring);position:relative;overflow:hidden;
-  box-shadow:var(--sh);will-change:transform;
+  box-shadow:var(--sh);contain:layout style;
 }
 .meal-item::before{
   content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
@@ -1019,6 +1019,8 @@ body{
 
 
 
+
+
 import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
 import{getFirestore,doc,getDoc,setDoc}from'https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js';
 const _FB={apiKey:'AIzaSyAB82hupqdQvlOfbM0xusNY5oPsEAHCcY4',authDomain:'portal-nutricional-693fb.firebaseapp.com',projectId:'portal-nutricional-693fb',storageBucket:'portal-nutricional-693fb.firebasestorage.app',messagingSenderId:'208066338229',appId:'1:208066338229:web:b4c16b54daa2aec9c24dfc'};
@@ -1034,6 +1036,15 @@ let pat={},prog={},logs={},req={k:2000,p:150,c:250,l:65};
 let curDay=null,curMeal='Desayuno',curMode='meal';
 let _dch=null,_bch=null,_mT=null,_iT=null;
 const $=id=>document.getElementById(id);
+// Debounced Firestore write — prevents write-storm on rapid taps
+var _writeQ={};
+function writeSoon(col,data,ms){
+  ms=ms||600;
+  clearTimeout(_writeQ[col]);
+  _writeQ[col]=setTimeout(function(){
+    setDoc(doc(db,col,pid),data,{merge:true}).catch(function(e){console.error('[db]',e);});
+  },ms);
+}
 const MK=['desayuno','colacion1','comida','colacion2','cena'];
 const MN=['Desayuno','Col. AM','Comida','Col. PM','Cena'];
 const MI=['☀️','🍎','🍽️','🍌','🌙'];
@@ -1041,7 +1052,7 @@ const norm=s=>(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCas
 
 // Search scoring
 function score(f,nq){
-  const fn=norm(f.nombre||''),al=(f.alias||[]).map(norm);
+  const fn=norm(f.nombre||f.n||''),al=(f.alias||[]).map(norm);
   const st=nq.endsWith('s')&&nq.length>4?nq.slice(0,-1):nq;
   if(fn===nq||fn===st)return 100;
   if(fn.startsWith(nq))return 92;
@@ -1145,20 +1156,26 @@ function updateStats(){
 
 // Calendar
 function renderCal(){
-  const g=$('calGrid');g.innerHTML='';
-  for(let d=1;d<=15;d++){
-    const pd=prog['day'+d]||{};
-    const c=Object.values(pd).filter(Boolean).length;
-    const hl=(logs['day'+d]||[]).length>0;
-    const el=document.createElement('div');
-    el.className='cc'+(c===5?' done':'')+(hl?' has-log':'')+(d===curDay?' sel':'');
-    el.style.animationDelay=(d*.03)+'s';
+  var g=$('calGrid');if(!g)return;
+  // Build cells once — only update className and innerHTML on re-renders
+  while(g.children.length<15){
+    var _d=g.children.length+1;
+    var _el=document.createElement('div');
+    _el.style.animationDelay=(_d*.03)+'s';
+    _el.onclick=(function(day){return function(){openSheet(day);};}(_d));
+    g.appendChild(_el);
+  }
+  for(var d=1;d<=15;d++){
+    var pd=prog['day'+d]||{};
+    var c=Object.values(pd).filter(Boolean).length;
+    var hl=(logs['day'+d]||[]).length>0;
+    var el=g.children[d-1];
+    var cls='cc'+(c===5?' done':'')+(hl?' has-log':'')+(d===curDay?' sel':'');
+    if(el.className!==cls)el.className=cls;
     el.innerHTML=
-      '<div class="cc-dots">'+[0,1,2,3,4].map(i=>'<div class="cc-dot'+(i<c?' on':'')+'"></div>').join('')+'</div>'+
+      '<div class="cc-dots">'+[0,1,2,3,4].map(function(i){return'<div class="cc-dot'+(i<c?' on':'')+'"></div>';}).join('')+'</div>'+
       '<div class="cc-num">'+d+'</div>'+
-      '<div class="cc-sub">Día</div>';
-    el.onclick=function(){openSheet(d);};
-    g.appendChild(el);
+      '<div class="cc-sub">D\xEDa</div>';
   }
 }
 
@@ -1250,7 +1267,7 @@ window.toggleMeal=async function(key){
   updateStats();
   renderCal();
   try{
-    await setDoc(doc(db,'progress',pid),prog,{merge:true});
+    writeSoon('progress',prog,400);
   }catch(e){console.error('toggleMeal:',e);}
   var c=Object.values(prog[dk]).filter(Boolean).length;
   if(c===5){snow(55);$('completionModal').classList.add('on');}
@@ -1658,27 +1675,13 @@ var FOODS_EX=[
 ];
 
 // Normalize function for extended search
-function normEx(s){return(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();}
-
-function scoreEx(food, nq){
-  var fn=normEx(food.n);
-  var st=nq.endsWith('s')&&nq.length>4?nq.slice(0,-1):nq;
-  if(fn===nq||fn===st)return 100;
-  if(fn.startsWith(nq))return 90;
-  if(fn.includes(nq)||fn.includes(st))return 68;
-  var ws=nq.split(/\s+/).filter(function(w){return w.length>2;});
-  if(ws.length>0){
-    var hits=ws.filter(function(w){return fn.includes(w)||fn.includes(w.endsWith('s')&&w.length>4?w.slice(0,-1):w);});
-    if(hits.length>0)return Math.round(hits.length/ws.length*50);
-  }
-  return 0;
-}
+// scoreEx merged into score()
 
 function searchExtended(q){
   if(!q||q.trim().length<2)return[];
-  var nq=normEx(q.trim());
+  var nq=norm(q.trim());
   return FOODS_EX
-    .map(function(f){return{f:f,s:scoreEx(f,nq)};})
+    .map(function(f){return{f:f,s:score(f,nq)};})
     .filter(function(x){return x.s>0;})
     .sort(function(a,b){return b.s-a.s;})
     .slice(0,20)
@@ -1821,7 +1824,9 @@ async function addEntry(pool){
   var key='day'+curDay;
   if(!logs[key])logs[key]=[];
   logs[key].push(entry);
-  try{await setDoc(doc(db,'calcLogs',pid),logs,{merge:true});}catch(e){console.error(e);}
+  // Invalidate rec cache
+  _recCache={sig:'',recs:[]};
+  writeSoon('calcLogs',logs,600);
   btn.dataset.fidx='-1';btn.dataset.rk=btn.dataset.rp=btn.dataset.rc=btn.dataset.rl=btn.dataset.rg='0';
   if(pool==='mega'){$('mSI').value='';$('mSel').style.display='none';$('mPrev').style.display='none';}
   else{$('iSI').value='';$('iSel').style.display='none';$('iPrev').style.display='none';}
@@ -1860,7 +1865,9 @@ function renderLog(){
 window.delEntry=async function(eid){
   var key='day'+curDay;
   logs[key]=(logs[key]||[]).filter(function(e){return e.id!==eid;});
-  try{await setDoc(doc(db,'calcLogs',pid),logs,{merge:true});}catch(e){}
+  // Invalidate rec cache
+  _recCache={sig:'',recs:[]};
+  writeSoon('calcLogs',logs,400);
   renderLog();renderAnalysis();updateStats();renderCal();
 };
 window.clearLog=async function(){
@@ -1869,7 +1876,7 @@ window.clearLog=async function(){
   if(!(logs[key]||[]).length)return;
   if(!confirm('¿Borrar el registro del Día '+curDay+'?'))return;
   logs[key]=[];
-  try{await setDoc(doc(db,'calcLogs',pid),logs,{merge:true});}catch(e){}
+  writeSoon('calcLogs',logs,400);
   renderLog();renderAnalysis();updateStats();renderCal();
 };
 
@@ -1905,14 +1912,23 @@ function renderAnalysis(){
   else if(pK>115||pP>115||pC>115||pL>115){sts.className='food-st fst-over';sts.innerHTML='<span>⚠️</span> Superaste algún requerimiento.';}
   else{sts.className='food-st fst-warn';sts.innerHTML='<span>📊</span> Sigue registrando para alcanzar tus metas.';}
   var mK=MN.map(function(m){return log.filter(function(e){return e.meal===m;}).reduce(function(s,e){return s+e.k;},0);});
-  if(_dch)_dch.destroy();
-  _dch=new Chart($('cDonut').getContext('2d'),{type:'doughnut',
-    data:{labels:['Prot','Carb','Gra'],datasets:[{data:[t.p*4||0,t.c*4||0,t.l*9||0],backgroundColor:['#16a34a','#2563eb','#dc2626'],borderWidth:0,hoverOffset:4}]},
-    options:{cutout:'66%',plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:10},color:'#6B7585'}}},animation:{duration:400}}});
-  if(_bch)_bch.destroy();
-  _bch=new Chart($('cBar').getContext('2d'),{type:'bar',
-    data:{labels:['Des','AM','Com','PM','Cen'],datasets:[{data:mK,backgroundColor:['#f97316','#16a34a','#2563eb','#8B5CF6','#dc2626'],borderRadius:4,borderSkipped:false}]},
-    options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'rgba(0,0,0,.04)'},ticks:{color:'#9AA3B0',font:{size:9}}},x:{grid:{display:false},ticks:{color:'#9AA3B0',font:{size:9}}}},animation:{duration:400}}});
+  // Update chart data in-place (no destroy/recreate — 60fps)
+  if(_dch){
+    _dch.data.datasets[0].data=[t.p*4||0,t.c*4||0,t.l*9||0];
+    _dch.update('none');
+  }else{
+    _dch=new Chart($('cDonut').getContext('2d'),{type:'doughnut',
+      data:{labels:['Prot','Carb','Gra'],datasets:[{data:[t.p*4||0,t.c*4||0,t.l*9||0],backgroundColor:['#16a34a','#2563eb','#dc2626'],borderWidth:0,hoverOffset:4}]},
+      options:{cutout:'66%',plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:10},color:'#6B7585'}}},animation:{duration:300}}});
+  }
+  if(_bch){
+    _bch.data.datasets[0].data=mK;
+    _bch.update('none');
+  }else{
+    _bch=new Chart($('cBar').getContext('2d'),{type:'bar',
+      data:{labels:['Des','AM','Com','PM','Cen'],datasets:[{data:mK,backgroundColor:['#f97316','#16a34a','#2563eb','#8B5CF6','#dc2626'],borderRadius:4,borderSkipped:false}]},
+      options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'rgba(0,0,0,.04)'},ticks:{color:'#9AA3B0',font:{size:9}}},x:{grid:{display:false},ticks:{color:'#9AA3B0',font:{size:9}}}},animation:{duration:300}}});
+  }
   // Render smart recommendations
   setTimeout(renderRecs, 100);
 }
@@ -2217,8 +2233,12 @@ function buildPool(filter) {
   return pool;
 }
 
+var _recCache={sig:'',recs:[]};
 function getRecommendations(mealCtx, filter) {
-  var rem = getRemainingMacros();
+  const rem=getRemainingMacros();
+  // Cache key = deficit signature (changes when log changes)
+  const sig=[Math.round(rem.k),Math.round(rem.p),Math.round(rem.c),Math.round(rem.l),mealCtx,filter].join('|');
+  if(_recCache.sig===sig) return _recCache.recs;
   if (!rem) return [];
   if (rem.pctK >= 100 && rem.pctP >= 100 && rem.pctC >= 100 && rem.pctL >= 100) return [];
 
@@ -2264,7 +2284,8 @@ function getRecommendations(mealCtx, filter) {
       why: whyText(entry.entry.nf, rem, mealCtx, filter, entry.quality)
     });
   }
-  return results.slice(0, 8);
+  _recCache={sig,recs:results.slice(0,8)};
+  return _recCache.recs;
 }
 
 // ── Coverage bar HTML ─────────────────────────────────────────
@@ -2484,6 +2505,8 @@ function snow(n){
 })();
 
 init();
+
+
 
 
 

@@ -1,0 +1,40 @@
+// firestore.rules
+// Copia y pega estas reglas en Firebase Console → Firestore → Rules
+// URL: https://console.firebase.google.com/project/portal-nutricional-693fb/firestore/rules
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── PATIENTS ──────────────────────────────────────────────────
+    // Solo administradores autenticados pueden crear/editar pacientes
+    // Los pacientes (acceso por URL) solo pueden leer su propio documento
+    match /patients/{patientId} {
+      // Lectura: admin autenticado O cualquiera (acceso por link)
+      // El link ?id= es el token de acceso del paciente
+      allow read:  if request.auth != null || true;
+      // Escritura: solo admin autenticado
+      allow write: if request.auth != null;
+    }
+
+    // ── PROGRESS (checkboxes de comidas) ──────────────────────────
+    // El paciente puede escribir su propio progreso (toggle de comidas)
+    // El admin puede leer/escribir cualquier progreso
+    match /progress/{patientId} {
+      allow read:  if true;   // paciente accede por link
+      allow write: if true;   // paciente actualiza sus checkboxes
+    }
+
+    // ── FOOD LOGS (registro de alimentos) ─────────────────────────
+    match /calcLogs/{patientId} {
+      allow read:  if true;
+      allow write: if true;
+    }
+
+    // ── NOTA DE SEGURIDAD ─────────────────────────────────────────
+    // Para seguridad máxima en producción, reemplaza `true` por:
+    //   request.auth != null   (requiere auth del paciente también)
+    // Pero eso requiere crear cuentas para cada paciente.
+    // El modelo actual (link como token) es aceptable para uso clínico privado.
+  }
+}

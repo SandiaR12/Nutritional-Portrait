@@ -1,4 +1,4 @@
-import { db } from './firebase.js';
+import { db, auth } from './firebase.js';
 import { 
     collection, 
     doc, 
@@ -7,6 +7,52 @@ import {
     setDoc, 
     deleteDoc
 } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js';
+import {
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged
+} from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
+
+// ── Auth guard — block admin if not logged in ─────────────────
+onAuthStateChanged(auth, function(user) {
+    if (user) {
+        // Logged in — show app, hide login screen
+        var loginScreen = document.getElementById('loginScreen');
+        var appScreen   = document.getElementById('appScreen');
+        if (loginScreen) loginScreen.style.display = 'none';
+        if (appScreen)   appScreen.style.display   = 'block';
+        document.getElementById('adminEmail').textContent = user.email;
+    } else {
+        // Not logged in — show login screen
+        var loginScreen = document.getElementById('loginScreen');
+        var appScreen   = document.getElementById('appScreen');
+        if (loginScreen) loginScreen.style.display = 'flex';
+        if (appScreen)   appScreen.style.display   = 'none';
+    }
+});
+
+window.adminLogin = async function() {
+    var email = document.getElementById('loginEmail').value.trim();
+    var pass  = document.getElementById('loginPass').value;
+    var errEl = document.getElementById('loginError');
+    var btn   = document.getElementById('loginBtn');
+    if (!email || !pass) { errEl.textContent = 'Ingresa correo y contraseña'; return; }
+    btn.disabled = true;
+    btn.textContent = 'Entrando…';
+    try {
+        await signInWithEmailAndPassword(auth, email, pass);
+    } catch(e) {
+        errEl.textContent = e.code === 'auth/invalid-credential'
+            ? 'Correo o contraseña incorrectos'
+            : 'Error: ' + e.message;
+        btn.disabled = false;
+        btn.textContent = 'Entrar';
+    }
+};
+
+window.adminLogout = async function() {
+    await signOut(auth);
+};
 
 // Estado
 let currentPatientId = null;
@@ -332,12 +378,18 @@ async function savePatient(e) {
         // NUEVO: Guardar fechas de período
         dietStartDate: document.getElementById('dietStartDate').value,
         dietEndDate: document.getElementById('dietEndDate').value,
-        // Guardar macros (nested para compatibilidad interna + flat para calculadora)
+        // Macros — guardados en formato plano (fuente de verdad única)
+        // patient-view.html lee: pat.calories || pat.macros.calories
+        calories: parseInt(document.getElementById('patientCalories').value) || 2000,
+        protein:  parseInt(document.getElementById('patientProtein').value)  || 150,
+        carbs:    parseInt(document.getElementById('patientCarbs').value)    || 250,
+        fats:     parseInt(document.getElementById('patientFats').value)     || 65,
+        // Mantener macros.{} por compatibilidad con versiones anteriores
         macros: {
-            calories: parseInt(document.getElementById('patientCalories').value),
-            protein: parseInt(document.getElementById('patientProtein').value),
-            carbs: parseInt(document.getElementById('patientCarbs').value),
-            fats: parseInt(document.getElementById('patientFats').value)
+            calories: parseInt(document.getElementById('patientCalories').value) || 2000,
+            protein:  parseInt(document.getElementById('patientProtein').value)  || 150,
+            carbs:    parseInt(document.getElementById('patientCarbs').value)    || 250,
+            fats:     parseInt(document.getElementById('patientFats').value)     || 65
         },
         // Campos flat que lee la calculadora
         calories: parseInt(document.getElementById('patientCalories').value),

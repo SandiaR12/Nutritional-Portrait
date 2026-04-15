@@ -1,23 +1,20 @@
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
-import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js';
+// firebase.js — Shared Firebase config (admin panel)
+// patient-view.html has its own embedded config for offline resilience
 
-// TODO: Reemplaza esto con tu configuración de Firebase
-// Ve a: https://console.firebase.google.com/
-// 1. Crea un proyecto
-// 2. Ve a Project Settings > General
-// 3. En "Your apps" selecciona la opción Web (</>) 
-// 4. Copia la configuración y pégala aquí
+import { initializeApp }  from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
+import { getFirestore }   from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js';
+import { getAuth }        from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAB82hupqdQvlOfbM0xusNY5oPsEAHCcY4",
-    authDomain: "portal-nutricional-693fb.firebaseapp.com",
-    projectId: "portal-nutricional-693fb",
-    storageBucket: "portal-nutricional-693fb.firebasestorage.app",
+    apiKey:            "AIzaSyAB82hupqdQvlOfbM0xusNY5oPsEAHCcY4",
+    authDomain:        "portal-nutricional-693fb.firebaseapp.com",
+    projectId:         "portal-nutricional-693fb",
+    storageBucket:     "portal-nutricional-693fb.firebasestorage.app",
     messagingSenderId: "208066338229",
-    appId: "1:208066338229:web:b4c16b54daa2aec9c24dfc",
-    measurementId: "G-TFJCYE4PW4"
+    appId:             "1:208066338229:web:b4c16b54daa2aec9c24dfc"
 };
 
-// Inicializar Firebase
-export const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+const app = initializeApp(firebaseConfig);
+
+export const db   = getFirestore(app);
+export const auth = getAuth(app);

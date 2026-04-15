@@ -1,58 +1,58 @@
-# 🥗 NutriPlan - Portal Nutricional Profesional
+# NutriPlan — Portal Nutricional
+**by Ricardo Sandoval Solórzano, Lic. Nutrición — Morelia, Michoacán**
 
-Sistema completo de gestión nutricional con diseño Apple-style. Permite a nutriólogos crear planes quincenales personalizados (15 días, 5 comidas diarias) y compartirlos con sus pacientes mediante links únicos.
+---
 
-## ✨ Características Principales
+## Archivos del proyecto
 
-### Para Pacientes:
-- 📅 **Plan Quincenal Interactivo**: 15 días con 5 comidas cada uno
-- ✅ **Sistema de Check**: Marca cada comida como completada
-- 📊 **Progreso Visual**: Círculos de progreso y estadísticas en tiempo real
-- 🎉 **Animaciones de Celebración**: Confetti al completar días
-- 📱 **Diseño Responsive**: Funciona perfectamente en móvil y desktop
-- 🎮 **Easter Egg Secreto**: Konami Code incluido
+| Archivo | Descripción |
+|---------|-------------|
+| `patient-view.html` | App principal del paciente (todo en uno) |
+| `index.html` | Redirect a patient-view.html |
+| `admin.html` | Panel del nutriólogo |
+| `admin-app.js` | Lógica del panel admin |
+| `admin-styles.css` | Estilos del admin |
+| `firebase.js` | Configuración Firebase compartida |
+| `firestore.rules` | Reglas de seguridad Firestore |
+| `calculadora-libre.html` | Calculadora nutricional libre |
+| `calculadora-paciente.html` | Calculadora para paciente |
 
-### Para Nutriólogos (Admin):
-- 👥 **Gestión de Pacientes**: CRUD completo
-- 📝 **Editor de 15 Días**: Configura cada comida de cada día
-- 🔗 **Links Únicos**: Genera enlaces personalizados
-- 💾 **Auto-guardado**: Todo se guarda en Firebase
-- 🎨 **Interface Intuitiva**: Diseño limpio estilo Apple
+---
 
-## 🎮 HUEVO DE PASCUA
+## Pasos para activar autenticación (URGENTE)
 
-En el portal de pacientes, presiona esta secuencia en el teclado:
+### Paso 1 — Activar Firebase Authentication
+1. Ve a https://console.firebase.google.com/project/portal-nutricional-693fb/authentication
+2. Clic en **"Get started"**
+3. En "Sign-in providers" → **Email/Password** → Activar → Guardar
 
-**⬆️ ⬆️ ⬇️ ⬇️ ⬅️ ➡️ ⬅️ ➡️ B A**
+### Paso 2 — Crear tu cuenta de admin
+1. En Authentication → Users → **Add user**
+2. Ingresa tu correo y una contraseña segura
+3. Guarda el UID que te muestra (lo necesitarás para las reglas)
 
-¡Disfruta de la sorpresa! 🎊
+### Paso 3 — Aplicar reglas de Firestore
+1. Ve a https://console.firebase.google.com/project/portal-nutricional-693fb/firestore/rules
+2. Borra el contenido actual
+3. Copia y pega el contenido de `firestore.rules`
+4. Clic en **Publicar**
 
-## 💻 Cómo Usar
+### Paso 4 — Subir archivos al hosting
+Sube todos los archivos de esta carpeta a tu hosting (Firebase Hosting, Netlify, etc.)
 
-### Panel Admin
-1. Abre `admin.html`
-2. Click en "Nuevo Paciente"
-3. Llena información básica
-4. Configura los 15 días (usa las tabs para cambiar de día)
-5. Cada día tiene 5 comidas fijas
-6. Guarda y genera el link
-7. Envía el link al paciente
+---
 
-### Portal Paciente
-1. Abre el link recibido
-2. Ve tu progreso general
-3. Click en cualquier día
-4. Marca las comidas completadas
-5. ¡Celebra al completar días! 🎉
+## Generar enlace de paciente
 
-## 📁 Archivos
+El admin genera links en el formato:
+```
+https://tudominio.com/patient-view.html?id=PATIENT_ID
+```
 
-- `index.html` + `patient-styles.css` + `patient-app.js` → Portal paciente
-- `admin.html` + `admin-styles.css` + `admin-app.js` → Panel admin
-- `firebase.js` → Configuración (actualiza con tus credenciales)
+Donde `PATIENT_ID` es el ID generado al crear el paciente en el admin.
 
-## 👨‍💻 Creado Por
+---
 
-**Ricardo Sandoval Solorzano**
-
-Made with 💚
+## Firebase Project
+- **Project ID:** portal-nutricional-693fb
+- **Console:** https://console.firebase.google.com/project/portal-nutricional-693fb

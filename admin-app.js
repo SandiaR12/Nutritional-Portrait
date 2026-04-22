@@ -344,31 +344,33 @@ function renderDaysEditor(existingDays = null) {
                     placeholder="Ej: Ensalada de atún, 2 rebanadas de pan integral">${dayData.cena || ''}</textarea>
             </div>
             <div style="background:#EFF6FF;border:2px dashed #93C5FD;border-radius:14px;padding:18px;margin-top:14px">
-              <div style="font-size:.88rem;font-weight:800;color:#1D4ED8;margin-bottom:6px">📸 Imágenes de referencia</div>
-              <div style="font-size:.74rem;color:#6B7585;margin-bottom:14px;line-height:1.5">
-                Sube una foto de referencia para cada tiempo de comida.<br>
-                El paciente la verá al abrir ese horario en la app.
-              </div>
-              ${(function(){
-                var meals=[['desayuno','🌅 Desayuno'],['colacion1','🍎 Colación AM'],['comida','🍽️ Comida'],['colacion2','🥤 Colación PM'],['cena','🌙 Cena']];
-                return meals.map(function(pair){
-                  var m=pair[0], lbl=pair[1];
-                  var ex=dayData['img_'+m]||'';
-                  return '<div style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #DBEAFE">'
-                    +'<div style="font-size:.75rem;font-weight:700;color:#374151;margin-bottom:6px">'+lbl+'</div>'
-                    +'<div style="display:flex;align-items:center;gap:8px">'
-                    +'<label style="display:inline-flex;align-items:center;gap:5px;background:#2563EB;color:#fff;border-radius:8px;padding:7px 14px;cursor:pointer;font-size:.74rem;font-weight:700">'
-                    +'📁 Subir imagen'
-                    +'<input type="file" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="window.npImgUp(event,'+day+',\''+m+'\')"></label>'
-                    +'<img id="np_p_'+day+'_'+m+'" src="'+ex+'" style="width:52px;height:52px;object-fit:cover;border-radius:8px;border:2px solid #93C5FD;display:'+(ex?'block':'none')+'">'
-                    +'<button type="button" onclick="window.npImgClr('+day+',\''+m+'\')" style="display:'+(ex?'flex':'none')+';background:#FEE2E2;border:1px solid #FCA5A5;color:#DC2626;border-radius:6px;padding:5px 10px;font-size:.72rem;cursor:pointer;font-family:inherit">✕ Quitar</button>'
-                    +'</div>'
-                    +'<input type="hidden" id="np_d_'+day+'_'+m+'" value="'+ex+'">'
-                    +'</div>';
-                }).join('');
-              })()}
+              <div style="font-size:.9rem;font-weight:800;color:#1D4ED8;margin-bottom:8px">&#128248; Imagenes de referencia por comida</div>
+              <div style="font-size:.74rem;color:#6B7585;margin-bottom:14px;line-height:1.5">Sube una foto para cada tiempo. Aparecera en la app del paciente al abrir ese horario. Maximo 2MB por imagen.</div>
+              <div id="imgSection_${day}"></div>
             </div>
         `;
+        // Build image rows after setting innerHTML
+        (function buildImgs(){
+          var cont = document.getElementById('imgSection_'+day);
+          if(!cont) return;
+          var meals=[['desayuno','Desayuno'],['colacion1','Colacion AM'],['comida','Comida'],['colacion2','Colacion PM'],['cena','Cena']];
+          cont.innerHTML = meals.map(function(pair){
+            var m=pair[0], lbl=pair[1];
+            var ex=(dayData['img_'+m]||'');
+            return '<div style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #DBEAFE">'
+              +'<div style="font-size:.75rem;font-weight:700;color:#374151;margin-bottom:6px">'+lbl+'</div>'
+              +'<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">'
+              +'<label style="display:inline-flex;align-items:center;gap:5px;background:#2563EB;color:#fff;border-radius:8px;padding:7px 14px;cursor:pointer;font-size:.74rem;font-weight:700">'
+              +'Subir imagen'
+              +'<input type="file" accept="image/jpeg,image/png,image/webp,image/gif" style="display:none" data-day="'+day+'" data-meal="'+m+'" onchange="window.npUp(this)">'
+              +'</label>'
+              +'<img id="np_p_'+day+'_'+m+'" src="'+ex+'" style="width:52px;height:52px;object-fit:cover;border-radius:8px;border:2px solid #93C5FD;display:'+(ex?'block':'none')+'">'
+              +'<button type="button" data-day="'+day+'" data-meal="'+m+'" onclick="window.npClr(this)" style="display:'+(ex?'flex':'none')+';align-items:center;background:#FEE2E2;border:1px solid #FCA5A5;color:#DC2626;border-radius:6px;padding:5px 10px;font-size:.72rem;cursor:pointer;font-family:inherit">Quitar</button>'
+              +'</div>'
+              +'<input type="hidden" id="np_d_'+day+'_'+m+'" value="'+ex+'">'
+              +'</div>';
+          }).join('');
+        })();
         
         container.appendChild(dayEditor);
     }
@@ -434,7 +436,7 @@ async function savePatient(e) {
         const colacion2El = document.querySelector(`[data-day="${day}"][data-meal="colacion2"]`);
         const cenaEl = document.querySelector(`[data-day="${day}"][data-meal="cena"]`);
         
-        var _d = {
+        var _dayObj = {
             desayuno: desayunoEl ? desayunoEl.value : '',
             colacion1: colacion1El ? colacion1El.value : '',
             comida: comidaEl ? comidaEl.value : '',
@@ -443,9 +445,9 @@ async function savePatient(e) {
         };
         ['desayuno','colacion1','comida','colacion2','cena'].forEach(function(m){
             var el=document.getElementById('np_d_'+day+'_'+m);
-            if(el&&el.value) _d['img_'+m]=el.value;
+            if(el && el.value) _dayObj['img_'+m]=el.value;
         });
-        patientData.days[`day${day}`] = _d;
+        patientData.days[`day${day}`] = _dayObj;
     }
     
     console.log('💾 Datos recopilados:', patientData);
@@ -548,11 +550,12 @@ function showToast(message, type = 'success') {
     }, 3000);
 }
 
-window.npImgUp=function(e,day,meal){
-  var f=e.target.files[0];
+window.npUp=function(input){
+  var day=input.dataset.day, meal=input.dataset.meal;
+  var f=input.files[0];
   if(!f)return;
-  if(!f.type.startsWith('image/')){alert('Solo imágenes');return;}
-  if(f.size>900000){alert('Máximo 900KB por imagen');return;}
+  if(!f.type.startsWith('image/')){alert('Solo imagenes (jpg, png, webp)');return;}
+  if(f.size>2000000){alert('Imagen muy grande. Maximo 2MB.');return;}
   var r=new FileReader();
   r.onload=function(ev){
     var b=ev.target.result;
@@ -560,16 +563,16 @@ window.npImgUp=function(e,day,meal){
     var d=document.getElementById('np_d_'+day+'_'+meal);
     if(p){p.src=b;p.style.display='block';}
     if(d)d.value=b;
-    var btns=p&&p.parentNode&&p.parentNode.querySelectorAll('button[type=button]');
-    if(btns&&btns[0])btns[0].style.display='flex';
+    var row=input.closest('div[style]');
+    if(row){var btn=row.querySelector('button[type=button]');if(btn)btn.style.display='flex';}
   };
   r.readAsDataURL(f);
 };
-window.npImgClr=function(day,meal){
+window.npClr=function(btn){
+  var day=btn.dataset.day, meal=btn.dataset.meal;
   var p=document.getElementById('np_p_'+day+'_'+meal);
   var d=document.getElementById('np_d_'+day+'_'+meal);
   if(p){p.src='';p.style.display='none';}
   if(d)d.value='';
-  var btns=p&&p.parentNode&&p.parentNode.querySelectorAll('button[type=button]');
-  if(btns&&btns[0])btns[0].style.display='none';
+  btn.style.display='none';
 };

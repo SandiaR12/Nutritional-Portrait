@@ -74,6 +74,10 @@ let currentEditingDay = 1;
 // value: File (imagen nueva) | 'REMOVED' (usuario dio "Quitar") | ausente (sin cambios)
 let pendingUploads = {};
 
+// ══ NUEVO: Foto de perfil pendiente ═══════════════════════════════
+// null | Blob (nueva foto) | 'REMOVED' (usuario quitó la foto)
+let pendingProfilePhoto = null;
+
 // Elementos DOM
 const patientsList = document.getElementById('patientsList');
 const editSection = document.getElementById('editSection');
@@ -164,6 +168,7 @@ window.openCalc = function(id) {
 window.editPatient = async function(id) {
     currentPatientId = id;
     pendingUploads = {};  // limpiar estado de subidas anteriores
+    pendingProfilePhoto = null;
     const docRef = doc(db, 'patients', id);
     const docSnap = await getDoc(docRef);
     
@@ -209,8 +214,20 @@ async function deletePatient() {
 function showNewPatientForm() {
     currentPatientId = null;
     pendingUploads = {};  // limpiar estado
+    pendingProfilePhoto = null;
     patientForm.reset();
     currentEditingDay = 1;
+
+    // Reset foto de perfil
+    var photoPreview = document.getElementById('profilePhotoPreview');
+    var photoHidden  = document.getElementById('profilePhotoHidden');
+    var photoInitial = document.getElementById('profilePhotoInitial');
+    var photoClearBtn = document.getElementById('profilePhotoClearBtn');
+    if (photoPreview) photoPreview.style.display = 'none';
+    if (photoHidden)  photoHidden.value = '';
+    if (photoInitial) { photoInitial.style.display = 'flex'; photoInitial.textContent = '?'; }
+    if (photoClearBtn) photoClearBtn.style.display = 'none';
+
     renderDaysEditor();
     showEditSection();
     generateLink.style.display = 'none';
@@ -243,6 +260,30 @@ function fillForm(patient) {
     document.getElementById('patientWeight').value = patient.weight || '';
     document.getElementById('patientHeight').value = patient.height || '';
     document.getElementById('patientGoal').value = patient.goal || '';
+
+    // Foto de perfil (si existe)
+    var existingPhoto = patient.photoURL || '';
+    var photoPreview = document.getElementById('profilePhotoPreview');
+    var photoHidden  = document.getElementById('profilePhotoHidden');
+    var photoInitial = document.getElementById('profilePhotoInitial');
+    var photoClearBtn = document.getElementById('profilePhotoClearBtn');
+    if (photoPreview) {
+        if (existingPhoto) {
+            photoPreview.src = existingPhoto;
+            photoPreview.style.display = 'block';
+            if (photoInitial) photoInitial.style.display = 'none';
+            if (photoClearBtn) photoClearBtn.style.display = 'inline-flex';
+        } else {
+            photoPreview.style.display = 'none';
+            if (photoInitial) {
+                photoInitial.style.display = 'flex';
+                photoInitial.textContent = (patient.name || '?')[0].toUpperCase();
+            }
+            if (photoClearBtn) photoClearBtn.style.display = 'none';
+        }
+    }
+    if (photoHidden) photoHidden.value = existingPhoto;
+    pendingProfilePhoto = null;  // resetear
     
     // NUEVO: Llenar fechas de período
     document.getElementById('dietStartDate').value = patient.dietStartDate || '';
@@ -477,6 +518,25 @@ async function savePatient(e) {
             days: {},
             updatedAt: new Date().toISOString()
         };
+
+        // 2.5. Foto de perfil
+        const photoHidden = document.getElementById('profilePhotoHidden');
+        const existingPhoto = photoHidden ? photoHidden.value : '';
+        if (pendingProfilePhoto === 'REMOVED') {
+            patientData.photoURL = '';   // borrar
+        } else if (pendingProfilePhoto instanceof Blob) {
+            // Subir nueva foto
+            if (saveBtn) saveBtn.innerHTML = '⏳ Subiendo foto de perfil...';
+            const photoPath = `profile-photos/${patientId}`;
+            const photoRef = storageRef(storage, photoPath);
+            const photoSnap = await uploadBytes(photoRef, pendingProfilePhoto, {
+                contentType: 'image/webp',
+                cacheControl: 'public,max-age=31536000'
+            });
+            patientData.photoURL = await getDownloadURL(photoSnap.ref);
+        } else if (existingPhoto) {
+            patientData.photoURL = existingPhoto;   // conservar
+        }
         if (isNew) patientData.createdAt = new Date().toISOString();
         
         // 3. Construir lista de tareas de imagen (subidas + migraciones)
@@ -494,8 +554,8 @@ async function savePatient(e) {
                     // Usuario dio "Quitar" — no hacer nada (no añadir img_)
                     continue;
                 }
-                if (pending instanceof File) {
-                    // Nueva imagen subida — hay que mandarla a Storage
+                if (pending instanceof Blob) {
+                    // Nueva imagen subida (File o Blob comprimido) — hay que mandarla a Storage
                     imageTasks.push({ day, meal, type: 'file', data: pending });
                 } else if (existing) {
                     if (existing.startsWith('data:')) {
@@ -735,4 +795,55 @@ window.npClr = function(btn){
     if(d) d.value = '';  // limpiar input hidden (ya no hay URL existente)
     pendingUploads[`day${day}_${meal}`] = 'REMOVED';  // marcar como borrada
     btn.style.display = 'none';
+};
+
+// ══════════════════════════════════════════════════════════════════
+//  Foto de perfil — Subir
+// ══════════════════════════════════════════════════════════════════
+window.npProfileUp = async function(input){
+    var f = input.files[0];
+    if(!f) return;
+    if(!f.type.startsWith('image/')){ alert('Solo imagenes'); return; }
+    if(f.size > 10000000){ alert('Imagen muy grande. Maximo 10MB.'); return; }
+
+    var preview = document.getElementById('profilePhotoPreview');
+    var initial = document.getElementById('profilePhotoInitial');
+    var clearBtn = document.getElementById('profilePhotoClearBtn');
+    if(preview) preview.style.opacity = '0.5';
+
+    try {
+        var compressed = await compressImage(f);
+        console.log(`📦 Foto perfil: ${(f.size/1024).toFixed(1)}KB → ${(compressed.size/1024).toFixed(1)}KB`);
+        pendingProfilePhoto = compressed;
+
+        var r = new FileReader();
+        r.onload = function(ev){
+            if(preview){
+                preview.src = ev.target.result;
+                preview.style.display = 'block';
+                preview.style.opacity = '1';
+            }
+            if(initial) initial.style.display = 'none';
+            if(clearBtn) clearBtn.style.display = 'inline-flex';
+        };
+        r.readAsDataURL(compressed);
+    } catch(err){
+        if(preview) preview.style.opacity = '1';
+        alert('Error: ' + err.message);
+    }
+};
+
+// ══════════════════════════════════════════════════════════════════
+//  Foto de perfil — Quitar
+// ══════════════════════════════════════════════════════════════════
+window.npProfileClr = function(){
+    var preview = document.getElementById('profilePhotoPreview');
+    var hidden  = document.getElementById('profilePhotoHidden');
+    var initial = document.getElementById('profilePhotoInitial');
+    var clearBtn = document.getElementById('profilePhotoClearBtn');
+    if(preview){ preview.src = ''; preview.style.display = 'none'; }
+    if(hidden)  hidden.value = '';
+    if(initial){ initial.style.display = 'flex'; initial.textContent = (document.getElementById('patientName').value || '?')[0].toUpperCase(); }
+    if(clearBtn) clearBtn.style.display = 'none';
+    pendingProfilePhoto = 'REMOVED';
 };

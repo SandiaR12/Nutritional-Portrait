@@ -363,34 +363,28 @@ function renderDaysEditor(existingDays = null) {
             </div>
             <div style="background:#EFF6FF;border:2px dashed #93C5FD;border-radius:14px;padding:18px;margin-top:14px">
               <div style="font-size:.9rem;font-weight:800;color:#1D4ED8;margin-bottom:8px">&#128248; Imagenes de referencia por comida</div>
-              <div style="font-size:.74rem;color:#6B7585;margin-bottom:14px;line-height:1.5">Sube una foto para cada tiempo. Se guarda en Firebase Storage (no ocupa espacio en la base de datos). Maximo 5MB por imagen.</div>
-              <div id="imgSection_${day}"></div>
+              <div style="font-size:.74rem;color:#6B7585;margin-bottom:14px;line-height:1.5">Sube una foto para cada tiempo. Se guarda en Firebase Storage (no ocupa espacio en la base de datos). Se comprime automaticamente.</div>
+              ${(function(){
+                var meals=[['desayuno','Desayuno'],['colacion1','Colacion AM'],['comida','Comida'],['colacion2','Colacion PM'],['cena','Cena']];
+                return meals.map(function(pair){
+                  var m=pair[0], lbl=pair[1];
+                  var ex=(dayData['img_'+m]||'');
+                  return '<div style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #DBEAFE">'
+                    +'<div style="font-size:.75rem;font-weight:700;color:#374151;margin-bottom:6px">'+lbl+'</div>'
+                    +'<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">'
+                    +'<label style="display:inline-flex;align-items:center;gap:5px;background:#2563EB;color:#fff;border-radius:8px;padding:7px 14px;cursor:pointer;font-size:.74rem;font-weight:700">'
+                    +'Subir imagen'
+                    +'<input type="file" accept="image/jpeg,image/png,image/webp,image/gif" style="display:none" data-day="'+day+'" data-meal="'+m+'" onchange="window.npUp(this)">'
+                    +'</label>'
+                    +'<img id="np_p_'+day+'_'+m+'" src="'+ex+'" style="width:52px;height:52px;object-fit:cover;border-radius:8px;border:2px solid #93C5FD;display:'+(ex?'block':'none')+'">'
+                    +'<button type="button" data-day="'+day+'" data-meal="'+m+'" onclick="window.npClr(this)" style="display:'+(ex?'flex':'none')+';align-items:center;background:#FEE2E2;border:1px solid #FCA5A5;color:#DC2626;border-radius:6px;padding:5px 10px;font-size:.72rem;cursor:pointer;font-family:inherit">Quitar</button>'
+                    +'</div>'
+                    +'<input type="hidden" id="np_d_'+day+'_'+m+'" value="'+ex+'">'
+                    +'</div>';
+                }).join('');
+              })()}
             </div>
         `;
-        // Build image rows after setting innerHTML
-        (function buildImgs(){
-          var cont = document.getElementById('imgSection_'+day);
-          if(!cont) return;
-          var meals=[['desayuno','Desayuno'],['colacion1','Colacion AM'],['comida','Comida'],['colacion2','Colacion PM'],['cena','Cena']];
-          cont.innerHTML = meals.map(function(pair){
-            var m=pair[0], lbl=pair[1];
-            var ex=(dayData['img_'+m]||'');
-            // La vista previa usa la URL existente (o base64 antiguo) directamente
-            return '<div style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #DBEAFE">'
-              +'<div style="font-size:.75rem;font-weight:700;color:#374151;margin-bottom:6px">'+lbl+'</div>'
-              +'<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">'
-              +'<label style="display:inline-flex;align-items:center;gap:5px;background:#2563EB;color:#fff;border-radius:8px;padding:7px 14px;cursor:pointer;font-size:.74rem;font-weight:700">'
-              +'Subir imagen'
-              +'<input type="file" accept="image/jpeg,image/png,image/webp,image/gif" style="display:none" data-day="'+day+'" data-meal="'+m+'" onchange="window.npUp(this)">'
-              +'</label>'
-              +'<img id="np_p_'+day+'_'+m+'" src="'+ex+'" style="width:52px;height:52px;object-fit:cover;border-radius:8px;border:2px solid #93C5FD;display:'+(ex?'block':'none')+'">'
-              +'<button type="button" data-day="'+day+'" data-meal="'+m+'" onclick="window.npClr(this)" style="display:'+(ex?'flex':'none')+';align-items:center;background:#FEE2E2;border:1px solid #FCA5A5;color:#DC2626;border-radius:6px;padding:5px 10px;font-size:.72rem;cursor:pointer;font-family:inherit">Quitar</button>'
-              +'</div>'
-              // El hidden input guarda la URL/base64 EXISTENTE del doc (se migra en save si es base64)
-              +'<input type="hidden" id="np_d_'+day+'_'+m+'" value="'+ex+'">'
-              +'</div>';
-          }).join('');
-        })();
         
         container.appendChild(dayEditor);
     }

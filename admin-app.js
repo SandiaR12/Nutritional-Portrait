@@ -12,6 +12,16 @@ import {
     signOut,
     onAuthStateChanged
 } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
+// ══ NUEVO: Firebase Storage para subir imagenes ══════════════════
+import {
+    getStorage,
+    ref as storageRef,
+    uploadBytes,
+    uploadString,
+    getDownloadURL
+} from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js';
+
+const storage = getStorage();
 
 // ── Auth guard — block admin if not logged in ─────────────────
 onAuthStateChanged(auth, function(user) {
@@ -58,6 +68,11 @@ window.adminLogout = async function() {
 let currentPatientId = null;
 let deletePatientId = null;
 let currentEditingDay = 1;
+
+// ══ NUEVO: Archivos pendientes de subir a Storage ════════════════
+// key: "day{N}_{meal}"
+// value: File (imagen nueva) | 'REMOVED' (usuario dio "Quitar") | ausente (sin cambios)
+let pendingUploads = {};
 
 // Elementos DOM
 const patientsList = document.getElementById('patientsList');
@@ -148,6 +163,7 @@ window.openCalc = function(id) {
 
 window.editPatient = async function(id) {
     currentPatientId = id;
+    pendingUploads = {};  // limpiar estado de subidas anteriores
     const docRef = doc(db, 'patients', id);
     const docSnap = await getDoc(docRef);
     
@@ -192,6 +208,7 @@ async function deletePatient() {
 
 function showNewPatientForm() {
     currentPatientId = null;
+    pendingUploads = {};  // limpiar estado
     patientForm.reset();
     currentEditingDay = 1;
     renderDaysEditor();
@@ -216,6 +233,7 @@ function hideEditSection() {
     editSection.style.display = 'none';
     patientsSection.style.display = 'block';
     currentPatientId = null;
+    pendingUploads = {};
 }
 
 function fillForm(patient) {
@@ -345,7 +363,7 @@ function renderDaysEditor(existingDays = null) {
             </div>
             <div style="background:#EFF6FF;border:2px dashed #93C5FD;border-radius:14px;padding:18px;margin-top:14px">
               <div style="font-size:.9rem;font-weight:800;color:#1D4ED8;margin-bottom:8px">&#128248; Imagenes de referencia por comida</div>
-              <div style="font-size:.74rem;color:#6B7585;margin-bottom:14px;line-height:1.5">Sube una foto para cada tiempo. Aparecera en la app del paciente al abrir ese horario. Maximo 2MB por imagen.</div>
+              <div style="font-size:.74rem;color:#6B7585;margin-bottom:14px;line-height:1.5">Sube una foto para cada tiempo. Se guarda en Firebase Storage (no ocupa espacio en la base de datos). Maximo 5MB por imagen.</div>
               <div id="imgSection_${day}"></div>
             </div>
         `;
@@ -357,6 +375,7 @@ function renderDaysEditor(existingDays = null) {
           cont.innerHTML = meals.map(function(pair){
             var m=pair[0], lbl=pair[1];
             var ex=(dayData['img_'+m]||'');
+            // La vista previa usa la URL existente (o base64 antiguo) directamente
             return '<div style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #DBEAFE">'
               +'<div style="font-size:.75rem;font-weight:700;color:#374151;margin-bottom:6px">'+lbl+'</div>'
               +'<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">'
@@ -367,6 +386,7 @@ function renderDaysEditor(existingDays = null) {
               +'<img id="np_p_'+day+'_'+m+'" src="'+ex+'" style="width:52px;height:52px;object-fit:cover;border-radius:8px;border:2px solid #93C5FD;display:'+(ex?'block':'none')+'">'
               +'<button type="button" data-day="'+day+'" data-meal="'+m+'" onclick="window.npClr(this)" style="display:'+(ex?'flex':'none')+';align-items:center;background:#FEE2E2;border:1px solid #FCA5A5;color:#DC2626;border-radius:6px;padding:5px 10px;font-size:.72rem;cursor:pointer;font-family:inherit">Quitar</button>'
               +'</div>'
+              // El hidden input guarda la URL/base64 EXISTENTE del doc (se migra en save si es base64)
               +'<input type="hidden" id="np_d_'+day+'_'+m+'" value="'+ex+'">'
               +'</div>';
           }).join('');
@@ -390,99 +410,173 @@ function switchDay(day) {
     });
 }
 
+// ══════════════════════════════════════════════════════════════════
+//  NUEVA FUNCIÓN: Subir un File a Firebase Storage
+// ══════════════════════════════════════════════════════════════════
+async function uploadFileToStorage(pid, day, meal, file) {
+    const path = `diet-images/${pid}/day${day}_${meal}`;
+    const sRef = storageRef(storage, path);
+    const snap = await uploadBytes(sRef, file, {
+        contentType: file.type || 'image/jpeg',
+        cacheControl: 'public,max-age=31536000'
+    });
+    return await getDownloadURL(snap.ref);
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  NUEVA FUNCIÓN: Migrar base64 existente a Storage
+// ══════════════════════════════════════════════════════════════════
+async function uploadBase64ToStorage(pid, day, meal, dataUrl) {
+    const path = `diet-images/${pid}/day${day}_${meal}`;
+    const sRef = storageRef(storage, path);
+    const snap = await uploadString(sRef, dataUrl, 'data_url', {
+        cacheControl: 'public,max-age=31536000'
+    });
+    return await getDownloadURL(snap.ref);
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  SAVE PATIENT — ahora sube imagenes a Storage, no a Firestore
+// ══════════════════════════════════════════════════════════════════
 async function savePatient(e) {
     e.preventDefault();
     console.log('🔥 Función savePatient ejecutada');
     
-    // Recopilar datos básicos
-    const patientData = {
-        name: document.getElementById('patientName').value,
-        age: parseInt(document.getElementById('patientAge').value),
-        sex: document.getElementById('patientSex').value,
-        weight: parseFloat(document.getElementById('patientWeight').value),
-        height: parseInt(document.getElementById('patientHeight').value),
-        goal: document.getElementById('patientGoal').value,
-        // NUEVO: Guardar fechas de período
-        dietStartDate: document.getElementById('dietStartDate').value,
-        dietEndDate: document.getElementById('dietEndDate').value,
-        // Macros — guardados en formato plano (fuente de verdad única)
-        // patient-view.html lee: pat.calories || pat.macros.calories
-        calories: parseInt(document.getElementById('patientCalories').value) || 2000,
-        protein:  parseInt(document.getElementById('patientProtein').value)  || 150,
-        carbs:    parseInt(document.getElementById('patientCarbs').value)    || 250,
-        fats:     parseInt(document.getElementById('patientFats').value)     || 65,
-        // Mantener macros.{} por compatibilidad con versiones anteriores
-        macros: {
+    const saveBtn = e.target.querySelector('button[type=submit]');
+    const originalBtnHtml = saveBtn ? saveBtn.innerHTML : '';
+    if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '⏳ Guardando...';
+    }
+    
+    try {
+        // 1. Determinar el ID del paciente (crear nuevo si no existe)
+        let patientId = currentPatientId;
+        let isNew = false;
+        if (!patientId) {
+            const newDocRef = doc(collection(db, 'patients'));
+            patientId = newDocRef.id;
+            isNew = true;
+            console.log('🆔 Nuevo ID generado:', patientId);
+        }
+        
+        // 2. Recopilar datos básicos del paciente
+        const patientData = {
+            name: document.getElementById('patientName').value,
+            age: parseInt(document.getElementById('patientAge').value),
+            sex: document.getElementById('patientSex').value,
+            weight: parseFloat(document.getElementById('patientWeight').value),
+            height: parseInt(document.getElementById('patientHeight').value),
+            goal: document.getElementById('patientGoal').value,
+            dietStartDate: document.getElementById('dietStartDate').value,
+            dietEndDate: document.getElementById('dietEndDate').value,
             calories: parseInt(document.getElementById('patientCalories').value) || 2000,
             protein:  parseInt(document.getElementById('patientProtein').value)  || 150,
             carbs:    parseInt(document.getElementById('patientCarbs').value)    || 250,
-            fats:     parseInt(document.getElementById('patientFats').value)     || 65
-        },
-        // Campos flat que lee la calculadora
-        calories: parseInt(document.getElementById('patientCalories').value),
-        protein: parseInt(document.getElementById('patientProtein').value),
-        carbs: parseInt(document.getElementById('patientCarbs').value),
-        fats: parseInt(document.getElementById('patientFats').value),
-        days: {},
-        updatedAt: new Date().toISOString()
-    };
-    
-    // Recopilar los 15 días usando data attributes
-    console.log('📝 Recopilando datos de los 15 días...');
-    for (let day = 1; day <= 15; day++) {
-        const desayunoEl = document.querySelector(`[data-day="${day}"][data-meal="desayuno"]`);
-        const colacion1El = document.querySelector(`[data-day="${day}"][data-meal="colacion1"]`);
-        const comidaEl = document.querySelector(`[data-day="${day}"][data-meal="comida"]`);
-        const colacion2El = document.querySelector(`[data-day="${day}"][data-meal="colacion2"]`);
-        const cenaEl = document.querySelector(`[data-day="${day}"][data-meal="cena"]`);
-        
-        var _dayObj = {
-            desayuno: desayunoEl ? desayunoEl.value : '',
-            colacion1: colacion1El ? colacion1El.value : '',
-            comida: comidaEl ? comidaEl.value : '',
-            colacion2: colacion2El ? colacion2El.value : '',
-            cena: cenaEl ? cenaEl.value : ''
+            fats:     parseInt(document.getElementById('patientFats').value)     || 65,
+            macros: {
+                calories: parseInt(document.getElementById('patientCalories').value) || 2000,
+                protein:  parseInt(document.getElementById('patientProtein').value)  || 150,
+                carbs:    parseInt(document.getElementById('patientCarbs').value)    || 250,
+                fats:     parseInt(document.getElementById('patientFats').value)     || 65
+            },
+            days: {},
+            updatedAt: new Date().toISOString()
         };
-        ['desayuno','colacion1','comida','colacion2','cena'].forEach(function(m){
-            var el=document.getElementById('np_d_'+day+'_'+m);
-            if(el && el.value) _dayObj['img_'+m]=el.value;
-        });
-        patientData.days[`day${day}`] = _dayObj;
-    }
-    
-    console.log('💾 Datos recopilados:', patientData);
-    console.log('🔑 currentPatientId:', currentPatientId);
-    
-    try {
-        console.log('🚀 Intentando guardar en Firebase...');
-        if (currentPatientId) {
-            // Actualizar existente
-            console.log('📝 Actualizando paciente existente...');
+        if (isNew) patientData.createdAt = new Date().toISOString();
+        
+        // 3. Construir lista de tareas de imagen (subidas + migraciones)
+        const MEALS = ['desayuno','colacion1','comida','colacion2','cena'];
+        const imageTasks = [];
+        
+        for (let day = 1; day <= 15; day++) {
+            for (const meal of MEALS) {
+                const key = `day${day}_${meal}`;
+                const hiddenInput = document.getElementById(`np_d_${day}_${meal}`);
+                const existing = hiddenInput ? hiddenInput.value : '';
+                const pending = pendingUploads[key];
+                
+                if (pending === 'REMOVED') {
+                    // Usuario dio "Quitar" — no hacer nada (no añadir img_)
+                    continue;
+                }
+                if (pending instanceof File) {
+                    // Nueva imagen subida — hay que mandarla a Storage
+                    imageTasks.push({ day, meal, type: 'file', data: pending });
+                } else if (existing) {
+                    if (existing.startsWith('data:')) {
+                        // Base64 antiguo en Firestore — migrar a Storage
+                        imageTasks.push({ day, meal, type: 'base64', data: existing });
+                    } else if (existing.startsWith('http')) {
+                        // Ya es URL de Storage — mantener tal cual
+                        imageTasks.push({ day, meal, type: 'url', data: existing });
+                    }
+                }
+            }
+        }
+        
+        console.log(`📸 ${imageTasks.length} imágenes a procesar`);
+        
+        // 4. Subir imágenes a Storage en paralelo (lotes de 5)
+        const imageUrls = {};  // { "day1_desayuno": "https://..." }
+        const total = imageTasks.length;
+        let done = 0;
+        
+        const BATCH = 5;
+        for (let i = 0; i < imageTasks.length; i += BATCH) {
+            const batch = imageTasks.slice(i, i + BATCH);
             
-            await Promise.race([
-                setDoc(doc(db, 'patients', currentPatientId), patientData, { merge: true }),
-                new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout después de 10 segundos')), 10000))
-            ]);
+            await Promise.all(batch.map(async (task) => {
+                const key = `day${task.day}_${task.meal}`;
+                
+                if (task.type === 'file') {
+                    imageUrls[key] = await uploadFileToStorage(patientId, task.day, task.meal, task.data);
+                } else if (task.type === 'base64') {
+                    imageUrls[key] = await uploadBase64ToStorage(patientId, task.day, task.meal, task.data);
+                } else if (task.type === 'url') {
+                    imageUrls[key] = task.data;
+                }
+                
+                done++;
+                if (saveBtn) {
+                    saveBtn.innerHTML = `⏳ Subiendo ${done}/${total}...`;
+                }
+            }));
+        }
+        
+        // 5. Construir el objeto days con textos + URLs (sin base64)
+        for (let day = 1; day <= 15; day++) {
+            const desayunoEl  = document.querySelector(`[data-day="${day}"][data-meal="desayuno"]`);
+            const colacion1El = document.querySelector(`[data-day="${day}"][data-meal="colacion1"]`);
+            const comidaEl    = document.querySelector(`[data-day="${day}"][data-meal="comida"]`);
+            const colacion2El = document.querySelector(`[data-day="${day}"][data-meal="colacion2"]`);
+            const cenaEl      = document.querySelector(`[data-day="${day}"][data-meal="cena"]`);
             
-            console.log('✅ Paciente actualizado en Firebase');
-            showToast('Plan actualizado exitosamente', 'success');
-        } else {
-            // Crear nuevo
-            console.log('➕ Creando nuevo paciente...');
-            const newDocRef = doc(collection(db, 'patients'));
-            currentPatientId = newDocRef.id;
-            console.log('🆔 Nuevo ID generado:', currentPatientId);
-            patientData.createdAt = new Date().toISOString();
+            const dayObj = {
+                desayuno:  desayunoEl  ? desayunoEl.value  : '',
+                colacion1: colacion1El ? colacion1El.value : '',
+                comida:    comidaEl    ? comidaEl.value    : '',
+                colacion2: colacion2El ? colacion2El.value : '',
+                cena:      cenaEl      ? cenaEl.value      : ''
+            };
             
-            await Promise.race([
-                setDoc(newDocRef, patientData),
-                new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout después de 10 segundos')), 10000))
-            ]);
+            for (const meal of MEALS) {
+                const url = imageUrls[`day${day}_${meal}`];
+                if (url) dayObj[`img_${meal}`] = url;
+            }
             
-            console.log('✅ Paciente guardado en Firebase');
-            
-            // Inicializar progreso vacío
-            console.log('📊 Inicializando progreso...');
+            patientData.days[`day${day}`] = dayObj;
+        }
+        
+        // 6. Guardar en Firestore (ahora pesa ~15KB en vez de ~6MB)
+        if (saveBtn) saveBtn.innerHTML = '⏳ Guardando en base de datos...';
+        console.log('🚀 Guardando en Firestore...');
+        
+        await setDoc(doc(db, 'patients', patientId), patientData);
+        console.log('✅ Paciente guardado en Firebase');
+        
+        // 7. Si es nuevo, inicializar progreso vacío
+        if (isNew) {
             const progressData = {};
             for (let day = 1; day <= 15; day++) {
                 progressData[`day${day}`] = {
@@ -493,23 +587,25 @@ async function savePatient(e) {
                     cena: false
                 };
             }
-            
-            await Promise.race([
-                setDoc(doc(db, 'progress', currentPatientId), progressData),
-                new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout en progreso')), 10000))
-            ]);
-            
+            await setDoc(doc(db, 'progress', patientId), progressData);
             console.log('✅ Progreso inicializado');
-            showToast('Paciente creado exitosamente', 'success');
+            currentPatientId = patientId;
         }
         
-        console.log('✅ TODO GUARDADO, mostrando botón de link...');
+        pendingUploads = {};  // limpiar estado
         generateLink.style.display = 'inline-flex';
         loadPatients();
+        showToast(isNew ? 'Paciente creado exitosamente' : 'Plan actualizado exitosamente', 'success');
         console.log('✅ PROCESO COMPLETADO');
+        
     } catch (error) {
         console.error('❌ ERROR COMPLETO:', error);
         showToast('Error al guardar: ' + error.message, 'error');
+    } finally {
+        if (saveBtn) {
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = originalBtnHtml;
+        }
     }
 }
 
@@ -550,29 +646,99 @@ function showToast(message, type = 'success') {
     }, 3000);
 }
 
-window.npUp=function(input){
-  var day=input.dataset.day, meal=input.dataset.meal;
-  var f=input.files[0];
-  if(!f)return;
-  if(!f.type.startsWith('image/')){alert('Solo imagenes (jpg, png, webp)');return;}
-  if(f.size>2000000){alert('Imagen muy grande. Maximo 2MB.');return;}
-  var r=new FileReader();
-  r.onload=function(ev){
-    var b=ev.target.result;
-    var p=document.getElementById('np_p_'+day+'_'+meal);
-    var d=document.getElementById('np_d_'+day+'_'+meal);
-    if(p){p.src=b;p.style.display='block';}
-    if(d)d.value=b;
-    var row=input.closest('div[style]');
-    if(row){var btn=row.querySelector('button[type=button]');if(btn)btn.style.display='flex';}
-  };
-  r.readAsDataURL(f);
+// ══════════════════════════════════════════════════════════════════
+//  FUNCIÓN: Comprimir imagen para ahorrar espacio en Storage
+// ══════════════════════════════════════════════════════════════════
+function compressImage(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = () => reject(new Error('Error al leer imagen'));
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onerror = () => reject(new Error('Error al decodificar imagen'));
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+                
+                // Reducir a máximo 600×600px (suficiente para preview en móvil)
+                const maxSize = 600;
+                if (width > maxSize || height > maxSize) {
+                    const ratio = Math.min(maxSize / width, maxSize / height);
+                    width = Math.round(width * ratio);
+                    height = Math.round(height * ratio);
+                }
+                
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d', { alpha: false });
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(0, 0, width, height);
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                // Convertir a WEBP con calidad 0.7 (reduce ~70% del tamaño)
+                canvas.toBlob(
+                    (blob) => {
+                        if (!blob) return resolve(file);  // fallback
+                        resolve(blob);
+                    },
+                    'image/webp',
+                    0.7
+                );
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  npUp — guarda el File en memoria (comprimido)
+// ══════════════════════════════════════════════════════════════════
+window.npUp = async function(input){
+    var day = input.dataset.day, meal = input.dataset.meal;
+    var f = input.files[0];
+    if(!f) return;
+    if(!f.type.startsWith('image/')){ alert('Solo imagenes (jpg, png, webp, gif)'); return; }
+    if(f.size > 10000000){ alert('Imagen muy grande. Maximo 10MB.'); return; }
+    
+    // Mostrar indicador mientras se comprime
+    var p = document.getElementById('np_p_' + day + '_' + meal);
+    if(p) { p.style.opacity = '0.5'; }
+    
+    try {
+        // Comprimir imagen (reduce tamaño ~70%)
+        var compressed = await compressImage(f);
+        console.log(`📦 ${meal} (día ${day}): ${(f.size/1024).toFixed(1)}KB → ${(compressed.size/1024).toFixed(1)}KB`);
+        
+        // Guardar File comprimido en memoria
+        pendingUploads[`day${day}_${meal}`] = compressed;
+        
+        // Mostrar vista previa
+        var r = new FileReader();
+        r.onload = function(ev){
+            var b = ev.target.result;
+            if(p){ p.src = b; p.style.display = 'block'; p.style.opacity = '1'; }
+            var row = input.closest('div[style]');
+            if(row){ var btn = row.querySelector('button[type=button]'); if(btn) btn.style.display = 'flex'; }
+        };
+        r.readAsDataURL(compressed);
+    } catch (err) {
+        console.error('Error comprimiendo:', err);
+        if(p) { p.style.opacity = '1'; }
+        alert('Error al procesar la imagen: ' + err.message);
+    }
 };
-window.npClr=function(btn){
-  var day=btn.dataset.day, meal=btn.dataset.meal;
-  var p=document.getElementById('np_p_'+day+'_'+meal);
-  var d=document.getElementById('np_d_'+day+'_'+meal);
-  if(p){p.src='';p.style.display='none';}
-  if(d)d.value='';
-  btn.style.display='none';
+
+// ══════════════════════════════════════════════════════════════════
+//  npClr — marca la imagen como eliminada
+// ══════════════════════════════════════════════════════════════════
+window.npClr = function(btn){
+    var day = btn.dataset.day, meal = btn.dataset.meal;
+    var p = document.getElementById('np_p_' + day + '_' + meal);
+    var d = document.getElementById('np_d_' + day + '_' + meal);
+    if(p){ p.src = ''; p.style.display = 'none'; }
+    if(d) d.value = '';  // limpiar input hidden (ya no hay URL existente)
+    pendingUploads[`day${day}_${meal}`] = 'REMOVED';  // marcar como borrada
+    btn.style.display = 'none';
 };

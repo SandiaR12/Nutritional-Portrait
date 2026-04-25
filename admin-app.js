@@ -218,6 +218,10 @@ function showNewPatientForm() {
     patientForm.reset();
     currentEditingDay = 1;
 
+    // Reset lista de compras
+    var shoppingEl = document.getElementById('patientShoppingList');
+    if (shoppingEl) shoppingEl.value = '';
+
     // Reset foto de perfil
     var photoPreview = document.getElementById('profilePhotoPreview');
     var photoHidden  = document.getElementById('profilePhotoHidden');
@@ -260,6 +264,10 @@ function fillForm(patient) {
     document.getElementById('patientWeight').value = patient.weight || '';
     document.getElementById('patientHeight').value = patient.height || '';
     document.getElementById('patientGoal').value = patient.goal || '';
+
+    // Lista de compras
+    var shoppingEl = document.getElementById('patientShoppingList');
+    if (shoppingEl) shoppingEl.value = patient.shoppingList || '';
 
     // Foto de perfil (si existe)
     var existingPhoto = patient.photoURL || '';
@@ -496,6 +504,7 @@ async function savePatient(e) {
         }
         
         // 2. Recopilar datos básicos del paciente
+        const shoppingListEl = document.getElementById('patientShoppingList');
         const patientData = {
             name: document.getElementById('patientName').value,
             age: parseInt(document.getElementById('patientAge').value),
@@ -503,6 +512,7 @@ async function savePatient(e) {
             weight: parseFloat(document.getElementById('patientWeight').value),
             height: parseInt(document.getElementById('patientHeight').value),
             goal: document.getElementById('patientGoal').value,
+            shoppingList: shoppingListEl ? shoppingListEl.value : '',
             dietStartDate: document.getElementById('dietStartDate').value,
             dietEndDate: document.getElementById('dietEndDate').value,
             calories: parseInt(document.getElementById('patientCalories').value) || 2000,

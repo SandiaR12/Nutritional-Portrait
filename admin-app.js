@@ -702,6 +702,7 @@ function showToast(message, type = 'success') {
 
 // ══════════════════════════════════════════════════════════════════
 //  FUNCIÓN: Comprimir imagen para ahorrar espacio en Storage
+//  CALIDAD ALTA — 1200×1200px, calidad 0.92 (premium)
 // ══════════════════════════════════════════════════════════════════
 function compressImage(file) {
     return new Promise((resolve, reject) => {
@@ -715,8 +716,8 @@ function compressImage(file) {
                 let width = img.width;
                 let height = img.height;
                 
-                // Reducir a máximo 600×600px (suficiente para preview en móvil)
-                const maxSize = 600;
+                // Maximo 1200×1200px (alta resolucion, perfecta para retina)
+                const maxSize = 1200;
                 if (width > maxSize || height > maxSize) {
                     const ratio = Math.min(maxSize / width, maxSize / height);
                     width = Math.round(width * ratio);
@@ -726,18 +727,20 @@ function compressImage(file) {
                 canvas.width = width;
                 canvas.height = height;
                 const ctx = canvas.getContext('2d', { alpha: false });
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
                 ctx.fillStyle = '#fff';
                 ctx.fillRect(0, 0, width, height);
                 ctx.drawImage(img, 0, 0, width, height);
                 
-                // Convertir a WEBP con calidad 0.7 (reduce ~70% del tamaño)
+                // WEBP calidad 0.92 (premium — casi indistinguible del original)
                 canvas.toBlob(
                     (blob) => {
-                        if (!blob) return resolve(file);  // fallback
+                        if (!blob) return resolve(file);
                         resolve(blob);
                     },
                     'image/webp',
-                    0.7
+                    0.92
                 );
             };
             img.src = e.target.result;

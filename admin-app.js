@@ -593,12 +593,21 @@ async function savePatient(e) {
             await Promise.all(batch.map(async (task) => {
                 const key = `day${task.day}_${task.meal}`;
                 
-                if (task.type === 'file') {
-                    imageUrls[key] = await uploadFileToStorage(patientId, task.day, task.meal, task.data);
-                } else if (task.type === 'base64') {
-                    imageUrls[key] = await uploadBase64ToStorage(patientId, task.day, task.meal, task.data);
-                } else if (task.type === 'url') {
-                    imageUrls[key] = task.data;
+                try {
+                    if (task.type === 'file') {
+                        const url = await uploadFileToStorage(patientId, task.day, task.meal, task.data);
+                        imageUrls[key] = url;
+                        console.log(`✅ Subió ${key}: ${url.substring(0,50)}...`);
+                    } else if (task.type === 'base64') {
+                        const url = await uploadBase64ToStorage(patientId, task.day, task.meal, task.data);
+                        imageUrls[key] = url;
+                        console.log(`✅ Migró ${key}: ${url.substring(0,50)}...`);
+                    } else if (task.type === 'url') {
+                        imageUrls[key] = task.data;
+                        console.log(`✅ Conservó ${key}: ${task.data.substring(0,50)}...`);
+                    }
+                } catch (err) {
+                    console.error(`❌ Error en ${key}:`, err);
                 }
                 
                 done++;
@@ -607,6 +616,8 @@ async function savePatient(e) {
                 }
             }));
         }
+        
+        console.log('🎯 URLs finales:', imageUrls);
         
         // 5. Construir el objeto days con textos + URLs (sin base64)
         for (let day = 1; day <= 15; day++) {
@@ -626,7 +637,10 @@ async function savePatient(e) {
             
             for (const meal of MEALS) {
                 const url = imageUrls[`day${day}_${meal}`];
-                if (url) dayObj[`img_${meal}`] = url;
+                if (url) {
+                    dayObj[`img_${meal}`] = url;
+                    console.log(`✍️ day${day}.img_${meal} = ${url.substring(0,50)}...`);
+                }
             }
             
             patientData.days[`day${day}`] = dayObj;

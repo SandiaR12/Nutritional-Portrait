@@ -151,6 +151,9 @@ function createPatientCard(id, patient) {
             <button class="btn btn-success btn-small" onclick="window.openCalc('${id}')" title="Abrir calculadora del paciente">
                 🧮 Calc
             </button>
+            <button class="btn btn-small" onclick="window.openChat('${id}','${patient.name}')" style="background:linear-gradient(135deg,#0066FF,#004FCC);color:#fff;border:none">
+                💬 Chat
+            </button>
             <button class="btn btn-danger btn-small" onclick="window.confirmDeletePatient('${id}')">
                 🗑️ Eliminar
             </button>
@@ -873,4 +876,99 @@ window.npProfileClr = function(){
     if(initial){ initial.style.display = 'flex'; initial.textContent = (document.getElementById('patientName').value || '?')[0].toUpperCase(); }
     if(clearBtn) clearBtn.style.display = 'none';
     pendingProfilePhoto = 'REMOVED';
+};
+
+/* ════════════════════════════════════════════════════════════════
+   CHAT — Sistema de mensajes con pacientes
+   Colección Firestore: chats/{pid}/messages
+   ════════════════════════════════════════════════════════════════ */
+import { collection, addDoc, onSnapshot, query, orderBy, serverTimestamp as serverTS, getDocs } from 'https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js';
+
+let chatUnsubscribe = null;
+let activeChatPid   = null;
+
+window.openChat = async function(pid, patientName) {
+  activeChatPid = pid;
+
+  // Crear/mostrar el panel de chat
+  let panel = document.getElementById('chatPanel');
+  if (!panel) {
+    panel = document.createElement('div');
+    panel.id = 'chatPanel';
+    panel.innerHTML = `
+      <div style="position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9000;display:flex;align-items:flex-end;justify-content:center" id="chatOverlay">
+        <div style="width:100%;max-width:480px;height:85vh;background:#fff;border-radius:24px 24px 0 0;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 -4px 32px rgba(0,0,0,.2)">
+          <!-- Header -->
+          <div style="background:linear-gradient(135deg,#0066FF,#004FCC);padding:18px 20px;display:flex;align-items:center;gap:12px;flex-shrink:0">
+            <button onclick="window.closeChat()" style="background:rgba(255,255,255,.2);border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:1.1rem">←</button>
+            <div style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.2rem">🥭</div>
+            <div>
+              <div id="chatPatientName" style="font-size:.95rem;font-weight:800;color:#fff"></div>
+              <div style="font-size:.7rem;color:rgba(255,255,255,.8)">Chat directo</div>
+            </div>
+          </div>
+          <!-- Messages -->
+          <div id="chatMessages" style="flex:1;overflow-y:auto;padding:20px 16px;background:#F5F7FA;display:flex;flex-direction:column;gap:10px"></div>
+          <!-- Input -->
+          <div style="display:flex;gap:10px;padding:12px 16px;background:#fff;border-top:1px solid rgba(0,0,0,.07);flex-shrink:0">
+            <input id="chatInput" placeholder="Responder al paciente..." onkeydown="if(event.key==='Enter')window.sendChatMsg()"
+              style="flex:1;padding:12px 16px;background:#F5F7FA;border:1.5px solid rgba(0,0,0,.08);border-radius:99px;font-size:.9rem;font-family:inherit;outline:none"/>
+            <button onclick="window.sendChatMsg()" style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#0066FF,#004FCC);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>`;
+    document.body.appendChild(panel);
+    document.getElementById('chatOverlay').addEventListener('click', function(e) {
+      if (e.target === this) window.closeChat();
+    });
+  }
+
+  document.getElementById('chatPatientName').textContent = patientName;
+  panel.style.display = 'block';
+
+  // Suscribir a mensajes en tiempo real
+  if (chatUnsubscribe) chatUnsubscribe();
+  const q = query(collection(db, 'chats', pid, 'messages'), orderBy('ts', 'asc'));
+  chatUnsubscribe = onSnapshot(q, snap => {
+    const container = document.getElementById('chatMessages');
+    if (!container) return;
+    container.innerHTML = '';
+    snap.docs.forEach(d => {
+      const msg = d.data();
+      const isNutri = msg.from === 'nutritionist';
+      const div = document.createElement('div');
+      div.style.cssText = `display:flex;justify-content:${isNutri ? 'flex-end' : 'flex-start'}`;
+      const ts = msg.ts?.toDate ? msg.ts.toDate().toLocaleTimeString('es-MX', {hour:'2-digit',minute:'2-digit'}) : '';
+      div.innerHTML = `
+        <div style="max-width:80%;background:${isNutri ? 'linear-gradient(135deg,#0066FF,#004FCC)' : '#fff'};
+          border-radius:${isNutri ? '18px 18px 4px 18px' : '18px 18px 18px 4px'};
+          padding:12px 16px;box-shadow:${isNutri ? '0 4px 14px rgba(0,102,255,.3)' : '0 1px 3px rgba(0,0,0,.08)'}">
+          <div style="font-size:.9rem;color:${isNutri ? '#fff' : '#0D1117'};line-height:1.5">${msg.text}</div>
+          <div style="font-size:.65rem;color:${isNutri ? 'rgba(255,255,255,.65)' : '#9AA3B0'};margin-top:4px;text-align:right">${ts}</div>
+        </div>`;
+      container.appendChild(div);
+    });
+    container.scrollTop = container.scrollHeight;
+  });
+};
+
+window.closeChat = function() {
+  if (chatUnsubscribe) { chatUnsubscribe(); chatUnsubscribe = null; }
+  const panel = document.getElementById('chatPanel');
+  if (panel) panel.style.display = 'none';
+  activeChatPid = null;
+};
+
+window.sendChatMsg = async function() {
+  const input = document.getElementById('chatInput');
+  const text = input?.value?.trim();
+  if (!text || !activeChatPid) return;
+  input.value = '';
+  await addDoc(collection(db, 'chats', activeChatPid, 'messages'), {
+    text,
+    from: 'nutritionist',
+    ts: serverTS(),
+  });
 };

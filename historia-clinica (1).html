@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Historia Clínica · NutriPlan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--g:#1D9E75;--gd:#0F6E56;--gl:#E1F5EE;--am:#E8A020;--al:#FEF3E2;--bg:#F7F6F2;--card:#fff;--text:#1A1A1A;--mu:#6B6B6B;--br:#E4E2DB;--r:16px;--rs:10px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6}
+.hdr{position:sticky;top:0;z-index:100;background:rgba(247,246,242,0.93);backdrop-filter:blur(12px);padding:12px 20px;border-bottom:1px solid var(--br)}
+.hdr-in{max-width:600px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Playfair Display',serif;font-size:17px;color:var(--gd)}
+.logo b{font-weight:500}
+.sbadge{font-size:12px;color:var(--mu);background:#fff;border:1px solid var(--br);padding:4px 10px;border-radius:20px}
+.pgw{background:var(--br);height:3px;position:sticky;top:53px;z-index:99}
+.pgb{height:100%;background:var(--g);transition:width .5s cubic-bezier(.4,0,.2,1);border-radius:0 2px 2px 0}
+.ctr{max-width:600px;margin:0 auto;padding:24px 16px 100px}
+.card{background:#fff;border-radius:var(--r);box-shadow:0 2px 12px rgba(0,0,0,.07);padding:22px 20px;margin-bottom:16px;border:1px solid rgba(0,0,0,.04)}
+.ct{font-family:'Playfair Display',serif;font-size:20px;font-weight:400;margin-bottom:4px}
+.cs{font-size:13px;color:var(--mu);line-height:1.5;margin-bottom:20px}
+.f{margin-bottom:16px}
+.f:last-child{margin-bottom:0}
+.f label{display:block;font-size:12px;font-weight:500;color:var(--mu);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
+.f input,.f select,.f textarea{width:100%;background:#F9F8F4;border:1px solid var(--br);border-radius:var(--rs);padding:11px 14px;font-size:15px;font-family:'DM Sans',sans-serif;color:var(--text);outline:none;appearance:none;transition:border-color .15s}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(29,158,117,.12);background:#fff}
+.f textarea{resize:vertical;min-height:80px;line-height:1.5}
+.f select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B6B6B' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;cursor:pointer}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+@media(max-width:400px){.g2,.g3{grid-template-columns:1fr}}
+.pg{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.p{padding:7px 14px;border:1.5px solid var(--br);border-radius:30px;font-size:13px;cursor:pointer;transition:all .15s;color:var(--mu);background:transparent;font-family:'DM Sans',sans-serif}
+.p:hover{border-color:var(--g);color:var(--g)}
+.p.on{background:var(--gl);border-color:var(--g);color:var(--gd);font-weight:500}
+.ckg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:380px){.ckg{grid-template-columns:1fr}}
+.ck{display:flex;align-items:center;gap:10px;padding:10px 13px;border:1.5px solid var(--br);border-radius:var(--rs);cursor:pointer;transition:all .15s;background:#fafaf8}
+.ck:hover{border-color:var(--g);background:var(--gl)}
+.ck.on{border-color:var(--g);background:var(--gl)}
+.cki{width:20px;height:20px;border-radius:5px;border:1.5px solid var(--br);background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.ck.on .cki{background:var(--g);border-color:var(--g)}
+.cki svg{display:none}
+.ck.on .cki svg{display:block}
+.ckl{font-size:13px;line-height:1.3}
+.ck.on .ckl{color:var(--gd);font-weight:500}
+.div{border:none;border-top:1px solid var(--br);margin:20px 0}
+.sh{font-size:14px;font-weight:500;margin-bottom:12px}
+.fw{overflow-x:auto;margin:0 -4px;padding:0 4px}
+table.fq{width:100%;border-collapse:collapse;min-width:420px}
+table.fq th{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;color:var(--mu);padding:8px 6px;text-align:center;border-bottom:1px solid var(--br)}
+table.fq th:first-child{text-align:left}
+table.fq td{padding:7px 6px;border-bottom:1px solid rgba(228,226,219,.5);font-size:13px}
+table.fq tr:last-child td{border-bottom:none}
+.fb{padding:4px 8px;border:1px solid var(--br);border-radius:6px;font-size:11px;cursor:pointer;background:transparent;color:var(--mu);transition:all .12s;white-space:nowrap;font-family:'DM Sans',sans-serif}
+.fb:hover{border-color:var(--g);color:var(--g)}
+.fb.on{background:var(--gl);border-color:var(--g);color:var(--gd);font-weight:500}
+/* 24h */
+.rrow{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--br)}
+.rrow:last-child{border-bottom:none}
+.rt{flex:0 0 82px}
+.rt input{background:#f0faf6;border:1px solid var(--br);border-radius:8px;padding:8px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--text);outline:none;width:100%;text-align:center}
+.rt input:focus{border-color:var(--g)}
+.rf{flex:1}
+.rf input{background:#F9F8F4;border:1px solid var(--br);border-radius:8px;padding:9px 12px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--text);outline:none;width:100%}
+.rf input:focus{border-color:var(--g);background:#fff}
+.rdel{flex:0 0 28px;height:28px;border-radius:50%;border:1px solid var(--br);background:transparent;cursor:pointer;color:var(--mu);font-size:18px;line-height:26px;text-align:center}
+.rdel:hover{border-color:#e24b4a;color:#e24b4a}
+.addr{display:flex;align-items:center;gap:6px;padding:12px 0 0;font-size:13px;color:var(--g);cursor:pointer;font-weight:500;border:none;background:none;font-family:'DM Sans',sans-serif}
+/* nav */
+.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(247,246,242,.95);backdrop-filter:blur(12px);border-top:1px solid var(--br);padding:12px 16px 20px;z-index:200}
+.nav-in{max-width:600px;margin:0 auto;display:flex;gap:10px}
+.bbk{flex:0 0 auto;padding:14px 20px;border:1.5px solid var(--br);border-radius:var(--rs);background:transparent;cursor:pointer;font-size:15px;color:var(--mu);font-family:'DM Sans',sans-serif;transition:all .15s}
+.bbk:hover{border-color:var(--text);color:var(--text)}
+.bnx{flex:1;padding:14px 20px;background:var(--g);color:#fff;border:none;border-radius:var(--rs);cursor:pointer;font-size:15px;font-weight:500;font-family:'DM Sans',sans-serif;transition:all .15s}
+.bnx:hover{background:var(--gd)}
+.bnx:active{transform:scale(.98)}
+/* intro */
+.si{text-align:center;padding:30px 16px 8px}
+.sicon{font-size:42px;margin-bottom:12px;display:block}
+.stit{font-family:'Playfair Display',serif;font-size:26px;margin-bottom:6px;line-height:1.2}
+.sdesc{font-size:14px;color:var(--mu);line-height:1.6;max-width:400px;margin:0 auto}
+/* done */
+.dh{text-align:center;padding:10px 0 20px}
+.dc{width:64px;height:64px;border-radius:50%;background:var(--gl);display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+.dc svg{width:28px;height:28px;stroke:var(--g);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.dtit{font-family:'Playfair Display',serif;font-size:24px;margin-bottom:4px}
+.dsub{font-size:14px;color:var(--mu)}
+.dbtn{width:100%;padding:14px;border:none;border-radius:var(--rs);cursor:pointer;font-size:15px;font-weight:500;font-family:'DM Sans',sans-serif;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s}
+.dbtn.gr{background:var(--g);color:#fff}.dbtn.gr:hover{background:var(--gd)}
+.dbtn.wa{background:#25D366;color:#fff}.dbtn.wa:hover{background:#1da851}
+.dbtn.out{background:transparent;color:var(--g);border:1.5px solid var(--g)}.dbtn.out:hover{background:var(--gl)}
+.nc{background:var(--al);border:1px solid rgba(232,160,32,.3);border-radius:var(--rs);padding:14px;font-size:13px;color:#5C3A00;margin-top:12px;line-height:1.5}
+#cvwrap{margin:16px 0;border-radius:var(--r);overflow:hidden;border:1px solid var(--br);background:#f0f0f0;min-height:80px;display:flex;align-items:center;justify-content:center}
+#cvwrap canvas{display:block;width:100%;height:auto}
+.spin{font-size:13px;color:var(--mu)}
+</style>
+</head>
+<body>
+<div class="hdr"><div class="hdr-in">
+  <div class="logo">Nutri<b>Plan</b></div>
+  <div class="sbadge" id="sb">Paso 1 de 9</div>
+</div></div>
+<div class="pgw"><div class="pgb" id="pb" style="width:11%"></div></div>
+<div class="ctr" id="ctr"></div>
+<div class="nav" id="nav"><div class="nav-in">
+  <button class="bbk" id="bbk" onclick="prev()" style="display:none">← Atrás</button>
+  <button class="bnx" id="bnx" onclick="next()">Continuar →</button>
+</div></div>
+
+<script>
+const N=9; let step=0;
+const D={
+  nombre:'',edad:'',sexo:'',fechaNac:'',ocupacion:'',estadoCivil:'',telefono:'',email:'',domicilio:'',peso:'',talla:'',
+  motivo:'',sintomas:'',apetito:'',emocion:'',
+  antFam:{diabetes:false,hipertension:false,obesidad:false,hipotiroidismo:false,cancer:false,dislipidemias:false,cardiopatias:false,otro:false},
+  antPers:{diabetes:false,hipertension:false,obesidad:false,hipotiroidismo:false,dislipidemias:false,cancer:false,cirugia:false,alergiaAlim:false,intolerancias:false,alergiasMed:false,suplementos:false,laxantes:false},
+  medicamentos:'',
+  ejercicio:'',ejercicioTipo:'',frecEj:'',durEj:'',
+  dietaPrevia:'',dietaTipo:'',dietaConstante:'',dietaResultados:'',medsPeso:'',medsPesoNombre:'',
+  comidasDia:'',quienCocina:'',picotea:'',picoteaQue:'',
+  alimentosPref:'',alimentosMalestar:'',
+  grasa:'',agua:'',azucar:'',fritos:'',
+  gAmenorrea:'',gAnticonceptivos:'',gMenopausia:'',gTRH:'',
+  freq:{},
+  recall:[{h:'07:00',c:''},{h:'10:00',c:''},{h:'14:00',c:''},{h:'17:00',c:''},{h:'20:00',c:''}]
+};
+const FOODS=['Frutas','Verduras','Lácteos','Carnes rojas','Pollo/pavo','Pescados','Huevo','Embutidos','Leguminosas','Oleaginosas','Cereales integrales','Pan/tortillas','Arroz/pasta','Bebidas azucaradas','Comida chatarra','Aderezos','Aceite de oliva','Aceites vegetales','Manteca/mantequilla'];
+const FREQS=['Diario','5-6/sem','3-4/sem','1-2/sem','Rara vez','Nunca'];
+const FCOLOR={'Diario':'#1D9E75','5-6/sem':'#5DCAA5','3-4/sem':'#E8A020','1-2/sem':'#E8A020','Rara vez':'#D85A30','Nunca':'#E24B4A'};
+
+function fi(id,lbl,type='text',ph=''){return`<div class="f"><label>${lbl}</label><input type="${type}" value="${D[id]||''}" placeholder="${ph}" oninput="D['${id}']=this.value"></div>`;}
+function fta(id,lbl,ph=''){return`<div class="f"><label>${lbl}</label><textarea placeholder="${ph}" oninput="D['${id}']=this.value">${D[id]||''}</textarea></div>`;}
+function fse(id,lbl,opts){const o=opts.map(x=>`<option value="${x}" ${D[id]===x?'selected':''}>${x}</option>`).join('');return`<div class="f"><label>${lbl}</label><select onchange="D['${id}']=this.value"><option value="">Selecciona...</option>${o}</select></div>`;}
+function pls(id,lbl,opts){const b=opts.map(x=>`<button type="button" class="p ${D[id]===x?'on':''}" onclick="D['${id}']='${x}';render()">${x}</button>`).join('');return`<div class="f"><label>${lbl}</label><div class="pg">${b}</div></div>`;}
+function ck(obj,key,lbl){const on=D[obj][key];return`<div class="ck ${on?'on':''}" onclick="D['${obj}']['${key}']=!D['${obj}']['${key}'];render()"><div class="cki"><svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ckl">${lbl}</div></div>`;}
+
+const RS=[
+()=>`<div class="si"><span class="sicon">🌿</span><h1 class="stit">Historia Clínica Nutricional</h1><p class="sdesc">Bienvenido/a. Completa este cuestionario antes de tu consulta con el <strong>Lic. Ricardo Sandoval</strong>. Tarda aproximadamente 8-10 minutos.</p></div>
+<div class="card" style="margin-top:18px"><div style="display:flex;flex-direction:column;gap:10px">
+${inf('🔒','Tu información es <strong>privada</strong> y solo la verá tu nutriólogo.')}
+${inf('📱','Funciona desde tu celular, sin instalar nada.')}
+${inf('📸','Al finalizar se genera una <strong>imagen resumen</strong> que puedes enviar por WhatsApp.')}
+</div></div>`,
+
+()=>`<div class="card"><div class="ct">Datos del paciente</div><div class="cs">Información básica para tu expediente</div>
+${fi('nombre','Nombre completo','text','Ej: María García López')}
+<div class="g2">${fi('edad','Edad','number','30')}${fse('sexo','Sexo',['Femenino','Masculino','Prefiero no decir'])}</div>
+<div class="g2">${fi('fechaNac','Fecha de nacimiento','date')}${fse('estadoCivil','Estado civil',['Soltero/a','Casado/a','Divorciado/a','Viudo/a','Unión libre'])}</div>
+${fi('ocupacion','Ocupación','text','Ej: Docente, Empleado...')}
+<div class="g2">${fi('telefono','Teléfono / WhatsApp','tel','+52 55 0000 0000')}${fi('email','Correo electrónico','email','correo@ejemplo.com')}</div>
+${fi('domicilio','Ciudad / Colonia')}
+<div class="g2">${fi('peso','Peso actual (kg)','number','70')}${fi('talla','Estatura (cm)','number','165')}</div>
+</div>`,
+
+()=>`<div class="card"><div class="ct">Motivo de consulta</div><div class="cs">Cuéntanos por qué buscas atención nutricional</div>
+${fta('motivo','¿Por qué decides consultar a un nutriólogo?','Ej: Quiero bajar de peso, mejorar mis niveles de glucosa...')}
+${fta('sintomas','¿Tienes algún síntoma actual?','Ej: Fatiga, caída de cabello, digestión lenta...')}
+${pls('apetito','¿Cómo describes tu apetito?',['Bueno','Regular','Malo','Excesivo','Variable'])}
+${pls('emocion','¿Comes diferente con ansiedad o tristeza?',['Sí, como más','Sí, como menos','No cambia','Depende'])}
+</div>`,
+
+()=>{const f=D.sexo==='Femenino';return`<div class="card"><div class="ct">Antecedentes familiares</div><div class="cs">¿Algún familiar directo tiene o tuvo estas condiciones?</div>
+<div class="ckg">${ck('antFam','diabetes','Diabetes')}${ck('antFam','hipertension','Hipertensión')}${ck('antFam','obesidad','Sobrepeso/Obesidad')}${ck('antFam','hipotiroidismo','Hipotiroidismo')}${ck('antFam','cancer','Cáncer')}${ck('antFam','dislipidemias','Colesterol/Triglicéridos')}${ck('antFam','cardiopatias','Cardiopatías')}${ck('antFam','otro','Otro')}</div>
+<div class="div"></div><div class="sh">Antecedentes personales</div>
+<div class="ckg">${ck('antPers','diabetes','Diabetes')}${ck('antPers','hipertension','Hipertensión')}${ck('antPers','obesidad','Sobrepeso/Obesidad')}${ck('antPers','hipotiroidismo','Hipotiroidismo')}${ck('antPers','dislipidemias','Dislipidemias')}${ck('antPers','cancer','Cáncer')}${ck('antPers','cirugia','Cirugías previas')}${ck('antPers','alergiaAlim','Alergia alimentaria')}${ck('antPers','intolerancias','Intolerancias')}${ck('antPers','alergiasMed','Alergia medicamentos')}${ck('antPers','suplementos','Suplementos')}${ck('antPers','laxantes','Laxantes')}</div>
+${fta('medicamentos','Medicamentos actuales (nombre y dosis)','Ej: Metformina 850mg, Levotiroxina 50mcg...')}
+${f?`<div class="div"></div><div class="sh">Historia ginecológica</div>${pls('gAmenorrea','¿Presentas amenorrea?',['Sí','No'])}${fi('gAnticonceptivos','Anticonceptivos (si aplica)','text','Ej: DIU, pastilla...')}${pls('gMenopausia','¿Has llegado a la menopausia?',['Sí','No'])}${fi('gTRH','Terapia hormonal (si aplica)','text')}`:''}
+</div>`;},
+
+()=>`<div class="card"><div class="ct">Actividad física</div><div class="cs">Tu rutina de movimiento</div>
+${pls('ejercicio','¿Realizas actividad física actualmente?',['Sí, regularmente','Esporádicamente','No, ninguna'])}
+${D.ejercicio&&D.ejercicio!=='No, ninguna'?`${fi('ejercicioTipo','¿Qué tipo de ejercicio?','text','Ej: caminata, gym, yoga...')}
+<div class="g2">${pls('frecEj','Frecuencia',['1-2 días','3-4 días','5+ días','Diario'])}${fi('durEj','Duración','text','Ej: 45 min')}</div>`:''}
+</div>`,
+
+()=>`<div class="card"><div class="ct">Cuestionario dietético</div><div class="cs">Hábitos y antecedentes alimentarios</div>
+${pls('dietaPrevia','¿Has seguido alguna dieta anteriormente?',['Sí','No'])}
+${D.dietaPrevia==='Sí'?`${fi('dietaTipo','¿Qué tipo de dieta?','text','Ej: keto, mediterránea...')}${pls('dietaConstante','¿Fuiste constante?',['Sí','No','A veces'])}${pls('dietaResultados','¿Obtuviste resultados?',['Sí','Parcialmente','No'])}`:''}
+${pls('medsPeso','¿Has tomado medicamentos para bajar de peso?',['Sí','No'])}
+${D.medsPeso==='Sí'?fi('medsPesoNombre','¿Cuáles?','text','Nombre'):''}
+<div class="div"></div>
+<div class="g2">${fi('comidasDia','Comidas al día','number','3')}${fse('quienCocina','¿Quién prepara tus alimentos?',['Yo mismo/a','Un familiar','Servicio de comida','Restaurante','Combinación'])}</div>
+${pls('picotea','¿Picoteas entre comidas?',['Sí, siempre','A veces','Casi nunca','No'])}
+${D.picotea&&D.picotea!=='No'?fi('picoteaQue','¿Qué comes al picotar?','text','Ej: fruta, galletas...'):''}
+${fta('alimentosPref','Alimentos preferidos / que más consumes')}
+${fta('alimentosMalestar','Alimentos que te causan malestar')}
+<div class="div"></div>
+<div class="g2">${fi('agua','Agua al día (litros)','number','2')}${fse('grasa','Grasa para cocinar',['Aceite de maíz/canola','Aceite de oliva','Aceite de coco','Manteca vegetal','Mantequilla','Margarina','No uso grasa'])}</div>
+<div class="g2">${fse('azucar','Consumo de azúcar',['Sin azúcar','Poco','Moderado','Mucho','Usa sustitutos'])}${fse('fritos','Fritos/empanizados',['Diario','3-5/sem','1-2/sem','Rara vez','Nunca'])}</div>
+</div>`,
+
+()=>{const rows=FOODS.map(fd=>{const cur=D.freq[fd]||'';const bs=FREQS.map(fr=>`<td style="text-align:center"><button class="fb ${cur===fr?'on':''}" onclick="D.freq['${fd}']='${fr}';render()">${fr}</button></td>`).join('');return`<tr><td style="font-size:13px;min-width:110px;padding:7px 6px">${fd}</td>${bs}</tr>`;}).join('');
+return`<div class="card"><div class="ct">Frecuencia de alimentos</div><div class="cs">¿Con qué frecuencia consumes cada grupo? (desliza si necesitas)</div>
+<div class="fw"><table class="fq"><thead><tr><th>Alimento</th>${FREQS.map(f=>`<th>${f}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div></div>`;},
+
+()=>{const rows=D.recall.map((r,i)=>`<div class="rrow">
+  <div class="rt"><input type="time" value="${r.h}" oninput="D.recall[${i}].h=this.value"></div>
+  <div class="rf"><input type="text" placeholder="¿Qué comiste? Ej: avena con leche y fruta, café con azúcar..." value="${r.c}" oninput="D.recall[${i}].c=this.value"></div>
+  ${D.recall.length>1?`<button class="rdel" onclick="D.recall.splice(${i},1);render()">×</button>`:'<div style="width:28px"></div>'}
+</div>`).join('');
+return`<div class="card"><div class="ct">Recordatorio de 24 horas</div>
+<div class="cs">¿Qué comiste <strong>ayer</strong>? Escribe la hora y todo lo que consumiste — comidas, snacks, bebidas, café, agua.</div>
+<div id="rl">${rows}</div>
+<button class="addr" onclick="D.recall.push({h:'',c:''});render()">
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="8" cy="8" r="7"/><line x1="8" y1="5" x2="8" y2="11"/><line x1="5" y1="8" x2="11" y2="8"/></svg>
+  Agregar otra comida
+</button></div>`;},
+
+()=>`<div class="card"><div class="dh">
+  <div class="dc"><svg viewBox="0 0 24 24"><polyline points="4,12 9,17 20,7"/></svg></div>
+  <div class="dtit">¡Historia completa!</div>
+  <div class="dsub">Generando tu imagen resumen...</div>
+</div>
+<div id="cvwrap"><div class="spin">⏳ Preparando imagen...</div></div>
+<button class="dbtn gr" onclick="dlImg()">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+  Descargar imagen para WhatsApp
+</button>
+<button class="dbtn wa" onclick="sWA()">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  Enviar resumen de texto por WhatsApp
+</button>
+<div class="nc">💡 <strong>Pasos:</strong> Descarga la imagen → abre WhatsApp → adjunta la imagen al chat de tu nutriólogo.</div>
+</div>`
+];
+
+function inf(icon,txt){return`<div style="display:flex;align-items:center;gap:12px;padding:12px;background:#f9f8f4;border-radius:10px;font-size:13px;color:var(--mu)"><span style="font-size:22px">${icon}</span><span>${txt}</span></div>`;}
+
+// ── Canvas image ──
+let CV=null;
+
+function drawCanvas(){
+  const G='#1D9E75',GD='#0F6E56',GL='#E1F5EE',AM='#E8A020',AL='#FEF3E2';
+  const BG='#F7F6F2',WH='#FFFFFF',TX='#1A1A1A',MU='#6B6B6B',BR='#E4E2DB';
+  const W=800,P=36;
+  const fam=Object.entries(D.antFam).filter(([,v])=>v).map(([k])=>k);
+  const per=Object.entries(D.antPers).filter(([,v])=>v).map(([k])=>k);
+  const frq=Object.entries(D.freq).filter(([,v])=>v&&v!=='Nunca');
+  const rc=D.recall.filter(r=>r.c);
+
+  // dynamic height
+  const rcH=Math.max(rc.length,1)*40+20;
+  const frqH=Math.ceil(frq.length/2)*30+20;
+  const antRows=Math.max(Math.ceil(fam.length/3),1);
+  const perRows=Math.max(Math.ceil(per.length/3),1);
+  const antH=(antRows+perRows)*22+80;
+  const H=140+220+antH+frqH+rcH+140;
+
+  const cv=document.createElement('canvas');
+  cv.width=W;cv.height=H;
+  const x=cv.getContext('2d');
+
+  function rnd(lx,ly,lw,lh,lr,fill,stroke){
+    x.beginPath();x.roundRect(lx,ly,lw,lh,lr);
+    if(fill){x.fillStyle=fill;x.fill();}
+    if(stroke){x.strokeStyle=stroke;x.lineWidth=1;x.stroke();}
+  }
+  function t(s,tx,ty,sz,col,al='left',fw='400',mx=0){
+    x.font=`${fw} ${sz}px "DM Sans",sans-serif`;x.fillStyle=col;x.textAlign=al;
+    x.fillText(s,tx,ty,mx||undefined);
+  }
+  function ln(x1,y1,x2,y2,col,lw=1){x.beginPath();x.moveTo(x1,y1);x.lineTo(x2,y2);x.strokeStyle=col;x.lineWidth=lw;x.stroke();}
+  function tag(lbl,tx,ty,col,bgcol){
+    x.font='500 11px "DM Sans",sans-serif';
+    const tw=x.measureText(lbl).width+16;
+    rnd(tx,ty,tw,22,11,bgcol);
+    x.fillStyle=col;x.textAlign='left';x.fillText(lbl,tx+8,ty+15);
+    return tw+6;
+  }
+
+  // BG
+  x.fillStyle=BG;x.fillRect(0,0,W,H);
+
+  // Header
+  rnd(0,0,W,128,0,G);
+  // Logo text
+  x.font='400 20px Georgia,serif';x.fillStyle='rgba(255,255,255,0.55)';x.textAlign='left';x.fillText('Nutri',P,50);
+  const nw=x.measureText('Nutri').width;
+  x.font='500 20px Georgia,serif';x.fillStyle='#fff';x.fillText('Plan',P+nw,50);
+  t('Historia Clínica Nutricional',P,70,13,'rgba(255,255,255,0.65)');
+  const fecha=new Date().toLocaleDateString('es-MX',{day:'2-digit',month:'long',year:'numeric'});
+  t(fecha,W-P,50,12,'rgba(255,255,255,0.65)','right');
+  t(D.nombre||'Paciente',P,110,30,'#fff','left','500');
+
+  let y=148;
+
+  // Stat cards
+  const stats=[
+    {l:'Edad',v:D.edad?D.edad+' años':'—'},
+    {l:'Sexo',v:D.sexo||'—'},
+    {l:'Peso',v:D.peso?D.peso+' kg':'—'},
+    {l:'Estatura',v:D.talla?D.talla+' cm':'—'},
+    {l:'Agua/día',v:D.agua?D.agua+' L':'—'},
+    {l:'Comidas/día',v:D.comidasDia||'—'},
+  ];
+  const sw=Math.floor((W-P*2-10*5)/6);
+  stats.forEach((s,i)=>{
+    const sx=P+i*(sw+10);
+    rnd(sx,y,sw,72,10,WH,BR);
+    t(s.l,sx+sw/2,y+20,11,MU,'center');
+    t(s.v,sx+sw/2,y+48,14,TX,'center','500',sw-8);
+  });
+  y+=88;
+
+  // Motivo
+  ln(P,y,W-P,y,BR);y+=14;
+  t('MOTIVO DE CONSULTA',P,y+14,11,G,'left','500');y+=28;
+  x.font='400 14px "DM Sans",sans-serif';x.fillStyle=TX;x.textAlign='left';
+  const mot=(D.motivo||'No especificado').slice(0,180);
+  const wrds=mot.split(' ');let ln2='';
+  wrds.forEach(w=>{const tt=ln2+w+' ';if(x.measureText(tt).width>W-P*2&&ln2){x.fillText(ln2.trim(),P,y);y+=20;ln2=w+' ';}else ln2=tt;});
+  if(ln2.trim()){x.fillText(ln2.trim(),P,y);y+=20;}
+  // síntomas mini
+  if(D.sintomas){
+    t('Síntomas: '+D.sintomas.slice(0,100),P,y+6,12,MU);y+=20;
+  }
+  // apetito + emocion
+  if(D.apetito||D.emocion){
+    t((D.apetito?'Apetito: '+D.apetito+'   ':'')+(D.emocion?'Emociones: '+D.emocion:''),P,y+6,12,MU);y+=20;
+  }
+  y+=14;
+
+  // Antecedentes
+  ln(P,y,W-P,y,BR);y+=14;
+  t('ANTECEDENTES',P,y+14,11,G,'left','500');y+=28;
+  const cw=(W-P*2-16)/2;
+  // draw ant box
+  function antBox(lx,ly,lw,items,title){
+    const bh=Math.max(60,items.length*22+28);
+    rnd(lx,ly,lw,bh,10,WH,BR);
+    t(title,lx+12,ly+18,12,MU);
+    if(items.length){items.forEach((it,i)=>t('• '+it,lx+14,ly+36+i*22,13,TX));}
+    else t('Ninguno marcado',lx+12,ly+36,13,MU);
+    return bh;
+  }
+  const bh1=antBox(P,y,cw,fam,'Antecedentes familiares');
+  const bh2=antBox(P+cw+16,y,cw,per,'Antecedentes personales');
+  y+=Math.max(bh1,bh2)+16;
+  if(D.medicamentos){t('Medicamentos: '+D.medicamentos.slice(0,120),P,y+4,12,MU);y+=20;}
+  y+=10;
+
+  // Frecuencia alimentaria
+  ln(P,y,W-P,y,BR);y+=14;
+  t('FRECUENCIA DE ALIMENTOS',P,y+14,11,AM,'left','500');y+=28;
+  if(frq.length){
+    const fc=2;const fw2=Math.floor((W-P*2-20)/fc);
+    frq.forEach(([food,fr],i)=>{
+      const col=i%fc;const row=Math.floor(i/fc);
+      const fx=P+col*(fw2+20);const fy=y+row*30;
+      const c=FCOLOR[fr]||MU;
+      t('●',fx,fy+15,10,c);
+      t(food,fx+14,fy+15,13,TX,'left','400',fw2-80);
+      // badge
+      x.font='500 11px "DM Sans",sans-serif';
+      const tw=x.measureText(fr).width+14;
+      rnd(fx+fw2-tw-4,fy+2,tw+4,20,10,c==='#1D9E75'||c==='#5DCAA5'?GL:AL);
+      x.fillStyle=c==='#1D9E75'||c==='#5DCAA5'?GD:'#8B5200';x.textAlign='center';
+      x.fillText(fr,fx+fw2-tw/2-2,fy+15);
+    });
+    y+=Math.ceil(frq.length/2)*30+10;
+  } else {t('No completada',P,y+14,13,MU);y+=28;}
+  y+=10;
+
+  // Recordatorio 24h
+  ln(P,y,W-P,y,BR);y+=14;
+  t('RECORDATORIO DE 24 HORAS (AYER)',P,y+14,11,'#D85A30','left','500');y+=28;
+  if(rc.length){
+    const bh=rc.length*40+16;
+    rnd(P,y,W-P*2,bh,10,WH,BR);
+    rc.forEach((r,i)=>{
+      const ry=y+16+i*40;
+      if(i>0)ln(P+16,ry-4,W-P-16,ry-4,BR);
+      // time pill
+      rnd(P+14,ry+4,68,24,12,GL);
+      t(r.h||'—',P+48,ry+20,12,GD,'center','500');
+      // comida text
+      x.font='400 13px "DM Sans",sans-serif';x.fillStyle=TX;x.textAlign='left';
+      x.fillText(r.c,P+92,ry+20,W-P*2-110);
+    });
+    y+=bh+12;
+  } else {t('No registrado',P,y+14,13,MU);y+=28;}
+  y+=10;
+
+  // Ejercicio + hábitos fila
+  ln(P,y,W-P,y,BR);y+=14;
+  const habs=[
+    {l:'Ejercicio',v:D.ejercicio||'—'},
+    {l:'Tipo',v:D.ejercicioTipo||'—'},
+    {l:'Grasa cocina',v:D.grasa||'—'},
+    {l:'Azúcar',v:D.azucar||'—'},
+    {l:'Fritos',v:D.fritos||'—'},
+  ];
+  const hw=Math.floor((W-P*2-10*4)/5);
+  habs.forEach((h,i)=>{
+    const hx=P+i*(hw+10);
+    rnd(hx,y,hw,62,10,WH,BR);
+    t(h.l,hx+hw/2,y+18,11,MU,'center');
+    t(h.v,hx+hw/2,y+44,12,TX,'center','500',hw-8);
+  });
+  y+=78;
+
+  // Footer
+  x.fillStyle=G;x.fillRect(0,y,W,50);
+  t('NutriPlan · Lic. Ricardo Sandoval',P,y+30,12,'rgba(255,255,255,0.7)');
+  t('Historia Clínica Nutricional',W-P,y+30,12,'rgba(255,255,255,0.7)','right');
+
+  CV=cv;
+  return cv;
+}
+
+function renderCanvas(){
+  setTimeout(()=>{
+    try{
+      const cv=drawCanvas();
+      const w=document.getElementById('cvwrap');
+      if(w){w.innerHTML='';w.appendChild(cv);}
+    }catch(e){console.error('Canvas err:',e);}
+  },200);
+}
+
+function dlImg(){
+  if(!CV)return alert('La imagen aún se está generando, espera un momento.');
+  const a=document.createElement('a');
+  a.download='historia-'+(D.nombre||'paciente').replace(/\s+/g,'-')+'.png';
+  a.href=CV.toDataURL('image/png');
+  a.click();
+}
+
+function sWA(){
+  const fam=Object.entries(D.antFam).filter(([,v])=>v).map(([k])=>k).join(', ')||'Ninguno';
+  const per=Object.entries(D.antPers).filter(([,v])=>v).map(([k])=>k).join(', ')||'Ninguno';
+  const rc=D.recall.filter(r=>r.c).map(r=>`${r.h||'—'} → ${r.c}`).join('\n')||'No registrado';
+  const msg=encodeURIComponent(`*📋 Historia Clínica Nutricional — NutriPlan*\n\n*Paciente:* ${D.nombre||'—'} | ${D.edad||'—'} años | ${D.sexo||'—'}\n*Peso:* ${D.peso||'—'} kg | *Talla:* ${D.talla||'—'} cm\n\n*🎯 Motivo:* ${D.motivo||'—'}\n*Apetito:* ${D.apetito||'—'} | *Emoción/comida:* ${D.emocion||'—'}\n\n*👨‍👩‍👦 Ant. familiares:* ${fam}\n*🏥 Ant. personales:* ${per}\n*💊 Medicamentos:* ${D.medicamentos||'Ninguno'}\n\n*🏃 Ejercicio:* ${D.ejercicio||'—'} ${D.ejercicioTipo?'('+D.ejercicioTipo+')':''}\n*🍽 Comidas/día:* ${D.comidasDia||'—'} | *Agua:* ${D.agua||'—'} L\n*Grasa:* ${D.grasa||'—'} | *Fritos:* ${D.fritos||'—'} | *Azúcar:* ${D.azucar||'—'}\n\n*⏰ Recordatorio 24h:*\n${rc}`);
+  window.open('https://wa.me/?text='+msg,'_blank');
+}
+
+function render(){
+  const pct=((step+1)/N)*100;
+  document.getElementById('pb').style.width=pct+'%';
+  document.getElementById('sb').textContent=`Paso ${step+1} de ${N}`;
+  document.getElementById('ctr').innerHTML=RS[step]();
+  const bk=document.getElementById('bbk');
+  const nx=document.getElementById('bnx');
+  const nv=document.getElementById('nav');
+  bk.style.display=step>0?'block':'none';
+  if(step===8){nv.style.display='none';renderCanvas();}
+  else{nv.style.display='block';nx.textContent=step===0?'Comenzar →':step===7?'Ver mi resumen ✓':'Continuar →';}
+}
+function next(){if(step<8){step++;render();window.scrollTo({top:0,behavior:'smooth'});}}
+function prev(){if(step>0){step--;render();window.scrollTo({top:0,behavior:'smooth'});}}
+render();
+</script>
+</body>
+</html>

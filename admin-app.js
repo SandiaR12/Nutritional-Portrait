@@ -5,7 +5,12 @@ import {
     getDoc, 
     getDocs, 
     setDoc, 
-    deleteDoc
+    deleteDoc,
+    addDoc,
+    onSnapshot,
+    query,
+    orderBy,
+    serverTimestamp as serverTS
 } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js';
 import {
     signInWithEmailAndPassword,
@@ -882,7 +887,7 @@ window.npProfileClr = function(){
    CHAT — Sistema de mensajes con pacientes
    Colección Firestore: chats/{pid}/messages
    ════════════════════════════════════════════════════════════════ */
-import { collection, addDoc, onSnapshot, query, orderBy, serverTimestamp as serverTS, getDocs } from 'https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js';
+// chat functions imported above
 
 let chatUnsubscribe = null;
 let activeChatPid   = null;

@@ -30,14 +30,15 @@ const storage = getStorage();
 
 // ── Auth guard — block admin if not logged in ─────────────────
 onAuthStateChanged(auth, function(user) {
-    if (user) {
-        // Logged in — show app, hide login screen
-        var loginScreen = document.getElementById('loginScreen');
-        var appScreen   = document.getElementById('appScreen');
-        if (loginScreen) loginScreen.style.display = 'none';
-        if (appScreen)   appScreen.style.display   = 'block';
-        document.getElementById('adminEmail').textContent = user.email;
-    } else {
+    // Auth check bypassed — admin accessible via direct link
+    var loginScreen = document.getElementById('loginScreen');
+    var appScreen   = document.getElementById('appScreen');
+    if (loginScreen) loginScreen.style.display = 'none';
+    if (appScreen)   appScreen.style.display   = 'block';
+    if (document.getElementById('adminEmail')) document.getElementById('adminEmail').textContent = 'Admin';
+    if (false && user) {
+        // (login disabled)
+    } else if (false) {
         // Not logged in — show login screen
         var loginScreen = document.getElementById('loginScreen');
         var appScreen   = document.getElementById('appScreen');

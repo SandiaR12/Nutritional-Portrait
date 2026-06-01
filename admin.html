@@ -12,7 +12,7 @@
 <body>
   <!-- ═══ LOGIN SCREEN ════════════════════════════════════════ -->
   <div id="loginScreen" style="
-    display:flex;position:fixed;inset:0;z-index:9999;
+    display:none;position:fixed;inset:0;z-index:9999;
     background:linear-gradient(135deg,#0A0D14,#141824);
     align-items:center;justify-content:center;padding:24px;
   ">
@@ -54,7 +54,7 @@
   </div>
 
   <!-- ═══ MAIN APP (hidden until auth) ════════════════════════ -->
-  <div id="appScreen" style="display:none">
+  <div id="appScreen" style="display:block">
   <div id="adminEmailBadge" style="position:fixed;top:10px;right:10px;z-index:1000;font-size:.7rem;color:rgba(255,255,255,.5);background:rgba(0,0,0,.3);padding:4px 10px;border-radius:99px;pointer-events:none"><span id="adminEmail"></span> · <button onclick="window.adminLogout()" style="background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:.7rem;padding:0;font-family:inherit">Salir</button></div>
 
     <div class="admin-wrapper">
@@ -332,7 +332,7 @@ Leche descremada (1 L)" style="width:100%;padding:12px 14px;border:1px solid rgb
         <div id="toast" class="toast"></div>
     </div>
 
-    <script type="module" src="admin-app.js"></script>
+    <script type="module" src="admin-app.js?v=3"></script>
 
   </div><!-- /appScreen -->
 </body>

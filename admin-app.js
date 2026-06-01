@@ -30,15 +30,14 @@ const storage = getStorage();
 
 // ── Auth guard — block admin if not logged in ─────────────────
 onAuthStateChanged(auth, function(user) {
-    // Auth check bypassed — admin accessible via direct link
-    var loginScreen = document.getElementById('loginScreen');
-    var appScreen   = document.getElementById('appScreen');
-    if (loginScreen) loginScreen.style.display = 'none';
-    if (appScreen)   appScreen.style.display   = 'block';
-    if (document.getElementById('adminEmail')) document.getElementById('adminEmail').textContent = 'Admin';
-    if (false && user) {
-        // (login disabled)
-    } else if (false) {
+    if (user) {
+        // Logged in — show app, hide login screen
+        var loginScreen = document.getElementById('loginScreen');
+        var appScreen   = document.getElementById('appScreen');
+        if (loginScreen) loginScreen.style.display = 'none';
+        if (appScreen)   appScreen.style.display   = 'block';
+        document.getElementById('adminEmail').textContent = user.email;
+    } else {
         // Not logged in — show login screen
         var loginScreen = document.getElementById('loginScreen');
         var appScreen   = document.getElementById('appScreen');
@@ -627,15 +626,32 @@ async function savePatient(e) {
         }
         
         console.log('🎯 URLs finales:', imageUrls);
-        
-        // 5. Construir el objeto days con textos + URLs (sin base64)
+
+        // 5. Traer datos existentes de Firestore para NO perder imágenes de otros días
+        let existingDaysFromDB = {};
+        if (!isNew) {
+            try {
+                const existingSnap = await getDoc(doc(db, 'patients', patientId));
+                if (existingSnap.exists()) {
+                    existingDaysFromDB = existingSnap.data().days || {};
+                    console.log('📂 Datos existentes cargados para preservar imágenes');
+                }
+            } catch(e) {
+                console.warn('No se pudieron cargar datos existentes:', e);
+            }
+        }
+
+        // 5b. Construir el objeto days con textos + URLs (preservando imágenes existentes)
         for (let day = 1; day <= 15; day++) {
             const desayunoEl  = document.querySelector(`[data-day="${day}"][data-meal="desayuno"]`);
             const colacion1El = document.querySelector(`[data-day="${day}"][data-meal="colacion1"]`);
             const comidaEl    = document.querySelector(`[data-day="${day}"][data-meal="comida"]`);
             const colacion2El = document.querySelector(`[data-day="${day}"][data-meal="colacion2"]`);
             const cenaEl      = document.querySelector(`[data-day="${day}"][data-meal="cena"]`);
-            
+
+            // Base: imágenes ya guardadas en Firestore para este día
+            const existingDayImages = existingDaysFromDB[`day${day}`] || {};
+
             const dayObj = {
                 desayuno:  desayunoEl  ? desayunoEl.value  : '',
                 colacion1: colacion1El ? colacion1El.value : '',
@@ -643,15 +659,33 @@ async function savePatient(e) {
                 colacion2: colacion2El ? colacion2El.value : '',
                 cena:      cenaEl      ? cenaEl.value      : ''
             };
-            
+
+            // Primero: copiar imágenes existentes de Firestore (base segura)
             for (const meal of MEALS) {
-                const url = imageUrls[`day${day}_${meal}`];
-                if (url) {
-                    dayObj[`img_${meal}`] = url;
-                    console.log(`✍️ day${day}.img_${meal} = ${url.substring(0,50)}...`);
+                const existingUrl = existingDayImages[`img_${meal}`];
+                if (existingUrl) {
+                    dayObj[`img_${meal}`] = existingUrl;
                 }
             }
-            
+
+            // Luego: aplicar cambios de esta sesión (nuevas subidas o eliminaciones)
+            for (const meal of MEALS) {
+                const key = `day${day}_${meal}`;
+                const pending = pendingUploads[key];
+                const newUrl = imageUrls[key];
+
+                if (pending === 'REMOVED') {
+                    // Usuario quitó esta imagen explícitamente
+                    delete dayObj[`img_${meal}`];
+                    console.log(`🗑️ day${day}.img_${meal} eliminada`);
+                } else if (newUrl) {
+                    // Nueva imagen subida esta sesión
+                    dayObj[`img_${meal}`] = newUrl;
+                    console.log(`✍️ day${day}.img_${meal} = ${newUrl.substring(0,50)}...`);
+                }
+                // Si no hay cambio, se conserva la URL de Firestore (ya copiada arriba)
+            }
+
             patientData.days[`day${day}`] = dayObj;
         }
         
@@ -888,7 +922,7 @@ window.npProfileClr = function(){
    CHAT — Sistema de mensajes con pacientes
    Colección Firestore: chats/{pid}/messages
    ════════════════════════════════════════════════════════════════ */
-// chat functions imported above
+// chat functions imported above (removed duplicate)
 
 let chatUnsubscribe = null;
 let activeChatPid   = null;

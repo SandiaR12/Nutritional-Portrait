@@ -1,4 +1,4 @@
-import { db, auth } from './firebase.js';
+import { db, auth, storage } from './firebase.js';
 import { 
     collection, 
     doc, 
@@ -19,14 +19,12 @@ import {
 } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
 // ══ NUEVO: Firebase Storage para subir imagenes ══════════════════
 import {
-    getStorage,
     ref as storageRef,
     uploadBytes,
     uploadString,
     getDownloadURL
 } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js';
-
-const storage = getStorage();
+// storage viene de firebase.js
 
 // ── Auth guard — block admin if not logged in ─────────────────
 onAuthStateChanged(auth, function(user) {

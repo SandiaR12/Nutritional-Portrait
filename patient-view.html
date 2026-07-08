@@ -744,59 +744,107 @@ body{
 .rec-empty{color:var(--txt4)}
 .rec-perfect{background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.18);border-radius:var(--rL);color:#059669;font-weight:600}
 
-/* ── MEAL DETAIL OVERLAY ───────────────────────────── */
-.meal-detail-ov{
-  position:fixed;inset:0;z-index:9000;
-  background:rgba(0,0,0,0);pointer-events:none;
-  transition:background .3s ease;
+/* ── MEAL DETAIL PAGE ─────────────────────────────────────── */
+.md-ov{
+  position:fixed;inset:0;z-index:9500;
+  background:#000;
+  opacity:0;pointer-events:none;
+  transition:opacity .35s ease;
 }
-.meal-detail-ov.on{
-  background:rgba(0,0,0,.7);pointer-events:all;
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+.md-ov.on{opacity:1;pointer-events:all;}
+
+.md-page{
+  position:fixed;inset:0;z-index:9501;
+  background:#fff;
+  transform:translateX(100%);
+  transition:transform .38s cubic-bezier(.4,0,.2,1);
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
 }
-.meal-detail-sheet{
-  position:absolute;bottom:0;left:0;right:0;
-  background:#fff;border-radius:28px 28px 0 0;
-  transform:translateY(100%);
-  transition:transform .35s cubic-bezier(.34,1.2,.64,1);
-  max-height:90vh;overflow-y:auto;
-  padding-bottom:env(safe-area-inset-bottom,24px);
+.md-page.on{transform:translateX(0);}
+
+/* back button */
+.md-back{
+  position:fixed;top:0;left:0;right:0;z-index:9600;
+  padding:env(safe-area-inset-top,16px) 20px 0;
+  display:flex;align-items:center;
+  pointer-events:none;
 }
-.meal-detail-ov.on .meal-detail-sheet{transform:translateY(0);}
-.meal-detail-handle{width:36px;height:4px;background:rgba(0,0,0,.12);border-radius:99px;margin:12px auto 0;}
-.meal-detail-img{
-  width:100%;height:220px;object-fit:cover;
-  display:block;background:#f0f0f0;
-}
-.meal-detail-img-placeholder{
-  width:100%;height:180px;background:linear-gradient(135deg,#f0f7ff,#e8f4fd);
-  display:flex;align-items:center;justify-content:center;font-size:3.5rem;
-}
-.meal-detail-body{padding:20px 24px 32px;}
-.meal-detail-tag{
+.md-back-btn{
+  pointer-events:all;
+  margin-top:12px;
   display:inline-flex;align-items:center;gap:6px;
-  background:#f0f7ff;color:#0066FF;
-  padding:5px 12px;border-radius:20px;
-  font-size:.78rem;font-weight:700;letter-spacing:.3px;
-  margin-bottom:12px;
+  background:rgba(255,255,255,.88);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:none;border-radius:30px;
+  padding:9px 16px 9px 10px;
+  font-size:.9rem;font-weight:600;color:#0066FF;
+  cursor:pointer;box-shadow:0 2px 16px rgba(0,0,0,.12);
+  font-family:inherit;
 }
-.meal-detail-title{font-size:1.35rem;font-weight:800;color:#0D1117;letter-spacing:-.4px;margin-bottom:12px;line-height:1.2;}
-.meal-detail-desc{font-size:.92rem;color:#3D4451;line-height:1.7;}
-.meal-detail-check{
-  margin-top:20px;width:100%;padding:15px;
-  border:none;border-radius:14px;
-  font-size:1rem;font-weight:700;cursor:pointer;
-  font-family:inherit;transition:all .2s;
+.md-back-btn svg{width:20px;height:20px;flex-shrink:0;}
+
+/* hero image */
+.md-hero{
+  width:100%;
+  aspect-ratio:4/3;
+  object-fit:cover;
+  display:block;
+  background:#f0f4f8;
 }
-.meal-detail-check.done{background:#E8FFF0;color:#00C851;}
-.meal-detail-check.pending{background:#00C851;color:#fff;}
-.meal-detail-check.pending:active{background:#00a844;transform:scale(.97);}
-.meal-detail-close{
-  position:absolute;top:16px;right:16px;
-  width:32px;height:32px;border-radius:50%;
-  background:rgba(0,0,0,.08);border:none;cursor:pointer;
-  font-size:1rem;display:flex;align-items:center;justify-content:center;
-  color:#555;z-index:10;
+.md-hero-placeholder{
+  width:100%;aspect-ratio:4/3;
+  background:linear-gradient(160deg,#0066FF 0%,#5AC8FA 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-size:5rem;
+}
+
+/* content */
+.md-content{
+  padding:28px 24px 48px;
+  background:#fff;
+  border-radius:28px 28px 0 0;
+  margin-top:-28px;
+  position:relative;
+}
+.md-eyebrow{
+  font-size:.72rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:1.2px;
+  color:#0066FF;margin-bottom:8px;
+}
+.md-title{
+  font-size:1.75rem;font-weight:800;
+  color:#0D1117;letter-spacing:-.5px;
+  line-height:1.15;margin-bottom:16px;
+}
+.md-divider{
+  height:1px;background:rgba(0,0,0,.07);
+  margin:18px 0;
+}
+.md-section-lbl{
+  font-size:.72rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.9px;
+  color:#8E8E93;margin-bottom:10px;
+}
+.md-desc{
+  font-size:1rem;color:#3D4451;
+  line-height:1.75;
+}
+.md-check-btn{
+  margin-top:28px;width:100%;
+  padding:17px;border:none;border-radius:16px;
+  font-size:1.05rem;font-weight:700;
+  cursor:pointer;font-family:inherit;
+  transition:all .2s;letter-spacing:-.1px;
+}
+.md-check-btn.pending{
+  background:#00C851;color:#fff;
+  box-shadow:0 4px 20px rgba(0,200,81,.35);
+}
+.md-check-btn.pending:active{transform:scale(.97);background:#00a844;}
+.md-check-btn.done{
+  background:#E8FFF0;color:#00C851;
+  box-shadow:none;
 }
 
 </style>
@@ -1297,24 +1345,25 @@ function renderMeals(){
   list.innerHTML='';
   var pd=prog['day'+curDay]||{};
   var dm=(pat.days&&pat.days['day'+curDay])?pat.days['day'+curDay]:{};
+  var hints=['Toca para ver tu desayuno completo','Toca para ver tu colación completa','Toca para ver tu comida completa','Toca para ver tu colación completa','Toca para ver tu cena completa'];
   MK.forEach(function(k,i){
     var done=pd[k]?true:false;
     var imgUrl=dm['img_'+k]||'';
     var el=document.createElement('div');
     el.className='meal-item'+(done?' done':'');
     el.style.animation='spIn .25s '+(i*.07)+'s both';
-    el.style.cursor='pointer';
-    var imgHtml=imgUrl
-      ?'<img src="'+imgUrl+'" style="width:52px;height:52px;object-fit:cover;border-radius:10px;flex-shrink:0;border:2px solid rgba(0,0,0,.06)" loading="lazy">'
-      :'<div style="width:52px;height:52px;border-radius:10px;background:#f0f4f8;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.4rem">'+MI[i]+'</div>';
+    var thumb=imgUrl
+      ?'<img src="'+imgUrl+'" style="width:56px;height:56px;object-fit:cover;border-radius:12px;flex-shrink:0;border:1.5px solid rgba(0,0,0,.07)" loading="lazy">'
+      :'<div style="width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,#f0f4f8,#e8edf2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.5rem">'+MI[i]+'</div>';
     el.innerHTML=
       '<div class="meal-cb">'+(done?'✓':'')+'</div>'+
-      '<div class="meal-body" style="flex:1;min-width:0">'+
+      '<div class="meal-body" style="flex:1;min-width:0;margin-right:10px">'+
         '<div class="meal-hdr"><span class="meal-ico">'+MI[i]+'</span><span class="meal-nm">'+MN[i]+'</span></div>'+
-        '<div class="meal-desc" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px">'+(dm[k]||'Sin especificar')+'</div>'+
+        '<div class="meal-desc" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+hints[i]+'</div>'+
       '</div>'+
-      imgHtml;
-    el.onclick=function(){ openMealDetail(k, i); };
+      thumb+
+      '<div style="color:#C7C7CC;font-size:1rem;margin-left:6px;flex-shrink:0">›</div>';
+    el.onclick=(function(key,idx){return function(){ openMealDetail(key,idx); };}(k,i));
     list.appendChild(el);
   });
 }
@@ -2574,77 +2623,89 @@ init();
 
 
 
-// ── MEAL DETAIL ───────────────────────────────────────
-var _mealDetailKey = null;
+// ── MEAL DETAIL ────────────────────────────────────────────────
+var _mdKey = null;
+var _mdIdx = 0;
+
 window.openMealDetail = function(k, i){
-  _mealDetailKey = k;
-  var pd = prog['day'+curDay]||{};
-  var dm = (pat.days&&pat.days['day'+curDay])?pat.days['day'+curDay]:{};
-  var done = pd[k] ? true : false;
+  _mdKey = k;
+  _mdIdx = i;
+  var pd  = prog['day'+curDay]||{};
+  var dm  = (pat.days&&pat.days['day'+curDay])?pat.days['day'+curDay]:{};
+  var done = !!pd[k];
   var imgUrl = dm['img_'+k]||'';
-  var desc = dm[k]||'Sin especificar';
+  var desc   = dm[k]||'Sin especificar';
 
-  // Image
-  var wrap = $('mealDetailImgWrap');
+  // imagen
+  var wrap = document.getElementById('mdImgWrap');
   if(imgUrl){
-    wrap.innerHTML = '<img class="meal-detail-img" src="'+imgUrl+'" alt="'+MN[i]+'">';
+    wrap.innerHTML = '<img class="md-hero" src="'+imgUrl+'" alt="'+MN[i]+'">';
   } else {
-    wrap.innerHTML = '<div class="meal-detail-img-placeholder">'+MI[i]+'</div>';
+    wrap.innerHTML = '<div class="md-hero-placeholder">'+MI[i]+'</div>';
   }
 
-  // Tag + title + desc
-  $('mealDetailTag').innerHTML = MI[i]+' '+MN[i];
-  $('mealDetailTitle').textContent = MN[i];
-  $('mealDetailDesc').textContent = desc;
+  document.getElementById('mdEyebrow').textContent = 'Día '+curDay+' · '+MN[i];
+  document.getElementById('mdTitle').textContent   = MN[i];
+  document.getElementById('mdDesc').textContent    = desc;
 
-  // Check button
-  var btn = $('mealDetailCheck');
+  var btn = document.getElementById('mdCheckBtn');
   if(done){
-    btn.textContent = '✓ Marcado como completado';
-    btn.className = 'meal-detail-check done';
+    btn.textContent = '✓  Completado';
+    btn.className = 'md-check-btn done';
   } else {
-    btn.textContent = '¡Marcar como completado!';
-    btn.className = 'meal-detail-check pending';
+    btn.textContent = 'Marcar como completado';
+    btn.className = 'md-check-btn pending';
   }
 
-  $('mealDetailOv').classList.add('on');
+  document.getElementById('mdOv').classList.add('on');
+  requestAnimationFrame(function(){
+    document.getElementById('mdPage').classList.add('on');
+  });
+  document.getElementById('mdPage').scrollTop = 0;
 };
 
 window.closeMealDetail = function(){
-  $('mealDetailOv').classList.remove('on');
-  _mealDetailKey = null;
+  document.getElementById('mdPage').classList.remove('on');
+  document.getElementById('mdOv').classList.remove('on');
+  _mdKey = null;
 };
 
 window.toggleFromDetail = function(){
-  if(!_mealDetailKey) return;
-  window.toggleMeal(_mealDetailKey);
-  // Update button state
-  var pd = prog['day'+curDay]||{};
-  var done = pd[_mealDetailKey] ? true : false;
-  var btn = $('mealDetailCheck');
+  if(!_mdKey) return;
+  window.toggleMeal(_mdKey);
+  var pd   = prog['day'+curDay]||{};
+  var done = !!pd[_mdKey];
+  var btn  = document.getElementById('mdCheckBtn');
   if(done){
-    btn.textContent = '✓ Marcado como completado';
-    btn.className = 'meal-detail-check done';
+    btn.textContent = '✓  Completado';
+    btn.className = 'md-check-btn done';
   } else {
-    btn.textContent = '¡Marcar como completado!';
-    btn.className = 'meal-detail-check pending';
+    btn.textContent = 'Marcar como completado';
+    btn.className = 'md-check-btn pending';
   }
 };
 
 </script>
 
-<!-- ── MEAL DETAIL OVERLAY ── -->
-<div class="meal-detail-ov" id="mealDetailOv" onclick="if(event.target===this)closeMealDetail()">
-  <div class="meal-detail-sheet" id="mealDetailSheet">
-    <div class="meal-detail-handle"></div>
-    <button class="meal-detail-close" onclick="closeMealDetail()">✕</button>
-    <div id="mealDetailImgWrap"></div>
-    <div class="meal-detail-body">
-      <div class="meal-detail-tag" id="mealDetailTag"></div>
-      <div class="meal-detail-title" id="mealDetailTitle"></div>
-      <div class="meal-detail-desc" id="mealDetailDesc"></div>
-      <button class="meal-detail-check" id="mealDetailCheck" onclick="toggleFromDetail()"></button>
-    </div>
+<!-- ── MEAL DETAIL PAGE ── -->
+<div class="md-ov" id="mdOv"></div>
+<div class="md-page" id="mdPage">
+  <div class="md-back">
+    <button class="md-back-btn" onclick="closeMealDetail()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+      Volver
+    </button>
+  </div>
+  <div id="mdImgWrap"></div>
+  <div class="md-content">
+    <div class="md-eyebrow" id="mdEyebrow"></div>
+    <div class="md-title" id="mdTitle"></div>
+    <div class="md-section-lbl">Tu plan para este tiempo</div>
+    <div class="md-desc" id="mdDesc"></div>
+    <div class="md-divider"></div>
+    <button class="md-check-btn" id="mdCheckBtn" onclick="toggleFromDetail()"></button>
   </div>
 </div>
 
